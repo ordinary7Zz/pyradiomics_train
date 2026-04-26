@@ -14,7 +14,15 @@ binary_class 目录说明
    - 对单个任务 CSV 训练一个 AutoGluon 二分类模型
 
 4. run_all_binary_tasks.py
-   - 自动串联：提基础特征 -> 逐任务构表 -> 逐任务训练
+   - 自动串联：提训练/测试基础特征 -> 逐任务构表 -> 逐任务训练 -> 在测试集上评估
+
+输出位置：
+- 训练基础特征：binary_class/outputs/base_features/train_base_features.csv
+- 测试基础特征：binary_class/outputs/base_features/test_base_features.csv
+- 各任务训练 CSV：binary_class/outputs/task_csvs/train_<task>.csv
+- 各任务测试 CSV：binary_class/outputs/task_csvs/test_<task>.csv
+- 各任务模型与测试结果：binary_class/outputs/models/<task>/
+- 总汇总：binary_class/outputs/reports/run_summary.csv
 
 推荐运行方式：
 
@@ -38,8 +46,11 @@ python binary_class/train_binary_task.py \
 
 批量所有任务：
 python binary_class/run_all_binary_tasks.py \
-  --image_dir /path/to/images \
-  --mask_dir /path/to/masks \
-  --label_json /path/to/test_labels.json \
+  --train_image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Malignant_ultrasound_images_cropped \
+  --train_mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Malignant_ultrasound_images_cropped_predictions \
+  --train_label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Malignant_ultrasound_images_cropped/train_labels.json \
+  --test_image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Malignant_ultrasound_images_cropped \
+  --test_mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Malignant_ultrasound_images_cropped_predictions \
+  --test_label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Malignant_ultrasound_images_cropped/test_labels.json \
   --work_dir binary_class/outputs \
   --skip_fail

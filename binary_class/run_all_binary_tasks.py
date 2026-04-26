@@ -3,7 +3,7 @@ import json
 import os
 import subprocess
 import sys
-from typing import List
+from typing import List, Set
 
 
 ROOT = os.path.dirname(os.path.dirname(__file__))
@@ -19,7 +19,7 @@ def _load_tasks(label_json_path: str) -> List[str]:
     if not isinstance(data, list):
         raise ValueError("label_json must be a list of dicts")
 
-    tasks = set()
+    tasks: Set[str] = set()
     for item in data:
         if not isinstance(item, dict):
             continue
@@ -29,16 +29,67 @@ def _load_tasks(label_json_path: str) -> List[str]:
     return sorted(tasks)
 
 
+def _resolve_tasks(train_label_json: str, test_label_json: str, requested_tasks: List[str] | None) -> List[str]:
+    train_tasks = set(_load_tasks(train_label_json))
+    test_tasks = set(_load_tasks(test_label_json))
+
+    if requested_tasks:
+        missing_in_train = [t for t in requested_tasks if t not in train_tasks]
+        missing_in_test = [t for t in requested_tasks if t not in test_tasks]
+        if missing_in_train:
+            raise ValueError(f"Tasks not found in train_label_json: {missing_in_train}")
+        if missing_in_test:
+            raise ValueError(f"Tasks not found in test_label_json: {missing_in_test}")
+        return requested_tasks
+
+    shared_tasks = sorted(train_tasks & test_tasks)
+    if not shared_tasks:
+        raise ValueError("No shared task keys found between train_label_json and test_label_json")
+    return shared_tasks
+
+
 def _run(cmd: List[str]) -> None:
     print("RUN:", " ".join(cmd))
     subprocess.run(cmd, check=True)
 
 
+def _extract_base_features(image_dir: str, mask_dir: str, label_json: str, output_csv: str, params: str, mask_threshold: int, spacing_x: float, spacing_y: float, skip_fail: bool) -> None:
+    cmd = [
+        sys.executable,
+        EXTRACT_SCRIPT,
+        "--image_dir", image_dir,
+        "--mask_dir", mask_dir,
+        "--label_json", label_json,
+        "--output_csv", output_csv,
+        "--params", params,
+        "--mask_threshold", str(mask_threshold),
+        "--spacing_x", str(spacing_x),
+        "--spacing_y", str(spacing_y),
+    ]
+    if skip_fail:
+        cmd.append("--skip_fail")
+    _run(cmd)
+
+
+def _build_task_csv(base_features_csv: str, label_json: str, task: str, output_csv: str) -> None:
+    _run([
+        sys.executable,
+        BUILD_SCRIPT,
+        "--base_features_csv", base_features_csv,
+        "--label_json", label_json,
+        "--task", task,
+        "--output_csv", output_csv,
+    ])
+
+
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="Run all binary tasks from one label json.")
-    p.add_argument("--image_dir", type=str, required=True)
-    p.add_argument("--mask_dir", type=str, required=True)
-    p.add_argument("--label_json", type=str, required=True)
+    p = argparse.ArgumentParser(description="Run all shared binary tasks with train/test JSON inputs.")
+    p.add_argument("--train_image_dir", type=str, required=True)
+    p.add_argument("--train_mask_dir", type=str, required=True)
+    p.add_argument("--train_label_json", type=str, required=True)
+    p.add_argument("--test_image_dir", type=str, required=True)
+    p.add_argument("--test_mask_dir", type=str, required=True)
+    p.add_argument("--test_label_json", type=str, required=True)
     p.add_argument("--work_dir", type=str, default=os.path.join(THIS_DIR, "outputs"))
     p.add_argument("--params", type=str, default=os.path.join(ROOT, "radiomics_2d.yaml"))
     p.add_argument("--mask_threshold", type=int, default=0)
@@ -66,45 +117,51 @@ def main() -> None:
     os.makedirs(models_dir, exist_ok=True)
     os.makedirs(reports_dir, exist_ok=True)
 
-    base_features_csv = os.path.join(base_features_dir, "base_features.csv")
-    extract_cmd = [
-        sys.executable,
-        EXTRACT_SCRIPT,
-        "--image_dir", args.image_dir,
-        "--mask_dir", args.mask_dir,
-        "--label_json", args.label_json,
-        "--output_csv", base_features_csv,
-        "--params", args.params,
-        "--mask_threshold", str(args.mask_threshold),
-        "--spacing_x", str(args.spacing_x),
-        "--spacing_y", str(args.spacing_y),
-    ]
-    if args.skip_fail:
-        extract_cmd.append("--skip_fail")
-    _run(extract_cmd)
+    train_base_features_csv = os.path.join(base_features_dir, "train_base_features.csv")
+    test_base_features_csv = os.path.join(base_features_dir, "test_base_features.csv")
 
-    tasks = args.tasks or _load_tasks(args.label_json)
+    _extract_base_features(
+        image_dir=args.train_image_dir,
+        mask_dir=args.train_mask_dir,
+        label_json=args.train_label_json,
+        output_csv=train_base_features_csv,
+        params=args.params,
+        mask_threshold=args.mask_threshold,
+        spacing_x=args.spacing_x,
+        spacing_y=args.spacing_y,
+        skip_fail=args.skip_fail,
+    )
+    _extract_base_features(
+        image_dir=args.test_image_dir,
+        mask_dir=args.test_mask_dir,
+        label_json=args.test_label_json,
+        output_csv=test_base_features_csv,
+        params=args.params,
+        mask_threshold=args.mask_threshold,
+        spacing_x=args.spacing_x,
+        spacing_y=args.spacing_y,
+        skip_fail=args.skip_fail,
+    )
+
+    tasks = _resolve_tasks(args.train_label_json, args.test_label_json, args.tasks)
     summary_rows = []
 
     for task in tasks:
-        task_csv = os.path.join(task_csv_dir, f"{task}.csv")
+        train_task_csv = os.path.join(task_csv_dir, f"train_{task}.csv")
+        test_task_csv = os.path.join(task_csv_dir, f"test_{task}.csv")
         model_dir = os.path.join(models_dir, task)
 
-        _run([
-            sys.executable,
-            BUILD_SCRIPT,
-            "--base_features_csv", base_features_csv,
-            "--label_json", args.label_json,
-            "--task", task,
-            "--output_csv", task_csv,
-        ])
+        _build_task_csv(train_base_features_csv, args.train_label_json, task, train_task_csv)
+        _build_task_csv(test_base_features_csv, args.test_label_json, task, test_task_csv)
 
         train_cmd = [
             sys.executable,
             TRAIN_SCRIPT,
-            "--train_csv", task_csv,
+            "--train_csv", train_task_csv,
             "--save_dir", model_dir,
             "--task_name", task,
+            "--test_csv", test_task_csv,
+            "--test_names", f"test_{task}",
             "--presets", args.presets,
             "--seed", str(args.seed),
         ]
@@ -116,7 +173,8 @@ def main() -> None:
 
         summary_rows.append({
             "task": task,
-            "task_csv": task_csv,
+            "train_task_csv": train_task_csv,
+            "test_task_csv": test_task_csv,
             "model_dir": model_dir,
         })
 
