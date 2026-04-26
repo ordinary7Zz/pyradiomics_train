@@ -1,11 +1,11 @@
 import math
-from typing import Dict
+from typing import Dict, Union
 
 import numpy as np
 import pandas as pd
 
 
-def get_positive_proba(proba: pd.DataFrame | pd.Series) -> pd.Series:
+def get_positive_proba(proba: Union[pd.DataFrame, pd.Series]) -> pd.Series:
     if isinstance(proba, pd.Series):
         return proba.astype(float)
     if 1 in proba.columns:

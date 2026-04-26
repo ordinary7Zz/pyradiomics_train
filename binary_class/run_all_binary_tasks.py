@@ -3,7 +3,7 @@ import json
 import os
 import subprocess
 import sys
-from typing import List, Set
+from typing import List, Optional, Set
 
 
 ROOT = os.path.dirname(os.path.dirname(__file__))
@@ -29,7 +29,7 @@ def _load_tasks(label_json_path: str) -> List[str]:
     return sorted(tasks)
 
 
-def _resolve_tasks(train_label_json: str, test_label_json: str, requested_tasks: List[str] | None) -> List[str]:
+def _resolve_tasks(train_label_json: str, test_label_json: str, requested_tasks: Optional[List[str]]) -> List[str]:
     train_tasks = set(_load_tasks(train_label_json))
     test_tasks = set(_load_tasks(test_label_json))
 
