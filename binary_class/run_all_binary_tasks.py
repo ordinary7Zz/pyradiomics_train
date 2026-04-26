@@ -101,6 +101,11 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--eval_metric", type=str, default=None)
     p.add_argument("--tasks", type=str, nargs="+", default=None)
+    p.add_argument("--threshold", type=float, default=0.5)
+    p.add_argument("--ece_bins", type=int, default=10)
+    p.add_argument("--ci_bootstrap_iters", type=int, default=1000)
+    p.add_argument("--ci_level", type=float, default=0.95)
+    p.add_argument("--ci_seed", type=int, default=42)
     return p.parse_args()
 
 
@@ -164,6 +169,11 @@ def main() -> None:
             "--test_names", f"test_{task}",
             "--presets", args.presets,
             "--seed", str(args.seed),
+            "--threshold", str(args.threshold),
+            "--ece_bins", str(args.ece_bins),
+            "--ci_bootstrap_iters", str(args.ci_bootstrap_iters),
+            "--ci_level", str(args.ci_level),
+            "--ci_seed", str(args.ci_seed),
         ]
         if args.time_limit is not None:
             train_cmd.extend(["--time_limit", str(args.time_limit)])

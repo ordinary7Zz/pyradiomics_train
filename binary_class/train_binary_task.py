@@ -4,6 +4,8 @@ import os
 import pandas as pd
 from autogluon.tabular import TabularPredictor
 
+from binary_class.binary_metrics import bootstrap_metric_cis, compute_binary_metrics, get_positive_proba
+
 
 DROP_IF_PRESENT = ["image_path", "mask_path", "filename"]
 
@@ -38,6 +40,11 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--time_limit", type=int, default=None)
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--eval_metric", type=str, default=None)
+    p.add_argument("--threshold", type=float, default=0.5)
+    p.add_argument("--ece_bins", type=int, default=10)
+    p.add_argument("--ci_bootstrap_iters", type=int, default=1000)
+    p.add_argument("--ci_level", type=float, default=0.95)
+    p.add_argument("--ci_seed", type=int, default=42)
     return p.parse_args()
 
 
@@ -76,20 +83,68 @@ def main() -> None:
         test_names = [os.path.splitext(os.path.basename(p))[0] for p in test_csvs]
 
     results = []
+    ci_results = []
     for name, csv_path in zip(test_names, test_csvs):
         test_df = pd.read_csv(csv_path)
         test_df = _prepare_df(test_df, args.label)
-        perf = predictor.evaluate(test_df, silent=True)
-        row = {"dataset": name, "csv": csv_path, "n_rows": int(test_df.shape[0])}
-        row.update(perf)
+        y_true = test_df[args.label].reset_index(drop=True)
+        proba = predictor.predict_proba(test_df)
+        y_score = get_positive_proba(proba).reset_index(drop=True)
+
+        metrics = compute_binary_metrics(
+            y_true=y_true,
+            y_score=y_score,
+            threshold=args.threshold,
+            ece_bins=args.ece_bins,
+        )
+        ci_metrics = bootstrap_metric_cis(
+            y_true=y_true,
+            y_score=y_score,
+            threshold=args.threshold,
+            ece_bins=args.ece_bins,
+            n_boot=args.ci_bootstrap_iters,
+            ci_level=args.ci_level,
+            seed=args.ci_seed,
+        )
+
+        n_pos = int((y_true == 1).sum())
+        n_neg = int((y_true == 0).sum())
+
+        row = {
+            "dataset": name,
+            "csv": csv_path,
+            "n_rows": int(test_df.shape[0]),
+            "n_neg": n_neg,
+            "n_pos": n_pos,
+        }
+        row.update(metrics)
         results.append(row)
-        print(f"Test performance [{name}]: {perf}")
+
+        ci_row = {
+            "dataset": name,
+            "csv": csv_path,
+            "n_rows": int(test_df.shape[0]),
+            "n_neg": n_neg,
+            "n_pos": n_pos,
+            "threshold": float(args.threshold),
+            "ci_level": float(args.ci_level),
+            "ci_bootstrap_iters": int(args.ci_bootstrap_iters),
+        }
+        ci_row.update(ci_metrics)
+        ci_results.append(ci_row)
+
+        print(f"Test performance [{name}]: {metrics}")
 
     if results:
         results_df = pd.DataFrame(results)
         results_path = os.path.join(args.save_dir, "test_results.csv")
         results_df.to_csv(results_path, index=False)
         print(f"Saved test results: {results_path}")
+
+        ci_results_df = pd.DataFrame(ci_results)
+        ci_results_path = os.path.join(args.save_dir, "test_results_ci.csv")
+        ci_results_df.to_csv(ci_results_path, index=False)
+        print(f"Saved test result CIs: {ci_results_path}")
 
 
 if __name__ == "__main__":

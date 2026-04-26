@@ -15,6 +15,8 @@ binary_class 目录说明
 
 4. run_all_binary_tasks.py
    - 自动串联：提训练/测试基础特征 -> 逐任务构表 -> 逐任务训练 -> 在测试集上评估
+   - 测试输出指标：AUROC, AUPRC, Acc, Prec, Recall, F1, Specificity, ECE
+   - 同时输出上述指标的 bootstrap 置信区间
 
 输出位置：
 - 训练基础特征：binary_class/outputs/base_features/train_base_features.csv
@@ -22,6 +24,9 @@ binary_class 目录说明
 - 各任务训练 CSV：binary_class/outputs/task_csvs/train_<task>.csv
 - 各任务测试 CSV：binary_class/outputs/task_csvs/test_<task>.csv
 - 各任务模型与测试结果：binary_class/outputs/models/<task>/
+  - leaderboard.csv
+  - test_results.csv
+  - test_results_ci.csv
 - 总汇总：binary_class/outputs/reports/run_summary.csv
 
 推荐运行方式：
@@ -53,4 +58,9 @@ python binary_class/run_all_binary_tasks.py \
   --test_mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Malignant_ultrasound_images_cropped_predictions \
   --test_label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Malignant_ultrasound_images_cropped/test_labels.json \
   --work_dir binary_class/outputs \
+  --threshold 0.5 \
+  --ece_bins 10 \
+  --ci_bootstrap_iters 1000 \
+  --ci_level 0.95 \
+  --ci_seed 42 \
   --skip_fail
