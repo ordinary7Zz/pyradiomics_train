@@ -1,0 +1,22 @@
+# 超大目录（必须忽略）
+autogluon_model/
+csv_data/
+
+# 日志/缓存
+test_logs/
+shap_plots/
+beeswarm_plots/
+__pycache__/
+.ipynb_checkpoints/
+
+# 模型文件
+*.pth
+*.pt
+*.bin
+*.ckpt
+*.h5
+*.pkl
+
+# Python缓存
+*.pyc
+*.pyo
