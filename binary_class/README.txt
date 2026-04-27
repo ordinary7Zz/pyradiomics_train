@@ -45,7 +45,7 @@ python binary_class/build_binary_task_csv.py \
   --task LNM_CN01 \
   --output_csv binary_class/outputs/task_csvs/LNM_CN01.csv
 
-python binary_class/train_binary_task.py \
+python -m binary_class.train_binary_task \
   --train_csv binary_class/outputs/task_csvs/LNM_CN01.csv \
   --save_dir binary_class/outputs/models/LNM_CN01
 

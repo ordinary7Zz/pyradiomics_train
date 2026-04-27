@@ -10,7 +10,6 @@ ROOT = os.path.dirname(os.path.dirname(__file__))
 THIS_DIR = os.path.dirname(__file__)
 EXTRACT_SCRIPT = os.path.join(THIS_DIR, "extract_base_radiomics.py")
 BUILD_SCRIPT = os.path.join(THIS_DIR, "build_binary_task_csv.py")
-TRAIN_SCRIPT = os.path.join(THIS_DIR, "train_binary_task.py")
 
 
 def _load_tasks(label_json_path: str) -> List[str]:
@@ -161,7 +160,8 @@ def main() -> None:
 
         train_cmd = [
             sys.executable,
-            TRAIN_SCRIPT,
+            "-m",
+            "binary_class.train_binary_task",
             "--train_csv", train_task_csv,
             "--save_dir", model_dir,
             "--task_name", task,
