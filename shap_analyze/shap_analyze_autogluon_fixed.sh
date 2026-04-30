@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 MODEL_DIR="./binary_class/outputs/models/LNM_CN01"
 TRAIN_CSV="./binary_class/outputs/base_features/train_base_features.csv"
-OUTPUT_DIR="./binary_class/shap_analysis_outputs"
+OUTPUT_DIR="./binary_class/shap_analysis_outputs/LNM_CN01"
 
 python shap_analyze_autogluon_fixed.py \
   --model_dir "$MODEL_DIR" \
