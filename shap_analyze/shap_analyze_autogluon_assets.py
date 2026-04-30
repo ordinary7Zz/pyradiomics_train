@@ -1,3 +1,14 @@
+"""
+SHAP资产导出脚本（样本级表格与案例分析为主）。
+
+主要功能：
+- 加载AutoGluon模型与训练CSV，构建背景/解释样本。
+- 计算各主模型的SHAP值与预测概率。
+- 生成样本级case表、代表性样本列表等“资产”结果。
+
+输出目录默认为 <model_dir>/shap_analysis_assets。
+"""
+
 import argparse
 import json
 import os

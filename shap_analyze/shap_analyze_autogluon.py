@@ -1,3 +1,14 @@
+"""
+早期版本的SHAP分析脚本（保留用于兼容或回溯）。
+
+主要功能：
+- 加载AutoGluon模型与训练CSV，计算各模型SHAP值。
+- 生成SHAP值CSV与特征重要性统计。
+- 可选生成全局性可视化（具体功能以脚本实现为准）。
+
+当前推荐使用 fixed 版本进行主流程分析。
+"""
+
 import argparse
 import os
 import re

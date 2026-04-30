@@ -75,3 +75,7 @@ python pyradiomics_train/train_autogluon_tabular.py \
 输出：
 - `--save_dir`：AutoGluon 模型目录
 - `leaderboard.csv`：各模型效果对比
+
+## 4) 绘图脚本
+
+绘图相关脚本已整理到 [plots/](plots/) 目录，使用说明见 [plots/README.md](plots/README.md)。
