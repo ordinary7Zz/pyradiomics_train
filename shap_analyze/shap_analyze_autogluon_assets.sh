@@ -5,7 +5,7 @@ MODEL_DIR="./autogluon_model/gtmask/${DATASET_NAME}/autogluon_model_20260107_233
 TRAIN_CSV="./csv_data/train_with_gtmask/${DATASET_NAME}_radiomics_2d_features.csv"
 OUTPUT_DIR="./shap_analysis"
 
-python shap_analyze_autogluon_assets.py \
+python shap_analyze/shap_analyze_autogluon_assets.py \
   --model_dir "$MODEL_DIR" \
   --train_csv "$TRAIN_CSV" \
   --output_dir "$OUTPUT_DIR" \
