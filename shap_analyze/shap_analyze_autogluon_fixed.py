@@ -27,6 +27,7 @@ from plots.plotting_utils import save_beeswarm_plot, save_waterfall_plot, short_
 np = None
 pd = None
 TabularPredictor = None
+DROP_IF_PRESENT = ["image_path", "mask_path", "filename"]
 
 def _require_numpy():
     global np
