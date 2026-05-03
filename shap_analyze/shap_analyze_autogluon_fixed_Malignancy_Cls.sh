@@ -14,5 +14,5 @@ python shap_analyze/shap_analyze_autogluon_fixed.py \
   --explain_samples 2000 \
   --skip_neural_net \
   --plot_waterfall \
-  --top_features 5 \
+  --top_features 10 \
   --waterfall_samples 10
