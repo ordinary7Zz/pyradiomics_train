@@ -5,7 +5,6 @@ csv_data/
 # 核心输出/模型目录（防止被 git clean 删除）
 outputs/
 shap_analysis_outputs/
-binary_class/
 models/
 reports/
 task_csvs/
