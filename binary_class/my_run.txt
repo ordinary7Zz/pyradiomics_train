@@ -93,9 +93,9 @@ python -m binary_class.train_binary_task_resampled \
   --train_csv binary_class/outputs/task_csvs/train_FTCPTC.csv \
   --test_csv binary_class/outputs/task_csvs/test_FTCPTC.csv \
   --test_names FTCPTC_test \
-  --save_dir binary_class/outputs/models/FTCPTC_resampled \
+  --save_dir binary_class/outputs/models/FTCPTC_resampled_3000_1000 \
   --eval_metric roc_auc \
-  --target_class0_count 4000 \
+  --target_class0_count 3000 \
   --target_class1_count 1000 \
   --threshold 0.5 \
   --ece_bins 10 \
