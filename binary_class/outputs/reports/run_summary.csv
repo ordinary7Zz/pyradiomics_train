@@ -1,0 +1,3 @@
+task,train_task_csv,test_task_csv,model_dir
+FTCPTC,/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/outputs/task_csvs/train_FTCPTC.csv,/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/outputs/task_csvs/test_FTCPTC.csv,/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/outputs/models/FTCPTC
+LNM_CN01,/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/outputs/task_csvs/train_LNM_CN01.csv,/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/outputs/task_csvs/test_LNM_CN01.csv,/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/outputs/models/LNM_CN01
