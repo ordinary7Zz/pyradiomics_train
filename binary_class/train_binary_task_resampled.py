@@ -1,6 +1,6 @@
 import argparse
 import os
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import pandas as pd
 from autogluon.tabular import TabularPredictor
@@ -11,6 +11,33 @@ from binary_class.binary_metrics import bootstrap_metric_cis, compute_binary_met
 
 
 DROP_IF_PRESENT = ["image_path", "mask_path", "filename"]
+MODEL_SET_CHOICES = ["all", "tree_fast", "tree_full", "gbm_cat", "gbm_only"]
+
+
+def _get_model_hyperparameters(model_set: str) -> Optional[Dict[str, Any]]:
+    if model_set == "all":
+        return None
+    if model_set == "tree_fast":
+        return {
+            "GBM": {},
+            "CAT": {},
+        }
+    if model_set == "tree_full":
+        return {
+            "GBM": {},
+            "CAT": {},
+            "XGB": {},
+        }
+    if model_set == "gbm_cat":
+        return {
+            "GBM": {},
+            "CAT": {},
+        }
+    if model_set == "gbm_only":
+        return {
+            "GBM": {},
+        }
+    raise ValueError(f"Unsupported model_set: {model_set}")
 
 
 def _prepare_df(df: pd.DataFrame, label_col: str) -> pd.DataFrame:
@@ -40,6 +67,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--test_csv", type=str, nargs="+", default=None)
     p.add_argument("--test_names", type=str, nargs="+", default=None)
     p.add_argument("--presets", type=str, default="best_quality")
+    p.add_argument("--model_set", type=str, default="all", choices=MODEL_SET_CHOICES)
     p.add_argument("--time_limit", type=int, default=None)
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--eval_metric", type=str, default=None)
@@ -415,12 +443,22 @@ def main() -> None:
         log_file_path="auto",
     )
 
+    hyperparameters = _get_model_hyperparameters(args.model_set)
+    print(
+        "Training configuration: "
+        f"presets={args.presets}, "
+        f"model_set={args.model_set}, "
+        f"time_limit={args.time_limit}"
+    )
+
     fit_kwargs = dict(
         train_data=fit_train_df,
         presets=args.presets,
         time_limit=args.time_limit,
         ag_args_fit={"random_seed": args.seed},
     )
+    if hyperparameters is not None:
+        fit_kwargs["hyperparameters"] = hyperparameters
     if holdout_df is not None:
         fit_kwargs["tuning_data"] = holdout_df
 

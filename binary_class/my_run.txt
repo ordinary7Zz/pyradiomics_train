@@ -17,6 +17,8 @@ binary_class 目录说明
 4. train_binary_task_resampled.py
    - 对单个任务 CSV 训练一个带重采样能力的 AutoGluon 二分类模型
    - 支持训练集重采样，以缓解类别不平衡问题
+   - 支持通过 `--time_limit` 控制总训练时长
+   - 支持通过 `--model_set` 选择训练哪些模型族
    - 支持两种使用方式：
      a) 通用重采样：oversample / undersample
      b) 目标数量重采样：直接指定 0 类和 1 类各自的目标数量
@@ -67,6 +69,8 @@ python -m binary_class.train_binary_task_resampled \
   --train_csv binary_class/outputs/task_csvs/LNM_CN01.csv \
   --save_dir binary_class/outputs/models/LNM_CN01_resampled \
   --eval_metric roc_auc \
+  --model_set tree_fast \
+  --time_limit 1800 \
   --resample_strategy oversample \
   --resample_target median \
   --seed 42
@@ -76,6 +80,8 @@ python -m binary_class.train_binary_task_resampled \
   --train_csv binary_class/outputs/task_csvs/FTCPTC.csv \
   --save_dir binary_class/outputs/models/FTCPTC_resampled \
   --eval_metric roc_auc \
+  --model_set tree_full \
+  --time_limit 3600 \
   --target_class0_count 4000 \
   --target_class1_count 1000 \
   --seed 42
@@ -84,6 +90,8 @@ python -m binary_class.train_binary_task_resampled \
 - --resample_strategy / --resample_target：通用重采样模式
 - --target_class0_count / --target_class1_count：分别指定训练时 0 类和 1 类的目标数量
 - 某一类设为 -1 表示保持该类原始数量不变
+- --time_limit：控制 AutoGluon 总训练时长，单位为秒
+- --model_set：控制训练哪些模型族，可选值为 all / tree_fast / tree_full / gbm_cat / gbm_only
 - 当传入 --target_class0_count 或 --target_class1_count 且其值不为 -1 时，会优先使用目标数量重采样
 - 如需保存重采样后的训练表，可附加：
   --save_resampled_csv binary_class/outputs/task_csvs/FTCPTC_resampled_train.csv
@@ -93,9 +101,11 @@ python -m binary_class.train_binary_task_resampled \
   --train_csv binary_class/outputs/task_csvs/train_FTCPTC.csv \
   --test_csv binary_class/outputs/task_csvs/test_FTCPTC.csv \
   --test_names FTCPTC_test \
-  --save_dir binary_class/outputs/models/FTCPTC_resampled_3000_1000 \
+  --save_dir binary_class/outputs/models/FTCPTC_resampled_2000_1000 \
   --eval_metric roc_auc \
-  --target_class0_count 3000 \
+  --model_set tree_full \
+  --time_limit 3600 \
+  --target_class0_count 2000 \
   --target_class1_count 1000 \
   --threshold 0.5 \
   --ece_bins 10 \
@@ -125,4 +135,6 @@ python binary_class/run_all_binary_tasks.py \
   --resample_strategy oversample --resample_target median
 - FTCPTC 这类明显不平衡任务，更推荐目标数量重采样，例如先限制 0 类数量，再视情况补足 1 类数量
 - 若希望只调整其中一类数量，可将另一类设为 -1 保持原始数量
+- 若希望更快试验，可优先使用 `--model_set tree_fast --time_limit 1800`
+- 若希望兼顾效果与速度，可优先使用 `--model_set tree_full --time_limit 3600`
 - 建议重点关注 test_results.csv 中的 AUPRC、Recall、F1、Specificity，而不只看 AUROC
