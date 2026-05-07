@@ -3,11 +3,9 @@ autogluon_model/
 csv_data/
 
 # 核心输出/模型目录（防止被 git clean 删除）
-outputs/
+models/
 shap_analysis_outputs/
 models/
-reports/
-task_csvs/
 
 # 日志/缓存
 test_logs/
