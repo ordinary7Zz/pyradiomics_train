@@ -26,7 +26,14 @@ binary_class 目录说明
    - 若不提供 test_csv，会先切分 holdout，再只对训练部分做重采样
    - 测试集 / holdout 保持原始分布，不参与重采样
 
-5. run_all_binary_tasks.py
+5. build_patient_task_csv.py
+   - 将图像级 task CSV 聚合成病人级 task CSV
+   - 默认从 filename 中提取“年份/病人目录名”作为病人键
+   - 会校验同一病人组内 label 是否一致
+   - 默认对数值特征做 mean 聚合，并新增 image_count 列
+   - 输出结果可直接复用 train_binary_task.py 或 train_binary_task_resampled.py 训练
+
+6. run_all_binary_tasks.py
    - 自动串联：提训练/测试基础特征 -> 逐任务构表 -> 逐任务训练 -> 在测试集上评估
    - 当前默认调用的是 train_binary_task.py
    - 测试输出指标：AUROC, AUPRC, Acc, Prec, Recall, F1, Specificity, ECE
@@ -114,6 +121,36 @@ python -m binary_class.train_binary_task_resampled \
   --ci_seed 42 \
   --seed 42
 
+病人级训练推荐流程：
+python binary_class/build_patient_task_csv.py \
+  --input_csv binary_class/outputs/task_csvs/train_FTCPTC.csv \
+  --output_csv binary_class/outputs/task_csvs/train_FTCPTC_patient.csv \
+  --summary_csv binary_class/outputs/task_csvs/train_FTCPTC_patient_summary.csv \
+  --mapping_csv binary_class/outputs/task_csvs/train_FTCPTC_patient_mapping.csv
+
+python binary_class/build_patient_task_csv.py \
+  --input_csv binary_class/outputs/task_csvs/test_FTCPTC.csv \
+  --output_csv binary_class/outputs/task_csvs/test_FTCPTC_patient.csv \
+  --summary_csv binary_class/outputs/task_csvs/test_FTCPTC_patient_summary.csv \
+  --mapping_csv binary_class/outputs/task_csvs/test_FTCPTC_patient_mapping.csv
+
+python -m binary_class.train_binary_task_resampled \
+  --train_csv binary_class/outputs/task_csvs/train_FTCPTC_patient.csv \
+  --test_csv binary_class/outputs/task_csvs/test_FTCPTC_patient.csv \
+  --test_names FTCPTC_test_patient \
+  --save_dir binary_class/outputs/models/FTCPTC_patient_tree_fast \
+  --eval_metric roc_auc \
+  --model_set tree_fast \
+  --time_limit 1800 \
+  --target_class0_count -1 \
+  --target_class1_count -1 \
+  --threshold 0.5 \
+  --ece_bins 10 \
+  --ci_bootstrap_iters 1000 \
+  --ci_level 0.95 \
+  --ci_seed 42 \
+  --seed 42
+
 批量所有任务：
 python binary_class/run_all_binary_tasks.py \
   --train_image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Malignant_ultrasound_images_cropped \
@@ -137,4 +174,5 @@ python binary_class/run_all_binary_tasks.py \
 - 若希望只调整其中一类数量，可将另一类设为 -1 保持原始数量
 - 若希望更快试验，可优先使用 `--model_set tree_fast --time_limit 1800`
 - 若希望兼顾效果与速度，可优先使用 `--model_set tree_full --time_limit 3600`
+- 若标签是病人级、样本却是图像级，建议先构建病人级 CSV，再复用现有训练脚本做病人级训练与评估
 - 建议重点关注 test_results.csv 中的 AUPRC、Recall、F1、Specificity，而不只看 AUROC
