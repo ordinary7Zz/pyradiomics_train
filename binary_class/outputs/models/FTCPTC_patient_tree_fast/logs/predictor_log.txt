@@ -1,0 +1,183 @@
+Verbosity: 2 (Standard Logging)
+=================== System Info ===================
+AutoGluon Version:  1.4.0
+Python Version:     3.9.25
+Operating System:   Linux
+Platform Machine:   x86_64
+Platform Version:   #35~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue May  7 09:00:52 UTC 2
+CPU Count:          20
+Memory Avail:       399.70 GB / 503.49 GB (79.4%)
+Disk Space Avail:   110177.52 GB / 185849.28 GB (59.3%)
+===================================================
+Presets specified: ['best_quality']
+Setting dynamic_stacking from 'auto' to True. Reason: Enable dynamic_stacking when use_bag_holdout is disabled. (use_bag_holdout=False)
+Stack configuration (auto_stack=True): num_stack_levels=1, num_bag_folds=8, num_bag_sets=1
+DyStack is enabled (dynamic_stacking=True). AutoGluon will try to determine whether the input data is affected by stacked overfitting and enable or disable stacking as a consequence.
+	This is used to identify the optimal `num_stack_levels` value. Copies of AutoGluon will be fit on subsets of the data. Then holdout validation data is used to detect stacked overfitting.
+	Running DyStack for up to 450s of the 1800s of remaining time (25%).
+		Context path: "/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/outputs/models/FTCPTC_patient_tree_fast/ds_sub_fit/sub_fit_ho"
+Running DyStack sub-fit ...
+Beginning AutoGluon training ... Time limit = 450s
+AutoGluon will save models to "/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/outputs/models/FTCPTC_patient_tree_fast/ds_sub_fit/sub_fit_ho"
+Train Data Rows:    1181
+Train Data Columns: 101
+Label Column:       label
+Problem Type:       binary
+Preprocessing data ...
+Selected class <--> label mapping:  class 1 = 1, class 0 = 0
+Using Feature Generators to preprocess the data ...
+Fitting AutoMLPipelineFeatureGenerator...
+	Available Memory:                    409296.43 MB
+	Train Data (Original)  Memory Usage: 0.91 MB (0.0% of available memory)
+	Inferring data type of each feature based on column values. Set feature_metadata_in to manually specify special dtypes of the features.
+	Stage 1 Generators:
+		Fitting AsTypeFeatureGenerator...
+	Stage 2 Generators:
+		Fitting FillNaFeatureGenerator...
+	Stage 3 Generators:
+		Fitting IdentityFeatureGenerator...
+	Stage 4 Generators:
+		Fitting DropUniqueFeatureGenerator...
+	Stage 5 Generators:
+		Fitting DropDuplicatesFeatureGenerator...
+	Unused Original Features (Count: 14): ['original_firstorder_TotalEnergy_mean', 'original_glszm_GrayLevelNonUniformity_mean', 'original_glszm_GrayLevelNonUniformityNormalized_mean', 'original_glszm_GrayLevelVariance_mean', 'original_glszm_HighGrayLevelZoneEmphasis_mean', 'original_glszm_LargeAreaEmphasis_mean', 'original_glszm_LargeAreaHighGrayLevelEmphasis_mean', 'original_glszm_LowGrayLevelZoneEmphasis_mean', 'original_glszm_SizeZoneNonUniformity_mean', 'original_glszm_SizeZoneNonUniformityNormalized_mean', 'original_glszm_SmallAreaEmphasis_mean', 'original_glszm_SmallAreaLowGrayLevelEmphasis_mean', 'original_glszm_ZonePercentage_mean', 'original_glszm_ZoneVariance_mean']
+		These features were not used to generate any of the output features. Add a feature generator compatible with these features to utilize them.
+		Features can also be unused if they carry very little information, such as being categorical but having almost entirely unique values or being duplicates of other features.
+		These features do not need to be present at inference time.
+		('float', []) : 14 | ['original_firstorder_TotalEnergy_mean', 'original_glszm_GrayLevelNonUniformity_mean', 'original_glszm_GrayLevelNonUniformityNormalized_mean', 'original_glszm_GrayLevelVariance_mean', 'original_glszm_HighGrayLevelZoneEmphasis_mean', ...]
+	Types of features in original data (raw dtype, special dtypes):
+		('float', []) : 86 | ['original_shape2D_Elongation_mean', 'original_shape2D_MajorAxisLength_mean', 'original_shape2D_MaximumDiameter_mean', 'original_shape2D_MeshSurface_mean', 'original_shape2D_MinorAxisLength_mean', ...]
+		('int', [])   :  1 | ['image_count']
+	Types of features in processed data (raw dtype, special dtypes):
+		('float', []) : 86 | ['original_shape2D_Elongation_mean', 'original_shape2D_MajorAxisLength_mean', 'original_shape2D_MaximumDiameter_mean', 'original_shape2D_MeshSurface_mean', 'original_shape2D_MinorAxisLength_mean', ...]
+		('int', [])   :  1 | ['image_count']
+	1.3s = Fit runtime
+	87 features in original data used to generate 87 features in processed data.
+	Train Data (Processed) Memory Usage: 0.78 MB (0.0% of available memory)
+Data preprocessing and feature engineering runtime = 1.27s ...
+AutoGluon will gauge predictive performance using evaluation metric: 'roc_auc'
+	This metric expects predicted probabilities rather than predicted class labels, so you'll need to use predict_proba() instead of predict()
+	To change this, specify the eval_metric parameter of Predictor()
+User-specified model hyperparameters to be fit:
+{
+	'GBM': [{}],
+	'CAT': [{}],
+}
+AutoGluon will fit 2 stack levels (L1 to L2) ...
+Fitting 2 L1 models, fit_strategy="sequential" ...
+Fitting model: LightGBM_BAG_L1 ... Training model for up to 299.08s of the 448.73s of remaining time.
+Will use sequential fold fitting strategy because import of ray failed. Reason: ray is required to train folds in parallel for TabularPredictor or HPO for MultiModalPredictor. A quick tip is to install via `pip install "ray>=2.10.0,<2.45.0"`
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9992	 = Validation score   (roc_auc)
+	9.41s	 = Training   runtime
+	2.28s	 = Validation runtime
+Fitting model: CatBoost_BAG_L1 ... Training model for up to 282.86s of the 432.51s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	Ran out of time, early stopping on iteration 7010.
+	Ran out of time, early stopping on iteration 7518.
+	Ran out of time, early stopping on iteration 7557.
+	0.9977	 = Validation score   (roc_auc)
+	241.5s	 = Training   runtime
+	0.04s	 = Validation runtime
+Fitting model: WeightedEnsemble_L2 ... Training model for up to 360.00s of the 190.05s of remaining time.
+	Ensemble Weights: {'LightGBM_BAG_L1': 1.0}
+	0.9992	 = Validation score   (roc_auc)
+	0.02s	 = Training   runtime
+	0.0s	 = Validation runtime
+Fitting 2 L2 models, fit_strategy="sequential" ...
+Fitting model: LightGBM_BAG_L2 ... Training model for up to 189.85s of the 189.84s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9994	 = Validation score   (roc_auc)
+	7.09s	 = Training   runtime
+	2.44s	 = Validation runtime
+Fitting model: CatBoost_BAG_L2 ... Training model for up to 177.52s of the 177.51s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	Ran out of time, early stopping on iteration 6180.
+	Ran out of time, early stopping on iteration 6348.
+	0.9988	 = Validation score   (roc_auc)
+	96.12s	 = Training   runtime
+	0.03s	 = Validation runtime
+Fitting model: WeightedEnsemble_L3 ... Training model for up to 360.00s of the 80.92s of remaining time.
+	Ensemble Weights: {'LightGBM_BAG_L2': 1.0}
+	0.9994	 = Validation score   (roc_auc)
+	0.03s	 = Training   runtime
+	0.0s	 = Validation runtime
+AutoGluon training complete, total runtime = 369.14s ... Best model: WeightedEnsemble_L3 | Estimated inference throughput: 31.1 rows/s (148 batch size)
+TabularPredictor saved. To load, use: predictor = TabularPredictor.load("/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/outputs/models/FTCPTC_patient_tree_fast/ds_sub_fit/sub_fit_ho")
+Deleting DyStack predictor artifacts (clean_up_fits=True) ...
+Leaderboard on holdout data (DyStack):
+                 model  score_holdout  score_val eval_metric  pred_time_test  pred_time_val    fit_time  pred_time_test_marginal  pred_time_val_marginal  fit_time_marginal  stack_level  can_infer  fit_order
+0      CatBoost_BAG_L1            1.0   0.997684     roc_auc        0.514397       0.037868  241.499640                 0.514397                0.037868         241.499640            1       True          2
+1      LightGBM_BAG_L1            1.0   0.999174     roc_auc        3.481441       2.280847    9.407650                 3.481441                2.280847           9.407650            1       True          1
+2  WeightedEnsemble_L2            1.0   0.999174     roc_auc        3.483194       2.281262    9.428374                 0.001753                0.000415           0.020724            2       True          3
+3      CatBoost_BAG_L2            1.0   0.998754     roc_auc        4.461803       2.348078  347.024359                 0.465964                0.029363          96.117069            2       True          5
+4      LightGBM_BAG_L2            1.0   0.999397     roc_auc        7.979611       4.754549  257.993094                 3.983772                2.435834           7.085804            2       True          4
+5  WeightedEnsemble_L3            1.0   0.999397     roc_auc        7.981423       4.754948  258.022105                 0.001812                0.000399           0.029011            3       True          6
+	0	 = Optimal   num_stack_levels (Stacked Overfitting Occurred: True)
+	378s	 = DyStack   runtime |	1422s	 = Remaining runtime
+Starting main fit with num_stack_levels=0.
+	For future fit calls on this dataset, you can skip DyStack to save time: `predictor.fit(..., dynamic_stacking=False, num_stack_levels=0)`
+Beginning AutoGluon training ... Time limit = 1422s
+AutoGluon will save models to "/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/outputs/models/FTCPTC_patient_tree_fast"
+Train Data Rows:    1329
+Train Data Columns: 101
+Label Column:       label
+Problem Type:       binary
+Preprocessing data ...
+Selected class <--> label mapping:  class 1 = 1, class 0 = 0
+Using Feature Generators to preprocess the data ...
+Fitting AutoMLPipelineFeatureGenerator...
+	Available Memory:                    409204.42 MB
+	Train Data (Original)  Memory Usage: 1.02 MB (0.0% of available memory)
+	Inferring data type of each feature based on column values. Set feature_metadata_in to manually specify special dtypes of the features.
+	Stage 1 Generators:
+		Fitting AsTypeFeatureGenerator...
+	Stage 2 Generators:
+		Fitting FillNaFeatureGenerator...
+	Stage 3 Generators:
+		Fitting IdentityFeatureGenerator...
+	Stage 4 Generators:
+		Fitting DropUniqueFeatureGenerator...
+	Stage 5 Generators:
+		Fitting DropDuplicatesFeatureGenerator...
+	Unused Original Features (Count: 14): ['original_firstorder_TotalEnergy_mean', 'original_glszm_GrayLevelNonUniformity_mean', 'original_glszm_GrayLevelNonUniformityNormalized_mean', 'original_glszm_GrayLevelVariance_mean', 'original_glszm_HighGrayLevelZoneEmphasis_mean', 'original_glszm_LargeAreaEmphasis_mean', 'original_glszm_LargeAreaHighGrayLevelEmphasis_mean', 'original_glszm_LowGrayLevelZoneEmphasis_mean', 'original_glszm_SizeZoneNonUniformity_mean', 'original_glszm_SizeZoneNonUniformityNormalized_mean', 'original_glszm_SmallAreaEmphasis_mean', 'original_glszm_SmallAreaLowGrayLevelEmphasis_mean', 'original_glszm_ZonePercentage_mean', 'original_glszm_ZoneVariance_mean']
+		These features were not used to generate any of the output features. Add a feature generator compatible with these features to utilize them.
+		Features can also be unused if they carry very little information, such as being categorical but having almost entirely unique values or being duplicates of other features.
+		These features do not need to be present at inference time.
+		('float', []) : 14 | ['original_firstorder_TotalEnergy_mean', 'original_glszm_GrayLevelNonUniformity_mean', 'original_glszm_GrayLevelNonUniformityNormalized_mean', 'original_glszm_GrayLevelVariance_mean', 'original_glszm_HighGrayLevelZoneEmphasis_mean', ...]
+	Types of features in original data (raw dtype, special dtypes):
+		('float', []) : 86 | ['original_shape2D_Elongation_mean', 'original_shape2D_MajorAxisLength_mean', 'original_shape2D_MaximumDiameter_mean', 'original_shape2D_MeshSurface_mean', 'original_shape2D_MinorAxisLength_mean', ...]
+		('int', [])   :  1 | ['image_count']
+	Types of features in processed data (raw dtype, special dtypes):
+		('float', []) : 86 | ['original_shape2D_Elongation_mean', 'original_shape2D_MajorAxisLength_mean', 'original_shape2D_MaximumDiameter_mean', 'original_shape2D_MeshSurface_mean', 'original_shape2D_MinorAxisLength_mean', ...]
+		('int', [])   :  1 | ['image_count']
+	1.5s = Fit runtime
+	87 features in original data used to generate 87 features in processed data.
+	Train Data (Processed) Memory Usage: 0.88 MB (0.0% of available memory)
+Data preprocessing and feature engineering runtime = 1.5s ...
+AutoGluon will gauge predictive performance using evaluation metric: 'roc_auc'
+	This metric expects predicted probabilities rather than predicted class labels, so you'll need to use predict_proba() instead of predict()
+	To change this, specify the eval_metric parameter of Predictor()
+User-specified model hyperparameters to be fit:
+{
+	'GBM': [{}],
+	'CAT': [{}],
+}
+Fitting 2 L1 models, fit_strategy="sequential" ...
+Fitting model: LightGBM_BAG_L1 ... Training model for up to 1420.61s of the 1420.61s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9996	 = Validation score   (roc_auc)
+	10.47s	 = Training   runtime
+	2.26s	 = Validation runtime
+Fitting model: CatBoost_BAG_L1 ... Training model for up to 1403.28s of the 1403.27s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9987	 = Validation score   (roc_auc)
+	247.85s	 = Training   runtime
+	0.04s	 = Validation runtime
+Fitting model: WeightedEnsemble_L2 ... Training model for up to 360.00s of the 1154.57s of remaining time.
+	Ensemble Weights: {'LightGBM_BAG_L1': 1.0}
+	0.9996	 = Validation score   (roc_auc)
+	0.02s	 = Training   runtime
+	0.0s	 = Validation runtime
+AutoGluon training complete, total runtime = 267.71s ... Best model: WeightedEnsemble_L2 | Estimated inference throughput: 74.0 rows/s (167 batch size)
+TabularPredictor saved. To load, use: predictor = TabularPredictor.load("/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/outputs/models/FTCPTC_patient_tree_fast")
