@@ -1,0 +1,2 @@
+dataset,csv,n_rows,n_neg,n_pos,auroc,auprc,acc,prec,recall,f1,specificity,ece
+test_LNM_CN01,/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/outputs/task_csvs/test_LNM_CN01.csv,500,250,250,0.689792,0.7011133522175024,0.562,0.9696969696969697,0.128,0.22614840989399293,0.996,0.20811291307210925

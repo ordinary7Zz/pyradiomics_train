@@ -1,0 +1,2 @@
+dataset,csv,n_rows,n_neg,n_pos,auroc,auprc,acc,prec,recall,f1,specificity,ece
+FTCPTC_test,binary_class/outputs/task_csvs/test_FTCPTC.csv,500,337,163,0.5431905481422148,0.34206350295131527,0.666,0.0,0.0,0.0,0.9881305637982196,0.22636525205336513

@@ -1,0 +1,2286 @@
+Verbosity: 2 (Standard Logging)
+=================== System Info ===================
+AutoGluon Version:  1.4.0
+Python Version:     3.9.25
+Operating System:   Linux
+Platform Machine:   x86_64
+Platform Version:   #35~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue May  7 09:00:52 UTC 2
+CPU Count:          20
+Memory Avail:       405.30 GB / 503.49 GB (80.5%)
+Disk Space Avail:   110570.62 GB / 185849.28 GB (59.5%)
+===================================================
+Presets specified: ['best_quality']
+Using hyperparameters preset: hyperparameters='zeroshot'
+Setting dynamic_stacking from 'auto' to True. Reason: Enable dynamic_stacking when use_bag_holdout is disabled. (use_bag_holdout=False)
+Stack configuration (auto_stack=True): num_stack_levels=1, num_bag_folds=8, num_bag_sets=1
+DyStack is enabled (dynamic_stacking=True). AutoGluon will try to determine whether the input data is affected by stacked overfitting and enable or disable stacking as a consequence.
+	This is used to identify the optimal `num_stack_levels` value. Copies of AutoGluon will be fit on subsets of the data. Then holdout validation data is used to detect stacked overfitting.
+	Warning: No time limit provided for DyStack. This could take awhile.
+		Context path: "/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/outputs/models/FTCPTC/ds_sub_fit/sub_fit_ho"
+Running DyStack sub-fit ...
+Beginning AutoGluon training ...
+AutoGluon will save models to "/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/outputs/models/FTCPTC/ds_sub_fit/sub_fit_ho"
+Train Data Rows:    9986
+Train Data Columns: 100
+Label Column:       label
+Problem Type:       binary
+Preprocessing data ...
+Selected class <--> label mapping:  class 1 = 1, class 0 = 0
+Using Feature Generators to preprocess the data ...
+Fitting AutoMLPipelineFeatureGenerator...
+	Available Memory:                    414996.62 MB
+	Train Data (Original)  Memory Usage: 7.62 MB (0.0% of available memory)
+	Inferring data type of each feature based on column values. Set feature_metadata_in to manually specify special dtypes of the features.
+	Stage 1 Generators:
+		Fitting AsTypeFeatureGenerator...
+	Stage 2 Generators:
+		Fitting FillNaFeatureGenerator...
+	Stage 3 Generators:
+		Fitting IdentityFeatureGenerator...
+	Stage 4 Generators:
+		Fitting DropUniqueFeatureGenerator...
+	Stage 5 Generators:
+		Fitting DropDuplicatesFeatureGenerator...
+	Unused Original Features (Count: 14): ['original_firstorder_TotalEnergy', 'original_glszm_GrayLevelNonUniformity', 'original_glszm_GrayLevelNonUniformityNormalized', 'original_glszm_GrayLevelVariance', 'original_glszm_HighGrayLevelZoneEmphasis', 'original_glszm_LargeAreaEmphasis', 'original_glszm_LargeAreaHighGrayLevelEmphasis', 'original_glszm_LowGrayLevelZoneEmphasis', 'original_glszm_SizeZoneNonUniformity', 'original_glszm_SizeZoneNonUniformityNormalized', 'original_glszm_SmallAreaEmphasis', 'original_glszm_SmallAreaLowGrayLevelEmphasis', 'original_glszm_ZonePercentage', 'original_glszm_ZoneVariance']
+		These features were not used to generate any of the output features. Add a feature generator compatible with these features to utilize them.
+		Features can also be unused if they carry very little information, such as being categorical but having almost entirely unique values or being duplicates of other features.
+		These features do not need to be present at inference time.
+		('float', []) : 14 | ['original_firstorder_TotalEnergy', 'original_glszm_GrayLevelNonUniformity', 'original_glszm_GrayLevelNonUniformityNormalized', 'original_glszm_GrayLevelVariance', 'original_glszm_HighGrayLevelZoneEmphasis', ...]
+	Types of features in original data (raw dtype, special dtypes):
+		('float', []) : 86 | ['original_shape2D_Elongation', 'original_shape2D_MajorAxisLength', 'original_shape2D_MaximumDiameter', 'original_shape2D_MeshSurface', 'original_shape2D_MinorAxisLength', ...]
+	Types of features in processed data (raw dtype, special dtypes):
+		('float', []) : 86 | ['original_shape2D_Elongation', 'original_shape2D_MajorAxisLength', 'original_shape2D_MaximumDiameter', 'original_shape2D_MeshSurface', 'original_shape2D_MinorAxisLength', ...]
+	2.4s = Fit runtime
+	86 features in original data used to generate 86 features in processed data.
+	Train Data (Processed) Memory Usage: 6.55 MB (0.0% of available memory)
+Data preprocessing and feature engineering runtime = 2.45s ...
+AutoGluon will gauge predictive performance using evaluation metric: 'accuracy'
+	To change this, specify the eval_metric parameter of Predictor()
+Large model count detected (110 configs) ... Only displaying the first 3 models of each family. To see all, set `verbosity=3`.
+User-specified model hyperparameters to be fit:
+{
+	'NN_TORCH': [{}, {'activation': 'elu', 'dropout_prob': 0.10077639529843717, 'hidden_size': 108, 'learning_rate': 0.002735937344002146, 'num_layers': 4, 'use_batchnorm': True, 'weight_decay': 1.356433327634438e-12, 'ag_args': {'name_suffix': '_r79', 'priority': -2}}, {'activation': 'elu', 'dropout_prob': 0.11897478034205347, 'hidden_size': 213, 'learning_rate': 0.0010474382260641949, 'num_layers': 4, 'use_batchnorm': False, 'weight_decay': 5.594471067786272e-10, 'ag_args': {'name_suffix': '_r22', 'priority': -7}}],
+	'GBM': [{'extra_trees': True, 'ag_args': {'name_suffix': 'XT'}}, {}, {'learning_rate': 0.03, 'num_leaves': 128, 'feature_fraction': 0.9, 'min_data_in_leaf': 3, 'ag_args': {'name_suffix': 'Large', 'priority': 0, 'hyperparameter_tune_kwargs': None}}],
+	'CAT': [{}, {'depth': 6, 'grow_policy': 'SymmetricTree', 'l2_leaf_reg': 2.1542798306067823, 'learning_rate': 0.06864209415792857, 'max_ctr_complexity': 4, 'one_hot_max_size': 10, 'ag_args': {'name_suffix': '_r177', 'priority': -1}}, {'depth': 8, 'grow_policy': 'Depthwise', 'l2_leaf_reg': 2.7997999596449104, 'learning_rate': 0.031375015734637225, 'max_ctr_complexity': 2, 'one_hot_max_size': 3, 'ag_args': {'name_suffix': '_r9', 'priority': -5}}],
+	'XGB': [{}, {'colsample_bytree': 0.6917311125174739, 'enable_categorical': False, 'learning_rate': 0.018063876087523967, 'max_depth': 10, 'min_child_weight': 0.6028633586934382, 'ag_args': {'name_suffix': '_r33', 'priority': -8}}, {'colsample_bytree': 0.6628423832084077, 'enable_categorical': False, 'learning_rate': 0.08775715546881824, 'max_depth': 5, 'min_child_weight': 0.6294123374222513, 'ag_args': {'name_suffix': '_r89', 'priority': -16}}],
+	'FASTAI': [{}, {'bs': 256, 'emb_drop': 0.5411770367537934, 'epochs': 43, 'layers': [800, 400], 'lr': 0.01519848858318159, 'ps': 0.23782946566604385, 'ag_args': {'name_suffix': '_r191', 'priority': -4}}, {'bs': 2048, 'emb_drop': 0.05070411322605811, 'epochs': 29, 'layers': [200, 100], 'lr': 0.08974235041576624, 'ps': 0.10393466140748028, 'ag_args': {'name_suffix': '_r102', 'priority': -11}}],
+	'RF': [{'criterion': 'gini', 'ag_args': {'name_suffix': 'Gini', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'entropy', 'ag_args': {'name_suffix': 'Entr', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'squared_error', 'ag_args': {'name_suffix': 'MSE', 'problem_types': ['regression', 'quantile']}}],
+	'XT': [{'criterion': 'gini', 'ag_args': {'name_suffix': 'Gini', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'entropy', 'ag_args': {'name_suffix': 'Entr', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'squared_error', 'ag_args': {'name_suffix': 'MSE', 'problem_types': ['regression', 'quantile']}}],
+}
+AutoGluon will fit 2 stack levels (L1 to L2) ...
+Fitting 108 L1 models, fit_strategy="sequential" ...
+Fitting model: LightGBMXT_BAG_L1 ...
+Will use sequential fold fitting strategy because import of ray failed. Reason: ray is required to train folds in parallel for TabularPredictor or HPO for MultiModalPredictor. A quick tip is to install via `pip install "ray>=2.10.0,<2.45.0"`
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9319	 = Validation score   (accuracy)
+	11.95s	 = Training   runtime
+	2.77s	 = Validation runtime
+Fitting model: LightGBM_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9321	 = Validation score   (accuracy)
+	12.36s	 = Training   runtime
+	2.53s	 = Validation runtime
+Fitting model: RandomForestGini_BAG_L1 ...
+	0.9319	 = Validation score   (accuracy)
+	1.76s	 = Training   runtime
+	0.33s	 = Validation runtime
+Fitting model: RandomForestEntr_BAG_L1 ...
+	0.9318	 = Validation score   (accuracy)
+	1.82s	 = Training   runtime
+	0.32s	 = Validation runtime
+Fitting model: CatBoost_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9312	 = Validation score   (accuracy)
+	12.78s	 = Training   runtime
+	0.02s	 = Validation runtime
+Fitting model: ExtraTreesGini_BAG_L1 ...
+	0.9319	 = Validation score   (accuracy)
+	0.91s	 = Training   runtime
+	0.34s	 = Validation runtime
+Fitting model: ExtraTreesEntr_BAG_L1 ...
+	0.9319	 = Validation score   (accuracy)
+	0.75s	 = Training   runtime
+	0.34s	 = Validation runtime
+Fitting model: NeuralNetFastAI_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 3: early stopping
+No improvement since epoch 8: early stopping
+No improvement since epoch 2: early stopping
+	0.9319	 = Validation score   (accuracy)
+	58.27s	 = Training   runtime
+	0.13s	 = Validation runtime
+Fitting model: XGBoost_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9326	 = Validation score   (accuracy)
+	13.34s	 = Training   runtime
+	0.04s	 = Validation runtime
+Fitting model: NeuralNetTorch_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	63.28s	 = Training   runtime
+	0.33s	 = Validation runtime
+Fitting model: LightGBMLarge_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9328	 = Validation score   (accuracy)
+	36.44s	 = Training   runtime
+	2.52s	 = Validation runtime
+Fitting model: CatBoost_r177_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9317	 = Validation score   (accuracy)
+	16.56s	 = Training   runtime
+	0.03s	 = Validation runtime
+Fitting model: NeuralNetTorch_r79_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9309	 = Validation score   (accuracy)
+	114.08s	 = Training   runtime
+	0.34s	 = Validation runtime
+Fitting model: LightGBM_r131_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9319	 = Validation score   (accuracy)
+	19.35s	 = Training   runtime
+	2.52s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r191_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 7: early stopping
+No improvement since epoch 4: early stopping
+No improvement since epoch 3: early stopping
+No improvement since epoch 7: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 13: early stopping
+No improvement since epoch 3: early stopping
+	0.9313	 = Validation score   (accuracy)
+	72.46s	 = Training   runtime
+	0.14s	 = Validation runtime
+Fitting model: CatBoost_r9_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9322	 = Validation score   (accuracy)
+	81.55s	 = Training   runtime
+	0.08s	 = Validation runtime
+Fitting model: LightGBM_r96_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	8.02s	 = Training   runtime
+	1.76s	 = Validation runtime
+Fitting model: NeuralNetTorch_r22_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	76.83s	 = Training   runtime
+	0.34s	 = Validation runtime
+Fitting model: XGBoost_r33_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9318	 = Validation score   (accuracy)
+	23.57s	 = Training   runtime
+	0.05s	 = Validation runtime
+Fitting model: ExtraTrees_r42_BAG_L1 ...
+	0.932	 = Validation score   (accuracy)
+	0.85s	 = Training   runtime
+	0.33s	 = Validation runtime
+Fitting model: CatBoost_r137_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9309	 = Validation score   (accuracy)
+	7.87s	 = Training   runtime
+	0.02s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r102_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 4: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 6: early stopping
+No improvement since epoch 3: early stopping
+No improvement since epoch 4: early stopping
+No improvement since epoch 4: early stopping
+No improvement since epoch 3: early stopping
+No improvement since epoch 3: early stopping
+	0.9309	 = Validation score   (accuracy)
+	10.87s	 = Training   runtime
+	0.06s	 = Validation runtime
+Fitting model: CatBoost_r13_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	18.08s	 = Training   runtime
+	0.02s	 = Validation runtime
+Fitting model: RandomForest_r195_BAG_L1 ...
+	0.9314	 = Validation score   (accuracy)
+	12.49s	 = Training   runtime
+	0.39s	 = Validation runtime
+Fitting model: LightGBM_r188_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9332	 = Validation score   (accuracy)
+	33.96s	 = Training   runtime
+	2.43s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r145_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 2: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 3: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 1: early stopping
+	0.9311	 = Validation score   (accuracy)
+	109.36s	 = Training   runtime
+	0.21s	 = Validation runtime
+Fitting model: XGBoost_r89_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9323	 = Validation score   (accuracy)
+	9.75s	 = Training   runtime
+	0.04s	 = Validation runtime
+Fitting model: NeuralNetTorch_r30_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	128.56s	 = Training   runtime
+	0.33s	 = Validation runtime
+Fitting model: LightGBM_r130_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9332	 = Validation score   (accuracy)
+	27.92s	 = Training   runtime
+	1.88s	 = Validation runtime
+Fitting model: NeuralNetTorch_r86_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	86.8s	 = Training   runtime
+	0.36s	 = Validation runtime
+Fitting model: CatBoost_r50_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.932	 = Validation score   (accuracy)
+	17.54s	 = Training   runtime
+	0.06s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r11_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 0: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 0: early stopping
+	0.931	 = Validation score   (accuracy)
+	86.83s	 = Training   runtime
+	0.2s	 = Validation runtime
+Fitting model: XGBoost_r194_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9328	 = Validation score   (accuracy)
+	16.31s	 = Training   runtime
+	0.12s	 = Validation runtime
+Fitting model: ExtraTrees_r172_BAG_L1 ...
+	0.9308	 = Validation score   (accuracy)
+	0.82s	 = Training   runtime
+	0.33s	 = Validation runtime
+Fitting model: CatBoost_r69_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9317	 = Validation score   (accuracy)
+	13.29s	 = Training   runtime
+	0.03s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r103_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 1: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 3: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 4: early stopping
+No improvement since epoch 3: early stopping
+	0.9309	 = Validation score   (accuracy)
+	53.8s	 = Training   runtime
+	0.13s	 = Validation runtime
+Fitting model: NeuralNetTorch_r14_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.931	 = Validation score   (accuracy)
+	49.96s	 = Training   runtime
+	0.32s	 = Validation runtime
+Fitting model: LightGBM_r161_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9324	 = Validation score   (accuracy)
+	68.7s	 = Training   runtime
+	2.44s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r143_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 0: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 0: early stopping
+	0.9308	 = Validation score   (accuracy)
+	16.63s	 = Training   runtime
+	0.09s	 = Validation runtime
+Fitting model: CatBoost_r70_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9319	 = Validation score   (accuracy)
+	34.68s	 = Training   runtime
+	0.07s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r156_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 12: early stopping
+No improvement since epoch 17: early stopping
+No improvement since epoch 20: early stopping
+No improvement since epoch 9: early stopping
+No improvement since epoch 18: early stopping
+No improvement since epoch 18: early stopping
+No improvement since epoch 14: early stopping
+	0.9318	 = Validation score   (accuracy)
+	13.22s	 = Training   runtime
+	0.05s	 = Validation runtime
+Fitting model: LightGBM_r196_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	22.06s	 = Training   runtime
+	2.12s	 = Validation runtime
+Fitting model: RandomForest_r39_BAG_L1 ...
+	0.9312	 = Validation score   (accuracy)
+	12.2s	 = Training   runtime
+	0.35s	 = Validation runtime
+Fitting model: CatBoost_r167_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9321	 = Validation score   (accuracy)
+	22.12s	 = Training   runtime
+	0.03s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r95_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 2: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 1: early stopping
+	0.9313	 = Validation score   (accuracy)
+	113.4s	 = Training   runtime
+	0.22s	 = Validation runtime
+Fitting model: NeuralNetTorch_r41_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	75.86s	 = Training   runtime
+	0.32s	 = Validation runtime
+Fitting model: XGBoost_r98_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.931	 = Validation score   (accuracy)
+	16.79s	 = Training   runtime
+	0.11s	 = Validation runtime
+Fitting model: LightGBM_r15_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9311	 = Validation score   (accuracy)
+	9.83s	 = Training   runtime
+	2.35s	 = Validation runtime
+Fitting model: NeuralNetTorch_r158_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	123.02s	 = Training   runtime
+	0.49s	 = Validation runtime
+Fitting model: CatBoost_r86_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9315	 = Validation score   (accuracy)
+	27.87s	 = Training   runtime
+	0.03s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r37_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 1: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 3: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 1: early stopping
+	0.9309	 = Validation score   (accuracy)
+	34.73s	 = Training   runtime
+	0.11s	 = Validation runtime
+Fitting model: NeuralNetTorch_r197_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9309	 = Validation score   (accuracy)
+	35.48s	 = Training   runtime
+	0.3s	 = Validation runtime
+Fitting model: CatBoost_r49_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9312	 = Validation score   (accuracy)
+	9.81s	 = Training   runtime
+	0.02s	 = Validation runtime
+Fitting model: ExtraTrees_r49_BAG_L1 ...
+	0.9319	 = Validation score   (accuracy)
+	1.01s	 = Training   runtime
+	0.35s	 = Validation runtime
+Fitting model: LightGBM_r143_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9326	 = Validation score   (accuracy)
+	48.35s	 = Training   runtime
+	1.97s	 = Validation runtime
+Fitting model: RandomForest_r127_BAG_L1 ...
+	0.9308	 = Validation score   (accuracy)
+	13.5s	 = Training   runtime
+	0.33s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r134_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 18: early stopping
+No improvement since epoch 16: early stopping
+No improvement since epoch 22: early stopping
+No improvement since epoch 7: early stopping
+No improvement since epoch 8: early stopping
+No improvement since epoch 23: early stopping
+	0.932	 = Validation score   (accuracy)
+	25.75s	 = Training   runtime
+	0.07s	 = Validation runtime
+Fitting model: RandomForest_r34_BAG_L1 ...
+	0.9308	 = Validation score   (accuracy)
+	6.15s	 = Training   runtime
+	0.34s	 = Validation runtime
+Fitting model: LightGBM_r94_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9315	 = Validation score   (accuracy)
+	9.3s	 = Training   runtime
+	2.14s	 = Validation runtime
+Fitting model: NeuralNetTorch_r143_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9309	 = Validation score   (accuracy)
+	162.62s	 = Training   runtime
+	0.36s	 = Validation runtime
+Fitting model: CatBoost_r128_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9321	 = Validation score   (accuracy)
+	79.53s	 = Training   runtime
+	0.08s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r111_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	11.19s	 = Training   runtime
+	0.06s	 = Validation runtime
+Fitting model: NeuralNetTorch_r31_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	55.65s	 = Training   runtime
+	0.32s	 = Validation runtime
+Fitting model: ExtraTrees_r4_BAG_L1 ...
+	0.9308	 = Validation score   (accuracy)
+	0.77s	 = Training   runtime
+	0.31s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r65_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 15: early stopping
+No improvement since epoch 17: early stopping
+No improvement since epoch 17: early stopping
+	0.9313	 = Validation score   (accuracy)
+	21.12s	 = Training   runtime
+	0.07s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r88_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 1: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 6: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 2: early stopping
+	0.9309	 = Validation score   (accuracy)
+	13.36s	 = Training   runtime
+	0.07s	 = Validation runtime
+Fitting model: LightGBM_r30_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9314	 = Validation score   (accuracy)
+	28.76s	 = Training   runtime
+	1.79s	 = Validation runtime
+Fitting model: XGBoost_r49_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.932	 = Validation score   (accuracy)
+	14.73s	 = Training   runtime
+	0.05s	 = Validation runtime
+Fitting model: CatBoost_r5_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9312	 = Validation score   (accuracy)
+	10.36s	 = Training   runtime
+	0.03s	 = Validation runtime
+Fitting model: NeuralNetTorch_r87_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	78.88s	 = Training   runtime
+	0.33s	 = Validation runtime
+Fitting model: NeuralNetTorch_r71_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	29.97s	 = Training   runtime
+	0.3s	 = Validation runtime
+Fitting model: CatBoost_r143_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9319	 = Validation score   (accuracy)
+	27.26s	 = Training   runtime
+	0.03s	 = Validation runtime
+Fitting model: ExtraTrees_r178_BAG_L1 ...
+	0.9308	 = Validation score   (accuracy)
+	1.04s	 = Training   runtime
+	0.34s	 = Validation runtime
+Fitting model: RandomForest_r166_BAG_L1 ...
+	0.9317	 = Validation score   (accuracy)
+	1.76s	 = Training   runtime
+	0.34s	 = Validation runtime
+Fitting model: XGBoost_r31_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	13.01s	 = Training   runtime
+	0.06s	 = Validation runtime
+Fitting model: NeuralNetTorch_r185_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	108.91s	 = Training   runtime
+	0.34s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r160_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	86.89s	 = Training   runtime
+	0.22s	 = Validation runtime
+Fitting model: CatBoost_r60_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9313	 = Validation score   (accuracy)
+	11.29s	 = Training   runtime
+	0.02s	 = Validation runtime
+Fitting model: RandomForest_r15_BAG_L1 ...
+	0.931	 = Validation score   (accuracy)
+	11.3s	 = Training   runtime
+	0.33s	 = Validation runtime
+Fitting model: LightGBM_r135_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9333	 = Validation score   (accuracy)
+	36.37s	 = Training   runtime
+	2.56s	 = Validation runtime
+Fitting model: XGBoost_r22_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9325	 = Validation score   (accuracy)
+	13.82s	 = Training   runtime
+	0.06s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r69_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9309	 = Validation score   (accuracy)
+	419.27s	 = Training   runtime
+	0.99s	 = Validation runtime
+Fitting model: CatBoost_r6_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9314	 = Validation score   (accuracy)
+	12.36s	 = Training   runtime
+	0.03s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r138_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 6: early stopping
+No improvement since epoch 18: early stopping
+No improvement since epoch 21: early stopping
+No improvement since epoch 10: early stopping
+No improvement since epoch 5: early stopping
+No improvement since epoch 3: early stopping
+No improvement since epoch 3: early stopping
+	0.9319	 = Validation score   (accuracy)
+	129.5s	 = Training   runtime
+	0.21s	 = Validation runtime
+Fitting model: LightGBM_r121_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9324	 = Validation score   (accuracy)
+	59.14s	 = Training   runtime
+	2.63s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r172_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 7: early stopping
+No improvement since epoch 3: early stopping
+No improvement since epoch 8: early stopping
+	0.9318	 = Validation score   (accuracy)
+	37.62s	 = Training   runtime
+	0.09s	 = Validation runtime
+Fitting model: CatBoost_r180_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9321	 = Validation score   (accuracy)
+	70.54s	 = Training   runtime
+	0.14s	 = Validation runtime
+Fitting model: NeuralNetTorch_r76_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9309	 = Validation score   (accuracy)
+	365.62s	 = Training   runtime
+	2.02s	 = Validation runtime
+Fitting model: ExtraTrees_r197_BAG_L1 ...
+	0.9322	 = Validation score   (accuracy)
+	1.08s	 = Training   runtime
+	0.34s	 = Validation runtime
+Fitting model: NeuralNetTorch_r121_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	125.47s	 = Training   runtime
+	0.41s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r127_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 1: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 2: early stopping
+	0.931	 = Validation score   (accuracy)
+	15.31s	 = Training   runtime
+	0.08s	 = Validation runtime
+Fitting model: RandomForest_r16_BAG_L1 ...
+	0.9317	 = Validation score   (accuracy)
+	17.78s	 = Training   runtime
+	0.34s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r194_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	52.63s	 = Training   runtime
+	0.15s	 = Validation runtime
+Fitting model: CatBoost_r12_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9312	 = Validation score   (accuracy)
+	15.87s	 = Training   runtime
+	0.02s	 = Validation runtime
+Fitting model: NeuralNetTorch_r135_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	122.29s	 = Training   runtime
+	0.35s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r4_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 1: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 3: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 1: early stopping
+	0.9309	 = Validation score   (accuracy)
+	35.51s	 = Training   runtime
+	0.11s	 = Validation runtime
+Fitting model: ExtraTrees_r126_BAG_L1 ...
+	0.9308	 = Validation score   (accuracy)
+	1.02s	 = Training   runtime
+	0.35s	 = Validation runtime
+Fitting model: NeuralNetTorch_r36_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	59.45s	 = Training   runtime
+	0.31s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r100_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9306	 = Validation score   (accuracy)
+	24.85s	 = Training   runtime
+	0.07s	 = Validation runtime
+Fitting model: CatBoost_r163_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9316	 = Validation score   (accuracy)
+	13.7s	 = Training   runtime
+	0.03s	 = Validation runtime
+Fitting model: CatBoost_r198_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.931	 = Validation score   (accuracy)
+	12.07s	 = Training   runtime
+	0.02s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r187_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 0: early stopping
+No improvement since epoch 5: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 3: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 2: early stopping
+	0.9309	 = Validation score   (accuracy)
+	18.04s	 = Training   runtime
+	0.09s	 = Validation runtime
+Fitting model: NeuralNetTorch_r19_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.931	 = Validation score   (accuracy)
+	49.84s	 = Training   runtime
+	0.3s	 = Validation runtime
+Fitting model: XGBoost_r95_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9319	 = Validation score   (accuracy)
+	9.74s	 = Training   runtime
+	0.04s	 = Validation runtime
+Fitting model: XGBoost_r34_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9321	 = Validation score   (accuracy)
+	20.57s	 = Training   runtime
+	0.05s	 = Validation runtime
+Fitting model: LightGBM_r42_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9332	 = Validation score   (accuracy)
+	33.91s	 = Training   runtime
+	2.11s	 = Validation runtime
+Fitting model: NeuralNetTorch_r1_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	110.25s	 = Training   runtime
+	0.36s	 = Validation runtime
+Fitting model: NeuralNetTorch_r89_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	105.97s	 = Training   runtime
+	0.35s	 = Validation runtime
+Fitting model: WeightedEnsemble_L2 ...
+	Ensemble Weights: {'LightGBM_r135_BAG_L1': 1.0}
+	0.9333	 = Validation score   (accuracy)
+	0.31s	 = Training   runtime
+	0.0s	 = Validation runtime
+Fitting 108 L2 models, fit_strategy="sequential" ...
+Fitting model: LightGBMXT_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9333	 = Validation score   (accuracy)
+	12.77s	 = Training   runtime
+	2.01s	 = Validation runtime
+Fitting model: LightGBM_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9338	 = Validation score   (accuracy)
+	13.57s	 = Training   runtime
+	2.4s	 = Validation runtime
+Fitting model: RandomForestGini_BAG_L2 ...
+	0.9329	 = Validation score   (accuracy)
+	1.86s	 = Training   runtime
+	0.37s	 = Validation runtime
+Fitting model: RandomForestEntr_BAG_L2 ...
+	0.9331	 = Validation score   (accuracy)
+	1.81s	 = Training   runtime
+	0.35s	 = Validation runtime
+Fitting model: CatBoost_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9331	 = Validation score   (accuracy)
+	14.92s	 = Training   runtime
+	0.04s	 = Validation runtime
+Fitting model: ExtraTreesGini_BAG_L2 ...
+	0.933	 = Validation score   (accuracy)
+	0.74s	 = Training   runtime
+	0.37s	 = Validation runtime
+Fitting model: ExtraTreesEntr_BAG_L2 ...
+	0.9329	 = Validation score   (accuracy)
+	0.76s	 = Training   runtime
+	0.38s	 = Validation runtime
+Fitting model: NeuralNetFastAI_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 3: early stopping
+No improvement since epoch 6: early stopping
+No improvement since epoch 5: early stopping
+No improvement since epoch 6: early stopping
+No improvement since epoch 5: early stopping
+No improvement since epoch 6: early stopping
+	0.9335	 = Validation score   (accuracy)
+	54.08s	 = Training   runtime
+	0.15s	 = Validation runtime
+Fitting model: XGBoost_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9329	 = Validation score   (accuracy)
+	11.26s	 = Training   runtime
+	0.06s	 = Validation runtime
+Fitting model: NeuralNetTorch_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9335	 = Validation score   (accuracy)
+	113.01s	 = Training   runtime
+	0.42s	 = Validation runtime
+Fitting model: LightGBMLarge_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9339	 = Validation score   (accuracy)
+	32.78s	 = Training   runtime
+	2.26s	 = Validation runtime
+Fitting model: CatBoost_r177_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9336	 = Validation score   (accuracy)
+	14.19s	 = Training   runtime
+	0.04s	 = Validation runtime
+Fitting model: NeuralNetTorch_r79_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.934	 = Validation score   (accuracy)
+	205.92s	 = Training   runtime
+	0.44s	 = Validation runtime
+Fitting model: LightGBM_r131_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9338	 = Validation score   (accuracy)
+	20.17s	 = Training   runtime
+	2.41s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r191_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 4: early stopping
+No improvement since epoch 5: early stopping
+No improvement since epoch 5: early stopping
+No improvement since epoch 7: early stopping
+No improvement since epoch 17: early stopping
+No improvement since epoch 3: early stopping
+	0.934	 = Validation score   (accuracy)
+	85.29s	 = Training   runtime
+	0.15s	 = Validation runtime
+Fitting model: CatBoost_r9_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9341	 = Validation score   (accuracy)
+	87.77s	 = Training   runtime
+	0.09s	 = Validation runtime
+Fitting model: LightGBM_r96_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9332	 = Validation score   (accuracy)
+	10.19s	 = Training   runtime
+	2.47s	 = Validation runtime
+Fitting model: NeuralNetTorch_r22_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9339	 = Validation score   (accuracy)
+	150.48s	 = Training   runtime
+	0.44s	 = Validation runtime
+Fitting model: XGBoost_r33_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9327	 = Validation score   (accuracy)
+	27.85s	 = Training   runtime
+	0.08s	 = Validation runtime
+Fitting model: ExtraTrees_r42_BAG_L2 ...
+	0.9327	 = Validation score   (accuracy)
+	0.94s	 = Training   runtime
+	0.36s	 = Validation runtime
+Fitting model: CatBoost_r137_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9339	 = Validation score   (accuracy)
+	10.21s	 = Training   runtime
+	0.04s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r102_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9338	 = Validation score   (accuracy)
+	13.9s	 = Training   runtime
+	0.08s	 = Validation runtime
+Fitting model: CatBoost_r13_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9335	 = Validation score   (accuracy)
+	30.19s	 = Training   runtime
+	0.04s	 = Validation runtime
+Fitting model: RandomForest_r195_BAG_L2 ...
+	0.9325	 = Validation score   (accuracy)
+	15.91s	 = Training   runtime
+	0.37s	 = Validation runtime
+Fitting model: LightGBM_r188_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9338	 = Validation score   (accuracy)
+	27.68s	 = Training   runtime
+	2.35s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r145_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 5: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 6: early stopping
+No improvement since epoch 8: early stopping
+No improvement since epoch 4: early stopping
+No improvement since epoch 6: early stopping
+	0.9341	 = Validation score   (accuracy)
+	133.0s	 = Training   runtime
+	0.23s	 = Validation runtime
+Fitting model: XGBoost_r89_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.933	 = Validation score   (accuracy)
+	8.66s	 = Training   runtime
+	0.06s	 = Validation runtime
+Fitting model: NeuralNetTorch_r30_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9334	 = Validation score   (accuracy)
+	248.14s	 = Training   runtime
+	0.51s	 = Validation runtime
+Fitting model: LightGBM_r130_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9339	 = Validation score   (accuracy)
+	21.4s	 = Training   runtime
+	2.11s	 = Validation runtime
+Fitting model: NeuralNetTorch_r86_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9335	 = Validation score   (accuracy)
+	153.71s	 = Training   runtime
+	0.44s	 = Validation runtime
+Fitting model: CatBoost_r50_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9337	 = Validation score   (accuracy)
+	14.03s	 = Training   runtime
+	0.05s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r11_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 1: early stopping
+No improvement since epoch 3: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 6: early stopping
+No improvement since epoch 5: early stopping
+	0.9339	 = Validation score   (accuracy)
+	470.12s	 = Training   runtime
+	0.78s	 = Validation runtime
+Fitting model: XGBoost_r194_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9331	 = Validation score   (accuracy)
+	13.71s	 = Training   runtime
+	0.14s	 = Validation runtime
+Fitting model: ExtraTrees_r172_BAG_L2 ...
+	0.9331	 = Validation score   (accuracy)
+	0.95s	 = Training   runtime
+	0.37s	 = Validation runtime
+Fitting model: CatBoost_r69_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9336	 = Validation score   (accuracy)
+	12.83s	 = Training   runtime
+	0.04s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r103_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 1: early stopping
+No improvement since epoch 7: early stopping
+No improvement since epoch 3: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 20: early stopping
+No improvement since epoch 4: early stopping
+No improvement since epoch 18: early stopping
+	0.9337	 = Validation score   (accuracy)
+	64.09s	 = Training   runtime
+	0.14s	 = Validation runtime
+Fitting model: NeuralNetTorch_r14_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9336	 = Validation score   (accuracy)
+	61.07s	 = Training   runtime
+	0.39s	 = Validation runtime
+Fitting model: LightGBM_r161_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9335	 = Validation score   (accuracy)
+	63.67s	 = Training   runtime
+	1.95s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r143_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 4: early stopping
+No improvement since epoch 4: early stopping
+No improvement since epoch 16: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 5: early stopping
+No improvement since epoch 10: early stopping
+No improvement since epoch 13: early stopping
+No improvement since epoch 6: early stopping
+	0.934	 = Validation score   (accuracy)
+	23.1s	 = Training   runtime
+	0.11s	 = Validation runtime
+Fitting model: CatBoost_r70_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9335	 = Validation score   (accuracy)
+	28.59s	 = Training   runtime
+	0.06s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r156_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 20: early stopping
+No improvement since epoch 13: early stopping
+No improvement since epoch 17: early stopping
+No improvement since epoch 18: early stopping
+No improvement since epoch 13: early stopping
+	0.934	 = Validation score   (accuracy)
+	15.68s	 = Training   runtime
+	0.07s	 = Validation runtime
+Fitting model: LightGBM_r196_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9331	 = Validation score   (accuracy)
+	40.65s	 = Training   runtime
+	2.26s	 = Validation runtime
+Fitting model: RandomForest_r39_BAG_L2 ...
+	0.9329	 = Validation score   (accuracy)
+	15.86s	 = Training   runtime
+	0.39s	 = Validation runtime
+Fitting model: CatBoost_r167_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9336	 = Validation score   (accuracy)
+	18.17s	 = Training   runtime
+	0.04s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r95_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 1: early stopping
+No improvement since epoch 5: early stopping
+No improvement since epoch 5: early stopping
+No improvement since epoch 6: early stopping
+	0.9339	 = Validation score   (accuracy)
+	142.83s	 = Training   runtime
+	0.24s	 = Validation runtime
+Fitting model: NeuralNetTorch_r41_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.934	 = Validation score   (accuracy)
+	207.76s	 = Training   runtime
+	0.44s	 = Validation runtime
+Fitting model: XGBoost_r98_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9327	 = Validation score   (accuracy)
+	28.7s	 = Training   runtime
+	0.15s	 = Validation runtime
+Fitting model: LightGBM_r15_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9333	 = Validation score   (accuracy)
+	11.46s	 = Training   runtime
+	2.54s	 = Validation runtime
+Fitting model: NeuralNetTorch_r158_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9323	 = Validation score   (accuracy)
+	256.51s	 = Training   runtime
+	0.54s	 = Validation runtime
+Fitting model: CatBoost_r86_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9337	 = Validation score   (accuracy)
+	28.24s	 = Training   runtime
+	0.05s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r37_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 3: early stopping
+No improvement since epoch 13: early stopping
+No improvement since epoch 6: early stopping
+No improvement since epoch 7: early stopping
+No improvement since epoch 20: early stopping
+No improvement since epoch 4: early stopping
+No improvement since epoch 14: early stopping
+No improvement since epoch 7: early stopping
+	0.9339	 = Validation score   (accuracy)
+	48.26s	 = Training   runtime
+	0.13s	 = Validation runtime
+Fitting model: NeuralNetTorch_r197_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9334	 = Validation score   (accuracy)
+	63.94s	 = Training   runtime
+	0.41s	 = Validation runtime
+Fitting model: CatBoost_r49_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9339	 = Validation score   (accuracy)
+	10.98s	 = Training   runtime
+	0.04s	 = Validation runtime
+Fitting model: ExtraTrees_r49_BAG_L2 ...
+	0.933	 = Validation score   (accuracy)
+	1.19s	 = Training   runtime
+	0.38s	 = Validation runtime
+Fitting model: LightGBM_r143_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9334	 = Validation score   (accuracy)
+	47.68s	 = Training   runtime
+	2.18s	 = Validation runtime
+Fitting model: RandomForest_r127_BAG_L2 ...
+	0.9334	 = Validation score   (accuracy)
+	34.59s	 = Training   runtime
+	4.17s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r134_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 6: early stopping
+No improvement since epoch 25: early stopping
+No improvement since epoch 12: early stopping
+No improvement since epoch 26: early stopping
+No improvement since epoch 12: early stopping
+No improvement since epoch 14: early stopping
+No improvement since epoch 15: early stopping
+	0.9335	 = Validation score   (accuracy)
+	103.49s	 = Training   runtime
+	0.25s	 = Validation runtime
+Fitting model: RandomForest_r34_BAG_L2 ...
+	0.9318	 = Validation score   (accuracy)
+	7.88s	 = Training   runtime
+	0.33s	 = Validation runtime
+Fitting model: LightGBM_r94_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9336	 = Validation score   (accuracy)
+	10.91s	 = Training   runtime
+	2.05s	 = Validation runtime
+Fitting model: NeuralNetTorch_r143_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9338	 = Validation score   (accuracy)
+	865.9s	 = Training   runtime
+	1.29s	 = Validation runtime
+Fitting model: CatBoost_r128_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9337	 = Validation score   (accuracy)
+	919.12s	 = Training   runtime
+	0.31s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r111_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9343	 = Validation score   (accuracy)
+	153.48s	 = Training   runtime
+	0.63s	 = Validation runtime
+Fitting model: NeuralNetTorch_r31_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9335	 = Validation score   (accuracy)
+	635.97s	 = Training   runtime
+	2.19s	 = Validation runtime
+Fitting model: ExtraTrees_r4_BAG_L2 ...
+	0.9327	 = Validation score   (accuracy)
+	3.6s	 = Training   runtime
+	0.35s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r65_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9315	 = Validation score   (accuracy)
+	101.14s	 = Training   runtime
+	0.1s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r88_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 11: early stopping
+No improvement since epoch 23: early stopping
+No improvement since epoch 14: early stopping
+No improvement since epoch 18: early stopping
+No improvement since epoch 6: early stopping
+No improvement since epoch 24: early stopping
+No improvement since epoch 4: early stopping
+No improvement since epoch 11: early stopping
+	0.9339	 = Validation score   (accuracy)
+	87.91s	 = Training   runtime
+	0.15s	 = Validation runtime
+Fitting model: LightGBM_r30_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9334	 = Validation score   (accuracy)
+	147.51s	 = Training   runtime
+	3.59s	 = Validation runtime
+Fitting model: XGBoost_r49_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.933	 = Validation score   (accuracy)
+	57.84s	 = Training   runtime
+	0.06s	 = Validation runtime
+Fitting model: CatBoost_r5_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9335	 = Validation score   (accuracy)
+	32.92s	 = Training   runtime
+	0.07s	 = Validation runtime
+Fitting model: NeuralNetTorch_r87_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9339	 = Validation score   (accuracy)
+	571.63s	 = Training   runtime
+	1.2s	 = Validation runtime
+Fitting model: NeuralNetTorch_r71_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9334	 = Validation score   (accuracy)
+	53.11s	 = Training   runtime
+	0.39s	 = Validation runtime
+Fitting model: CatBoost_r143_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9335	 = Validation score   (accuracy)
+	17.19s	 = Training   runtime
+	0.04s	 = Validation runtime
+Fitting model: ExtraTrees_r178_BAG_L2 ...
+	0.9329	 = Validation score   (accuracy)
+	0.83s	 = Training   runtime
+	0.35s	 = Validation runtime
+Fitting model: RandomForest_r166_BAG_L2 ...
+	0.933	 = Validation score   (accuracy)
+	1.31s	 = Training   runtime
+	0.36s	 = Validation runtime
+Fitting model: XGBoost_r31_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9331	 = Validation score   (accuracy)
+	9.2s	 = Training   runtime
+	0.06s	 = Validation runtime
+Fitting model: NeuralNetTorch_r185_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9336	 = Validation score   (accuracy)
+	219.25s	 = Training   runtime
+	0.46s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r160_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9337	 = Validation score   (accuracy)
+	98.65s	 = Training   runtime
+	0.24s	 = Validation runtime
+Fitting model: CatBoost_r60_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9337	 = Validation score   (accuracy)
+	15.56s	 = Training   runtime
+	0.04s	 = Validation runtime
+Fitting model: RandomForest_r15_BAG_L2 ...
+	0.9331	 = Validation score   (accuracy)
+	14.71s	 = Training   runtime
+	0.37s	 = Validation runtime
+Fitting model: LightGBM_r135_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.934	 = Validation score   (accuracy)
+	32.95s	 = Training   runtime
+	2.42s	 = Validation runtime
+Fitting model: XGBoost_r22_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9334	 = Validation score   (accuracy)
+	11.58s	 = Training   runtime
+	0.07s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r69_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9339	 = Validation score   (accuracy)
+	84.36s	 = Training   runtime
+	0.24s	 = Validation runtime
+Fitting model: CatBoost_r6_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9344	 = Validation score   (accuracy)
+	16.65s	 = Training   runtime
+	0.06s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r138_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 5: early stopping
+No improvement since epoch 9: early stopping
+No improvement since epoch 5: early stopping
+No improvement since epoch 20: early stopping
+No improvement since epoch 7: early stopping
+No improvement since epoch 15: early stopping
+No improvement since epoch 13: early stopping
+	0.9338	 = Validation score   (accuracy)
+	137.75s	 = Training   runtime
+	0.22s	 = Validation runtime
+Fitting model: LightGBM_r121_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9334	 = Validation score   (accuracy)
+	51.11s	 = Training   runtime
+	1.75s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r172_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 9: early stopping
+No improvement since epoch 7: early stopping
+No improvement since epoch 11: early stopping
+No improvement since epoch 11: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 7: early stopping
+No improvement since epoch 3: early stopping
+	0.9336	 = Validation score   (accuracy)
+	37.33s	 = Training   runtime
+	0.13s	 = Validation runtime
+Fitting model: CatBoost_r180_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9344	 = Validation score   (accuracy)
+	50.49s	 = Training   runtime
+	0.07s	 = Validation runtime
+Fitting model: NeuralNetTorch_r76_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9332	 = Validation score   (accuracy)
+	54.06s	 = Training   runtime
+	0.4s	 = Validation runtime
+Fitting model: ExtraTrees_r197_BAG_L2 ...
+	0.9328	 = Validation score   (accuracy)
+	1.15s	 = Training   runtime
+	0.38s	 = Validation runtime
+Fitting model: NeuralNetTorch_r121_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9317	 = Validation score   (accuracy)
+	219.41s	 = Training   runtime
+	0.53s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r127_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 2: early stopping
+	0.9336	 = Validation score   (accuracy)
+	18.5s	 = Training   runtime
+	0.1s	 = Validation runtime
+Fitting model: RandomForest_r16_BAG_L2 ...
+	0.9332	 = Validation score   (accuracy)
+	21.4s	 = Training   runtime
+	0.35s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r194_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9337	 = Validation score   (accuracy)
+	51.11s	 = Training   runtime
+	0.16s	 = Validation runtime
+Fitting model: CatBoost_r12_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9335	 = Validation score   (accuracy)
+	19.11s	 = Training   runtime
+	0.04s	 = Validation runtime
+Fitting model: NeuralNetTorch_r135_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9336	 = Validation score   (accuracy)
+	167.63s	 = Training   runtime
+	0.43s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r4_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 4: early stopping
+No improvement since epoch 9: early stopping
+No improvement since epoch 14: early stopping
+No improvement since epoch 3: early stopping
+No improvement since epoch 3: early stopping
+No improvement since epoch 5: early stopping
+No improvement since epoch 4: early stopping
+No improvement since epoch 18: early stopping
+	0.9341	 = Validation score   (accuracy)
+	49.73s	 = Training   runtime
+	0.13s	 = Validation runtime
+Fitting model: ExtraTrees_r126_BAG_L2 ...
+	0.9327	 = Validation score   (accuracy)
+	1.21s	 = Training   runtime
+	0.38s	 = Validation runtime
+Fitting model: NeuralNetTorch_r36_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9337	 = Validation score   (accuracy)
+	141.53s	 = Training   runtime
+	0.41s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r100_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9266	 = Validation score   (accuracy)
+	25.9s	 = Training   runtime
+	0.08s	 = Validation runtime
+Fitting model: CatBoost_r163_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9333	 = Validation score   (accuracy)
+	10.14s	 = Training   runtime
+	0.04s	 = Validation runtime
+Fitting model: CatBoost_r198_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9334	 = Validation score   (accuracy)
+	16.7s	 = Training   runtime
+	0.05s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r187_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 6: early stopping
+No improvement since epoch 9: early stopping
+No improvement since epoch 5: early stopping
+No improvement since epoch 8: early stopping
+No improvement since epoch 4: early stopping
+No improvement since epoch 7: early stopping
+No improvement since epoch 12: early stopping
+	0.9338	 = Validation score   (accuracy)
+	25.3s	 = Training   runtime
+	0.1s	 = Validation runtime
+Fitting model: NeuralNetTorch_r19_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9337	 = Validation score   (accuracy)
+	67.02s	 = Training   runtime
+	0.41s	 = Validation runtime
+Fitting model: XGBoost_r95_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9331	 = Validation score   (accuracy)
+	9.61s	 = Training   runtime
+	0.06s	 = Validation runtime
+Fitting model: XGBoost_r34_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.933	 = Validation score   (accuracy)
+	21.46s	 = Training   runtime
+	0.07s	 = Validation runtime
+Fitting model: LightGBM_r42_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9339	 = Validation score   (accuracy)
+	32.65s	 = Training   runtime
+	2.17s	 = Validation runtime
+Fitting model: NeuralNetTorch_r1_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9338	 = Validation score   (accuracy)
+	287.23s	 = Training   runtime
+	0.44s	 = Validation runtime
+Fitting model: NeuralNetTorch_r89_BAG_L2 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9336	 = Validation score   (accuracy)
+	215.81s	 = Training   runtime
+	0.43s	 = Validation runtime
+Fitting model: WeightedEnsemble_L3 ...
+	Ensemble Weights: {'CatBoost_r6_BAG_L2': 1.0}
+	0.9344	 = Validation score   (accuracy)
+	0.3s	 = Training   runtime
+	0.0s	 = Validation runtime
+AutoGluon training complete, total runtime = 14392.11s ... Best model: WeightedEnsemble_L3 | Estimated inference throughput: 139.4 rows/s (1249 batch size)
+Disabling decision threshold calibration for metric `accuracy` due to having fewer than 10000 rows of validation data for calibration, to avoid overfitting (9986 rows).
+	`accuracy` is generally not improved through threshold calibration. Force calibration via specifying `calibrate_decision_threshold=True`.
+TabularPredictor saved. To load, use: predictor = TabularPredictor.load("/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/outputs/models/FTCPTC/ds_sub_fit/sub_fit_ho")
+Deleting DyStack predictor artifacts (clean_up_fits=True) ...
+Leaderboard on holdout data (DyStack):
+                           model  score_holdout  score_val eval_metric  pred_time_test  pred_time_val     fit_time  pred_time_test_marginal  pred_time_val_marginal  fit_time_marginal  stack_level  can_infer  fit_order
+0           CatBoost_r198_BAG_L1       0.931145   0.931003    accuracy        0.023478       0.021339    12.069515                 0.023478                0.021339          12.069515            1       True        101
+1            CatBoost_r60_BAG_L1       0.931145   0.931304    accuracy        0.027439       0.022928    11.291560                 0.027439                0.022928          11.291560            1       True         78
+2            CatBoost_r13_BAG_L1       0.931145   0.930803    accuracy        0.027724       0.020668    18.082053                 0.027724                0.020668          18.082053            1       True         23
+3            CatBoost_r49_BAG_L1       0.931145   0.931204    accuracy        0.028362       0.022397     9.813542                 0.028362                0.022397           9.813542            1       True         53
+4           CatBoost_r163_BAG_L1       0.931145   0.931604    accuracy        0.034803       0.027653    13.699514                 0.034803                0.027653          13.699514            1       True        100
+5            CatBoost_r69_BAG_L1       0.931145   0.931704    accuracy        0.036223       0.026098    13.294465                 0.036223                0.026098          13.294465            1       True         35
+6           CatBoost_r143_BAG_L1       0.931145   0.931905    accuracy        0.036899       0.027360    27.255201                 0.036899                0.027360          27.255201            1       True         72
+7           CatBoost_r137_BAG_L1       0.931145   0.930903    accuracy        0.037840       0.020884     7.865562                 0.037840                0.020884           7.865562            1       True         21
+8             CatBoost_r6_BAG_L1       0.931145   0.931404    accuracy        0.042445       0.034717    12.360255                 0.042445                0.034717          12.360255            1       True         83
+9             CatBoost_r5_BAG_L1       0.931145   0.931204    accuracy        0.051501       0.025273    10.355287                 0.051501                0.025273          10.355287            1       True         69
+10               CatBoost_BAG_L1       0.931145   0.931204    accuracy        0.056631       0.024647    12.781772                 0.056631                0.024647          12.781772            1       True          5
+11           CatBoost_r12_BAG_L1       0.931145   0.931204    accuracy        0.062005       0.023442    15.874940                 0.062005                0.023442          15.874940            1       True         94
+12           CatBoost_r50_BAG_L1       0.931145   0.932005    accuracy        0.064705       0.056000    17.536832                 0.064705                0.056000          17.536832            1       True         31
+13           CatBoost_r70_BAG_L1       0.931145   0.931905    accuracy        0.073223       0.071202    34.682851                 0.073223                0.071202          34.682851            1       True         40
+14           CatBoost_r86_BAG_L1       0.931145   0.931504    accuracy        0.079083       0.025542    27.870618                 0.079083                0.025542          27.870618            1       True         50
+15   NeuralNetFastAI_r156_BAG_L1       0.931145   0.931805    accuracy        0.081362       0.053382    13.221667                 0.081362                0.053382          13.221667            1       True         41
+16            XGBoost_r95_BAG_L1       0.931145   0.931905    accuracy        0.099468       0.044649     9.742379                 0.099468                0.044649           9.742379            1       True        104
+17    NeuralNetFastAI_r88_BAG_L1       0.931145   0.930903    accuracy        0.101908       0.067068    13.355479                 0.101908                0.067068          13.355479            1       True         66
+18          CatBoost_r167_BAG_L1       0.931145   0.932105    accuracy        0.103271       0.028660    22.116767                 0.103271                0.028660          22.116767            1       True         44
+19   NeuralNetFastAI_r102_BAG_L1       0.931145   0.930903    accuracy        0.104459       0.062865    10.868760                 0.104459                0.062865          10.868760            1       True         22
+20          CatBoost_r128_BAG_L1       0.931145   0.932105    accuracy        0.105899       0.081601    79.528899                 0.105899                0.081601          79.528899            1       True         61
+21            CatBoost_r9_BAG_L1       0.931145   0.932205    accuracy        0.108181       0.084507    81.550677                 0.108181                0.084507          81.550677            1       True         16
+22            XGBoost_r31_BAG_L1       0.931145   0.930803    accuracy        0.114064       0.057995    13.007324                 0.114064                0.057995          13.007324            1       True         75
+23   NeuralNetFastAI_r127_BAG_L1       0.931145   0.931003    accuracy        0.118095       0.081841    15.308024                 0.118095                0.081841          15.308024            1       True         91
+24   NeuralNetFastAI_r187_BAG_L1       0.931145   0.930903    accuracy        0.120844       0.085878    18.041209                 0.120844                0.085878          18.041209            1       True        102
+25            XGBoost_r34_BAG_L1       0.931145   0.932105    accuracy        0.134983       0.052303    20.570075                 0.134983                0.052303          20.570075            1       True        105
+26     NeuralNetFastAI_r4_BAG_L1       0.931145   0.930903    accuracy        0.139476       0.112468    35.505572                 0.139476                0.112468          35.505572            1       True         96
+27    NeuralNetFastAI_r37_BAG_L1       0.931145   0.930903    accuracy        0.142034       0.106962    34.729023                 0.142034                0.106962          34.729023            1       True         51
+28   NeuralNetFastAI_r111_BAG_L1       0.931145   0.930803    accuracy        0.145457       0.062623    11.194410                 0.145457                0.062623          11.194410            1       True         62
+29            XGBoost_r98_BAG_L1       0.931145   0.931003    accuracy        0.150866       0.109291    16.788230                 0.150866                0.109291          16.788230            1       True         47
+30       RandomForest_r34_BAG_L1       0.931145   0.930803    accuracy        0.154524       0.335333     6.147026                 0.154524                0.335333           6.147026            1       True         58
+31          CatBoost_r180_BAG_L1       0.931145   0.932105    accuracy        0.156567       0.139081    70.539125                 0.156567                0.139081          70.539125            1       True         87
+32           XGBoost_r194_BAG_L1       0.931145   0.932806    accuracy        0.157177       0.116694    16.306476                 0.157177                0.116694          16.306476            1       True         33
+33   NeuralNetFastAI_r103_BAG_L1       0.931145   0.930903    accuracy        0.164515       0.130563    53.801237                 0.164515                0.130563          53.801237            1       True         36
+34            XGBoost_r89_BAG_L1       0.931145   0.932305    accuracy        0.166395       0.042086     9.753286                 0.166395                0.042086           9.753286            1       True         27
+35                XGBoost_BAG_L1       0.931145   0.932606    accuracy        0.168482       0.044620    13.341284                 0.168482                0.044620          13.341284            1       True          9
+36        ExtraTrees_r178_BAG_L1       0.931145   0.930803    accuracy        0.170992       0.341201     1.039866                 0.170992                0.341201           1.039866            1       True         73
+37          ExtraTrees_r4_BAG_L1       0.931145   0.930803    accuracy        0.173102       0.305049     0.769865                 0.173102                0.305049           0.769865            1       True         64
+38   NeuralNetFastAI_r134_BAG_L1       0.931145   0.932005    accuracy        0.173428       0.070191    25.747289                 0.173428                0.070191          25.747289            1       True         57
+39   NeuralNetFastAI_r194_BAG_L1       0.931145   0.930803    accuracy        0.174308       0.148791    52.625437                 0.174308                0.148791          52.625437            1       True         93
+40        ExtraTrees_r172_BAG_L1       0.931145   0.930803    accuracy        0.175615       0.330155     0.820964                 0.175615                0.330155           0.820964            1       True         34
+41            XGBoost_r33_BAG_L1       0.931145   0.931805    accuracy        0.189736       0.053241    23.572498                 0.189736                0.053241          23.572498            1       True         19
+42       RandomForestEntr_BAG_L1       0.931145   0.931805    accuracy        0.190437       0.323215     1.823165                 0.190437                0.323215           1.823165            1       True          4
+43        ExtraTrees_r126_BAG_L1       0.931145   0.930803    accuracy        0.197930       0.352653     1.017834                 0.197930                0.352653           1.017834            1       True         97
+44        NeuralNetFastAI_BAG_L1       0.931145   0.931905    accuracy        0.257745       0.129794    58.274993                 0.257745                0.129794          58.274993            1       True          8
+45    NeuralNetFastAI_r69_BAG_L1       0.931145   0.930903    accuracy        0.278896       0.988872   419.268233                 0.278896                0.988872         419.268233            1       True         82
+46   NeuralNetFastAI_r138_BAG_L1       0.931145   0.931905    accuracy        0.283108       0.205483   129.496590                 0.283108                0.205483         129.496590            1       True         84
+47   NeuralNetFastAI_r160_BAG_L1       0.931145   0.930803    accuracy        0.285641       0.216774    86.894728                 0.285641                0.216774          86.894728            1       True         77
+48    NeuralNetFastAI_r95_BAG_L1       0.931145   0.931304    accuracy        0.294309       0.218512   113.404576                 0.294309                0.218512         113.404576            1       True         45
+49     NeuralNetTorch_r14_BAG_L1       0.931145   0.931003    accuracy        0.307946       0.320923    49.957113                 0.307946                0.320923          49.957113            1       True         37
+50     NeuralNetTorch_r71_BAG_L1       0.931145   0.930803    accuracy        0.326277       0.301297    29.971093                 0.326277                0.301297          29.971093            1       True         71
+51     NeuralNetTorch_r19_BAG_L1       0.931145   0.931003    accuracy        0.330232       0.304166    49.836926                 0.330232                0.304166          49.836926            1       True        103
+52     NeuralNetTorch_r36_BAG_L1       0.931145   0.930803    accuracy        0.331066       0.313114    59.450647                 0.331066                0.313114          59.450647            1       True         98
+53    NeuralNetTorch_r197_BAG_L1       0.931145   0.930903    accuracy        0.347003       0.299528    35.478239                 0.347003                0.299528          35.478239            1       True         52
+54     NeuralNetTorch_r76_BAG_L1       0.931145   0.930903    accuracy        0.355583       2.018712   365.618582                 0.355583                2.018712         365.618582            1       True         88
+55    NeuralNetTorch_r135_BAG_L1       0.931145   0.930803    accuracy        0.355670       0.349548   122.289504                 0.355670                0.349548         122.289504            1       True         95
+56    NeuralNetTorch_r185_BAG_L1       0.931145   0.930803    accuracy        0.364496       0.337154   108.913976                 0.364496                0.337154         108.913976            1       True         76
+57         NeuralNetTorch_BAG_L1       0.931145   0.930803    accuracy        0.365819       0.326472    63.283600                 0.365819                0.326472          63.283600            1       True         10
+58     NeuralNetTorch_r87_BAG_L1       0.931145   0.930803    accuracy        0.367220       0.334554    78.877909                 0.367220                0.334554          78.877909            1       True         70
+59     NeuralNetTorch_r30_BAG_L1       0.931145   0.930803    accuracy        0.378088       0.334037   128.564812                 0.378088                0.334037         128.564812            1       True         28
+60     NeuralNetTorch_r41_BAG_L1       0.931145   0.930803    accuracy        0.389245       0.323761    75.862800                 0.389245                0.323761          75.862800            1       True         46
+61     NeuralNetTorch_r89_BAG_L1       0.931145   0.930803    accuracy        0.393789       0.347793   105.971436                 0.393789                0.347793         105.971436            1       True        108
+62     NeuralNetTorch_r31_BAG_L1       0.931145   0.930803    accuracy        0.400970       0.316408    55.649530                 0.400970                0.316408          55.649530            1       True         63
+63     NeuralNetTorch_r79_BAG_L1       0.931145   0.930903    accuracy        0.407142       0.340693   114.082677                 0.407142                0.340693         114.082677            1       True         13
+64          CatBoost_r177_BAG_L1       0.931145   0.931704    accuracy        0.447959       0.029068    16.561680                 0.447959                0.029068          16.561680            1       True         12
+65    NeuralNetTorch_r121_BAG_L1       0.931145   0.930803    accuracy        0.484244       0.412452   125.467335                 0.484244                0.412452         125.467335            1       True         90
+66            XGBoost_r22_BAG_L1       0.931145   0.932506    accuracy        0.496105       0.055291    13.818199                 0.496105                0.055291          13.818199            1       True         81
+67      RandomForest_r127_BAG_L1       0.931145   0.930803    accuracy        0.576793       0.334248    13.495179                 0.576793                0.334248          13.495179            1       True         56
+68   NeuralNetFastAI_r143_BAG_L1       0.931145   0.930803    accuracy        0.580015       0.085230    16.625357                 0.580015                0.085230          16.625357            1       True         39
+69   NeuralNetFastAI_r172_BAG_L1       0.931145   0.931805    accuracy        0.612766       0.090349    37.616514                 0.612766                0.090349          37.616514            1       True         86
+70            XGBoost_r49_BAG_L1       0.931145   0.932005    accuracy        0.632782       0.052862    14.733491                 0.632782                0.052862          14.733491            1       True         68
+71   NeuralNetFastAI_r191_BAG_L1       0.931145   0.931304    accuracy        0.650198       0.136724    72.461879                 0.650198                0.136724          72.461879            1       True         15
+72      NeuralNetTorch_r1_BAG_L1       0.931145   0.930803    accuracy        0.736963       0.356754   110.252562                 0.736963                0.356754         110.252562            1       True        107
+73   NeuralNetFastAI_r145_BAG_L1       0.931145   0.931104    accuracy        0.746363       0.214065   109.362177                 0.746363                0.214065         109.362177            1       True         26
+74    NeuralNetFastAI_r11_BAG_L1       0.931145   0.931003    accuracy        0.788703       0.202529    86.825126                 0.788703                0.202529          86.825126            1       True         32
+75     NeuralNetTorch_r22_BAG_L1       0.931145   0.930803    accuracy        0.794143       0.336017    76.825285                 0.794143                0.336017          76.825285            1       True         18
+76    NeuralNetTorch_r143_BAG_L1       0.931145   0.930903    accuracy        0.835134       0.358479   162.623052                 0.835134                0.358479         162.623052            1       True         60
+77     NeuralNetTorch_r86_BAG_L1       0.931145   0.930803    accuracy        0.856998       0.362727    86.799945                 0.856998                0.362727          86.799945            1       True         30
+78    NeuralNetTorch_r158_BAG_L1       0.931145   0.930803    accuracy        0.932807       0.487511   123.017007                 0.932807                0.487511         123.017007            1       True         49
+79           LightGBM_r96_BAG_L1       0.931145   0.930803    accuracy        1.007111       1.763195     8.019262                 1.007111                1.763195           8.019262            1       True         17
+80          LightGBM_r196_BAG_L1       0.931145   0.930803    accuracy        1.599815       2.116980    22.057873                 1.599815                2.116980          22.057873            1       True         42
+81           LightGBM_r94_BAG_L1       0.931145   0.931504    accuracy        1.798695       2.140901     9.303854                 1.798695                2.140901           9.303854            1       True         59
+82          LightGBMLarge_BAG_L1       0.931145   0.932806    accuracy        2.856776       2.523176    36.439785                 2.856776                2.523176          36.439785            1       True         11
+83          LightGBM_r131_BAG_L1       0.931145   0.931905    accuracy        2.979002       2.517697    19.351928                 2.979002                2.517697          19.351928            1       True         14
+84          LightGBM_r143_BAG_L1       0.931145   0.932606    accuracy        3.018761       1.968003    48.352766                 3.018761                1.968003          48.352766            1       True         55
+85           LightGBM_r30_BAG_L1       0.931145   0.931404    accuracy        3.119174       1.785151    28.756166                 3.119174                1.785151          28.756166            1       True         67
+86           LightGBM_r15_BAG_L1       0.931145   0.931104    accuracy        3.238066       2.347471     9.832305                 3.238066                2.347471           9.832305            1       True         48
+87          LightGBM_r161_BAG_L1       0.931145   0.932405    accuracy        3.445359       2.435625    68.704281                 3.445359                2.435625          68.704281            1       True         38
+88          LightGBM_r135_BAG_L1       0.931145   0.933307    accuracy        3.480508       2.556550    36.365242                 3.480508                2.556550          36.365242            1       True         80
+89           WeightedEnsemble_L2       0.931145   0.933307    accuracy        3.482414       2.557602    36.679824                 0.001906                0.001052           0.314583            2       True        109
+90             LightGBMXT_BAG_L1       0.931145   0.931905    accuracy        3.688260       2.772366    11.945256                 3.688260                2.772366          11.945256            1       True          1
+91               LightGBM_BAG_L1       0.931145   0.932105    accuracy        3.899965       2.531595    12.357335                 3.899965                2.531595          12.357335            1       True          2
+92          LightGBM_r121_BAG_L1       0.931145   0.932405    accuracy        4.065136       2.629016    59.143922                 4.065136                2.629016          59.143922            1       True         85
+93          CatBoost_r163_BAG_L2       0.931145   0.933307    accuracy       14.135273      10.695298   770.625460                 0.028248                0.041334          10.135972            2       True        209
+94          CatBoost_r143_BAG_L2       0.931145   0.933507    accuracy       14.139431      10.695673   777.679833                 0.032405                0.041709          17.190345            2       True        181
+95           CatBoost_r86_BAG_L2       0.931145   0.933707    accuracy       14.145064      10.700930   788.725150                 0.038039                0.046966          28.235662            2       True        159
+96           CatBoost_r69_BAG_L2       0.931145   0.933607    accuracy       14.145197      10.692538   773.321693                 0.038171                0.038574          12.832205            2       True        144
+97           CatBoost_r12_BAG_L2       0.931145   0.933507    accuracy       14.146882      10.696909   779.600922                 0.039856                0.042944          19.111435            2       True        203
+98               CatBoost_BAG_L2       0.931145   0.933106    accuracy       14.166945      10.694981   775.407884                 0.059920                0.041016          14.918396            2       True        114
+99            XGBoost_r34_BAG_L2       0.931145   0.933006    accuracy       14.222127      10.725796   781.951810                 0.115101                0.071831          21.462323            2       True        214
+100           XGBoost_r31_BAG_L2       0.931145   0.933106    accuracy       14.233720      10.717616   769.691814                 0.126695                0.063651           9.202327            2       True        184
+101           XGBoost_r33_BAG_L2       0.931145   0.932706    accuracy       14.242628      10.731372   788.335661                 0.135602                0.077408          27.846174            2       True        128
+102               XGBoost_BAG_L2       0.931145   0.932906    accuracy       14.256102      10.712589   771.745075                 0.149076                0.058624          11.255587            2       True        118
+103          XGBoost_r194_BAG_L2       0.931145   0.933106    accuracy       14.268543      10.792165   774.204117                 0.161517                0.138201          13.714630            2       True        142
+104        ExtraTrees_r49_BAG_L2       0.931145   0.933006    accuracy       14.300014      11.036471   761.675587                 0.192988                0.382506           1.186099            2       True        163
+105           XGBoost_r98_BAG_L2       0.931145   0.932706    accuracy       14.302231      10.801450   789.191383                 0.195205                0.147486          28.701895            2       True        156
+106        ExtraTreesGini_BAG_L2       0.931145   0.933006    accuracy       14.317239      11.021487   761.228573                 0.210214                0.367522           0.739085            2       True        115
+107    NeuralNetTorch_r71_BAG_L2       0.931145   0.933407    accuracy       14.491241      11.048942   813.598916                 0.384216                0.394978          53.109428            2       True        180
+108           XGBoost_r49_BAG_L2       0.931145   0.933006    accuracy       14.678734      10.717112   818.330287                 0.571709                0.063148          57.840800            2       True        177
+109   NeuralNetTorch_r121_BAG_L2       0.931145   0.931704    accuracy       14.696261      11.188866   979.902858                 0.589235                0.534902         219.413371            2       True        199
+110         LightGBM_r196_BAG_L2       0.931145   0.933106    accuracy       18.023863      12.909050   801.143513                 3.916838                2.255085          40.654025            2       True        151
+111   NeuralNetFastAI_r65_BAG_L1       0.930344   0.931304    accuracy        0.114795       0.067810    21.123200                 0.114795                0.067810          21.123200            1       True         65
+112      RandomForest_r15_BAG_L1       0.930344   0.931003    accuracy        0.177510       0.331443    11.298613                 0.177510                0.331443          11.298613            1       True         79
+113      RandomForest_r16_BAG_L1       0.930344   0.931704    accuracy        0.187823       0.344264    17.779495                 0.187823                0.344264          17.779495            1       True         92
+114     RandomForest_r166_BAG_L1       0.930344   0.931704    accuracy        0.198957       0.339389     1.762682                 0.198957                0.339389           1.762682            1       True         74
+115        ExtraTrees_r49_BAG_L1       0.930344   0.931905    accuracy        0.217882       0.345023     1.012984                 0.217882                0.345023           1.012984            1       True         54
+116        ExtraTreesGini_BAG_L1       0.930344   0.931905    accuracy        0.224215       0.340869     0.912979                 0.224215                0.340869           0.912979            1       True          6
+117        ExtraTreesEntr_BAG_L1       0.930344   0.931905    accuracy        0.224883       0.343846     0.750253                 0.224883                0.343846           0.750253            1       True          7
+118      RandomForestGini_BAG_L1       0.930344   0.931905    accuracy        0.555054       0.329912     1.757561                 0.555054                0.329912           1.757561            1       True          3
+119      RandomForest_r39_BAG_L1       0.930344   0.931204    accuracy        0.624002       0.348511    12.198994                 0.624002                0.348511          12.198994            1       True         43
+120         LightGBM_r130_BAG_L1       0.930344   0.933206    accuracy        2.577368       1.878133    27.923680                 2.577368                1.878133          27.923680            1       True         29
+121          LightGBM_r42_BAG_L1       0.930344   0.933206    accuracy        3.223676       2.108817    33.912303                 3.223676                2.108817          33.912303            1       True        106
+122         LightGBM_r188_BAG_L1       0.930344   0.933206    accuracy        3.589155       2.434367    33.958029                 3.589155                2.434367          33.958029            1       True         25
+123         CatBoost_r198_BAG_L2       0.930344   0.933407    accuracy       14.144341      10.702353   777.192697                 0.037315                0.048388          16.703210            2       True        210
+124          CatBoost_r50_BAG_L2       0.930344   0.933707    accuracy       14.146213      10.701696   774.514834                 0.039187                0.047731          14.025347            2       True        140
+125         CatBoost_r167_BAG_L2       0.930344   0.933607    accuracy       14.152251      10.698167   778.662803                 0.045226                0.044202          18.173315            2       True        153
+126          CatBoost_r70_BAG_L2       0.930344   0.933507    accuracy       14.158089      10.709461   789.081126                 0.051064                0.055496          28.591638            2       True        149
+127           CatBoost_r6_BAG_L2       0.930344   0.934408    accuracy       14.160800      10.712288   777.144313                 0.053774                0.058323          16.654825            2       True        192
+128          WeightedEnsemble_L3       0.930344   0.934408    accuracy       14.162470      10.713264   777.441417                 0.001671                0.000977           0.297105            3       True        218
+129         CatBoost_r128_BAG_L2       0.930344   0.933707    accuracy       14.176926      10.959781  1679.610865                 0.069900                0.305816         919.121377            2       True        170
+130          CatBoost_r13_BAG_L2       0.930344   0.933507    accuracy       14.186358      10.697970   790.681349                 0.079332                0.044006          30.191861            2       True        132
+131  NeuralNetFastAI_r156_BAG_L2       0.930344   0.934008    accuracy       14.203002      10.726355   776.173489                 0.095976                0.072390          15.684002            2       True        150
+132           XGBoost_r95_BAG_L2       0.930344   0.933106    accuracy       14.204655      10.717836   770.094626                 0.097629                0.063872           9.605139            2       True        213
+133           CatBoost_r9_BAG_L2       0.930344   0.934108    accuracy       14.210096      10.741949   848.260892                 0.103070                0.087985          87.771404            2       True        125
+134           XGBoost_r89_BAG_L2       0.930344   0.933006    accuracy       14.232652      10.715649   769.148153                 0.125626                0.061684           8.658665            2       True        136
+135   NeuralNetFastAI_r88_BAG_L2       0.930344   0.933907    accuracy       14.241649      10.805011   848.402173                 0.134623                0.151047          87.912685            2       True        175
+136       ExtraTrees_r126_BAG_L2       0.930344   0.932706    accuracy       14.305657      11.032773   761.699499                 0.198632                0.378809           1.210011            2       True        206
+137        ExtraTreesEntr_BAG_L2       0.930344   0.932906    accuracy       14.319827      11.034144   761.245516                 0.212801                0.380180           0.756029            2       True        116
+138        ExtraTrees_r42_BAG_L2       0.930344   0.932706    accuracy       14.320141      11.016546   761.427274                 0.213115                0.362581           0.937787            2       True        129
+139         CatBoost_r177_BAG_L2       0.930344   0.933607    accuracy       14.538702      10.696593   774.679751                 0.431677                0.042629          14.190264            2       True        121
+140        NeuralNetTorch_BAG_L2       0.930344   0.933507    accuracy       14.548373      11.073751   873.503328                 0.441348                0.419786         113.013840            2       True        119
+141           XGBoost_r22_BAG_L2       0.930344   0.933407    accuracy       14.634988      10.719763   772.071384                 0.527962                0.065799          11.581896            2       True        190
+142  NeuralNetFastAI_r143_BAG_L2       0.930344   0.934008    accuracy       14.640157      10.760158   783.585139                 0.533132                0.106193          23.095651            2       True        148
+143  NeuralNetFastAI_r172_BAG_L2       0.930344   0.933607    accuracy       14.715852      10.782928   797.823060                 0.608826                0.128963          37.333572            2       True        195
+144      RandomForestGini_BAG_L2       0.930344   0.932906    accuracy       14.841648      11.025336   762.347109                 0.734622                0.371372           1.857622            2       True        112
+145   NeuralNetTorch_r158_BAG_L2       0.930344   0.932305    accuracy       15.151436      11.195207  1017.000594                 1.044410                0.541242         256.511106            2       True        158
+146            LightGBMXT_BAG_L2       0.930344   0.933307    accuracy       15.809867      12.663475   773.260241                 1.702842                2.009511          12.770753            2       True        110
+147              LightGBM_BAG_L2       0.930344   0.933807    accuracy       16.272083      13.056647   774.059570                 2.165057                2.402683          13.570082            2       True        111
+148         LightGBM_r188_BAG_L2       0.930344   0.933807    accuracy       16.391079      13.002078   788.166683                 2.284054                2.348114          27.677195            2       True        134
+149         LightGBMLarge_BAG_L2       0.930344   0.933907    accuracy       16.613089      12.916859   793.264535                 2.506063                2.262894          32.775048            2       True        120
+150          LightGBM_r30_BAG_L2       0.930344   0.933407    accuracy       16.661308      14.245071   908.001946                 2.554282                3.591107         147.512459            2       True        176
+151          LightGBM_r96_BAG_L2       0.930344   0.933206    accuracy       16.800299      13.124954   770.675488                 2.693274                2.470989          10.186001            2       True        126
+152          LightGBM_r15_BAG_L2       0.930344   0.933307    accuracy       16.997368      13.191997   771.946010                 2.890342                2.538033          11.456522            2       True        157
+153          LightGBM_r94_BAG_L2       0.930344   0.933607    accuracy       17.009827      12.699237   771.402205                 2.902801                2.045273          10.912717            2       True        168
+154         LightGBM_r121_BAG_L2       0.930344   0.933407    accuracy       17.100118      12.408571   811.602778                 2.993092                1.754607          51.113290            2       True        194
+155         LightGBM_r135_BAG_L2       0.930344   0.934008    accuracy       17.213524      13.070204   793.440871                 3.106498                2.416240          32.951383            2       True        189
+156          LightGBM_r42_BAG_L2       0.930344   0.933907    accuracy       17.371913      12.824164   793.137154                 3.264887                2.170199          32.647667            2       True        215
+157         LightGBM_r143_BAG_L2       0.930344   0.933407    accuracy       17.399801      12.835029   808.169132                 3.292775                2.181064          47.679644            2       True        164
+158         LightGBM_r131_BAG_L2       0.930344   0.933807    accuracy       17.480143      13.068839   780.660273                 3.373117                2.414874          20.170786            2       True        123
+159         LightGBM_r161_BAG_L2       0.930344   0.933507    accuracy       17.853250      12.603902   824.163807                 3.746224                1.949938          63.674320            2       True        147
+160     RandomForest_r195_BAG_L1       0.929544   0.931404    accuracy        0.191264       0.392705    12.494082                 0.191264                0.392705          12.494082            1       True         24
+161       ExtraTrees_r197_BAG_L1       0.929544   0.932205    accuracy        0.192270       0.339039     1.075996                 0.192270                0.339039           1.075996            1       True         89
+162        ExtraTrees_r42_BAG_L1       0.929544   0.932005    accuracy        0.200344       0.329867     0.852262                 0.200344                0.329867           0.852262            1       True         20
+163           CatBoost_r5_BAG_L2       0.929544   0.933507    accuracy       14.141585      10.726436   793.406979                 0.034559                0.072471          32.917491            2       True        178
+164          CatBoost_r60_BAG_L2       0.929544   0.933707    accuracy       14.146815      10.698748   776.047738                 0.039790                0.044784          15.558251            2       True        187
+165         CatBoost_r137_BAG_L2       0.929544   0.933907    accuracy       14.152711      10.692565   770.701363                 0.045686                0.038601          10.211875            2       True        130
+166          CatBoost_r49_BAG_L2       0.929544   0.933907    accuracy       14.154477      10.693877   771.473413                 0.047452                0.039912          10.983926            2       True        162
+167         CatBoost_r180_BAG_L2       0.929544   0.934408    accuracy       14.175301      10.726844   810.974861                 0.068275                0.072879          50.485373            2       True        196
+168  NeuralNetFastAI_r111_BAG_L2       0.929544   0.934308    accuracy       14.212154      11.286238   913.974290                 0.105129                0.632273         153.484802            2       True        171
+169  NeuralNetFastAI_r127_BAG_L2       0.929544   0.933607    accuracy       14.228291      10.751652   778.986879                 0.121266                0.097687          18.497391            2       True        200
+170  NeuralNetFastAI_r134_BAG_L2       0.929544   0.933507    accuracy       14.243284      10.899501   863.982409                 0.136258                0.245537         103.492921            2       True        166
+171  NeuralNetFastAI_r187_BAG_L2       0.929544   0.933807    accuracy       14.243812      10.752993   785.786577                 0.136786                0.099029          25.297089            2       True        211
+172         ExtraTrees_r4_BAG_L2       0.929544   0.932706    accuracy       14.270546      11.008327   764.087847                 0.163521                0.354363           3.598360            2       True        173
+173    NeuralNetFastAI_r4_BAG_L2       0.929544   0.934108    accuracy       14.276780      10.781515   810.221400                 0.169755                0.127550          49.731912            2       True        205
+174       ExtraTrees_r178_BAG_L2       0.929544   0.932906    accuracy       14.282431      11.007099   761.317451                 0.175406                0.353135           0.827964            2       True        182
+175      RandomForest_r15_BAG_L2       0.929544   0.933106    accuracy       14.282974      11.020016   775.203959                 0.175948                0.366052          14.714472            2       True        188
+176       ExtraTrees_r172_BAG_L2       0.929544   0.933106    accuracy       14.283998      11.020479   761.436425                 0.176972                0.366515           0.946938            2       True        143
+177      RandomForest_r16_BAG_L2       0.929544   0.933206    accuracy       14.290768      11.006791   781.887131                 0.183743                0.352826          21.397644            2       True        201
+178       ExtraTrees_r197_BAG_L2       0.929544   0.932806    accuracy       14.296124      11.031361   761.644470                 0.189098                0.377397           1.154982            2       True        198
+179       NeuralNetFastAI_BAG_L2       0.929544   0.933507    accuracy       14.298159      10.805098   814.567631                 0.191134                0.151133          54.078143            2       True        117
+180     RandomForest_r166_BAG_L2       0.929544   0.933006    accuracy       14.300007      11.018779   761.795275                 0.192981                0.364815           1.305787            2       True        183
+181      RandomForestEntr_BAG_L2       0.929544   0.933106    accuracy       14.303307      11.005850   762.302070                 0.196281                0.351885           1.812582            2       True        113
+182   NeuralNetFastAI_r37_BAG_L2       0.929544   0.933907    accuracy       14.304973      10.784916   808.745227                 0.197947                0.130952          48.255739            2       True        160
+183  NeuralNetFastAI_r103_BAG_L2       0.929544   0.933707    accuracy       14.315467      10.791053   824.582248                 0.208441                0.137088          64.092761            2       True        145
+184  NeuralNetFastAI_r194_BAG_L2       0.929544   0.933707    accuracy       14.318263      10.809011   811.603111                 0.211237                0.155046          51.113623            2       True        202
+185   NeuralNetFastAI_r69_BAG_L2       0.929544   0.933907    accuracy       14.363995      10.894993   844.848516                 0.256969                0.241028          84.359029            2       True        191
+186  NeuralNetFastAI_r160_BAG_L2       0.929544   0.933707    accuracy       14.374994      10.895100   859.140833                 0.267968                0.241135          98.651345            2       True        186
+187  NeuralNetFastAI_r138_BAG_L2       0.929544   0.933807    accuracy       14.375600      10.874361   898.236390                 0.268574                0.220397         137.746902            2       True        193
+188   NeuralNetFastAI_r95_BAG_L2       0.929544   0.933907    accuracy       14.422160      10.896696   903.316467                 0.315135                0.242732         142.826979            2       True        154
+189   NeuralNetFastAI_r11_BAG_L2       0.929544   0.933907    accuracy       14.433601      11.436792  1230.608143                 0.326575                0.782828         470.118655            2       True        141
+190     RandomForest_r195_BAG_L2       0.929544   0.932506    accuracy       14.488207      11.024140   776.397740                 0.381181                0.370176          15.908253            2       True        133
+191   NeuralNetTorch_r197_BAG_L2       0.929544   0.933407    accuracy       14.528873      11.061824   824.434214                 0.421848                0.407860          63.944726            2       True        161
+192    NeuralNetTorch_r19_BAG_L2       0.929544   0.933707    accuracy       14.546747      11.062713   827.507950                 0.439721                0.408749          67.018463            2       True        212
+193    NeuralNetTorch_r36_BAG_L2       0.929544   0.933707    accuracy       14.568384      11.065382   902.016584                 0.461359                0.411417         141.527096            2       True        207
+194    NeuralNetTorch_r31_BAG_L2       0.929544   0.933507    accuracy       14.605128      12.842176  1396.459498                 0.498103                2.188212         635.970010            2       True        172
+195      RandomForest_r39_BAG_L2       0.929544   0.932906    accuracy       14.628349      11.041608   776.349420                 0.521323                0.387644          15.859932            2       True        152
+196     RandomForest_r127_BAG_L2       0.929544   0.933407    accuracy       14.676487      14.823663   795.078186                 0.569461                4.169699          34.588698            2       True        165
+197    NeuralNetTorch_r79_BAG_L2       0.929544   0.934008    accuracy       14.737031      11.097114   966.411942                 0.630006                0.443149         205.922455            2       True        122
+198  NeuralNetFastAI_r191_BAG_L2       0.929544   0.934008    accuracy       14.809450      10.806355   845.778083                 0.702424                0.152390          85.288595            2       True        124
+199  NeuralNetFastAI_r145_BAG_L2       0.929544   0.934108    accuracy       14.899551      10.885271   893.490779                 0.792525                0.231306         133.001292            2       True        135
+200     NeuralNetTorch_r1_BAG_L2       0.929544   0.933807    accuracy       14.907323      11.093276  1047.715661                 0.800297                0.439311         287.226173            2       True        216
+201    NeuralNetTorch_r86_BAG_L2       0.929544   0.933507    accuracy       14.956508      11.092645   914.203446                 0.849483                0.438680         153.713958            2       True        139
+202    NeuralNetTorch_r22_BAG_L2       0.929544   0.933907    accuracy       15.036127      11.094013   910.970362                 0.929102                0.440049         150.480875            2       True        127
+203   NeuralNetTorch_r143_BAG_L2       0.929544   0.933807    accuracy       15.060435      11.942540  1626.388393                 0.953409                1.288576         865.898905            2       True        169
+204         LightGBM_r130_BAG_L2       0.929544   0.933907    accuracy       16.471126      12.765444   781.891481                 2.364100                2.111479          21.401994            2       True        138
+205  NeuralNetFastAI_r102_BAG_L2       0.928743   0.933807    accuracy       14.207701      10.732043   774.392277                 0.100676                0.078078          13.902789            2       True        131
+206      RandomForest_r34_BAG_L2       0.928743   0.931805    accuracy       14.264698      10.985865   768.369188                 0.157672                0.331900           7.879700            2       True        167
+207    NeuralNetTorch_r14_BAG_L2       0.928743   0.933607    accuracy       14.528038      11.040955   821.563460                 0.421012                0.386991          61.073972            2       True        146
+208    NeuralNetTorch_r87_BAG_L2       0.928743   0.933907    accuracy       14.560802      11.856296  1332.121472                 0.453776                1.202331         571.631984            2       True        179
+209   NeuralNetTorch_r135_BAG_L2       0.928743   0.933607    accuracy       14.597846      11.088302   928.123274                 0.490820                0.434338         167.633786            2       True        204
+210   NeuralNetFastAI_r65_BAG_L2       0.927942   0.931504    accuracy       14.226899      10.757647   861.630898                 0.119874                0.103683         101.141411            2       True        174
+211    NeuralNetTorch_r89_BAG_L2       0.927942   0.933607    accuracy       14.525772      11.080570   976.302591                 0.418746                0.426605         215.813103            2       True        217
+212    NeuralNetTorch_r76_BAG_L2       0.927942   0.933206    accuracy       14.530973      11.052154   814.548003                 0.423947                0.398190          54.058516            2       True        197
+213    NeuralNetTorch_r41_BAG_L2       0.927942   0.934008    accuracy       14.540905      11.090476   968.246776                 0.433879                0.436511         207.757288            2       True        155
+214   NeuralNetTorch_r185_BAG_L2       0.927942   0.933607    accuracy       14.544667      11.118370   979.739490                 0.437642                0.464405         219.250002            2       True        185
+215  NeuralNetFastAI_r100_BAG_L1       0.927142   0.930603    accuracy        0.164629       0.074359    24.848415                 0.164629                0.074359          24.848415            1       True         99
+216  NeuralNetFastAI_r100_BAG_L2       0.927142   0.926597    accuracy       14.229986      10.737297   786.386497                 0.122960                0.083333          25.897010            2       True        208
+217    NeuralNetTorch_r30_BAG_L2       0.927142   0.933407    accuracy       14.855490      11.166856  1008.626834                 0.748464                0.512891         248.137347            2       True        137
+	0	 = Optimal   num_stack_levels (Stacked Overfitting Occurred: True)
+	14539s	 = DyStack   runtime
+Starting main fit with num_stack_levels=0.
+	For future fit calls on this dataset, you can skip DyStack to save time: `predictor.fit(..., dynamic_stacking=False, num_stack_levels=0)`
+Beginning AutoGluon training ...
+AutoGluon will save models to "/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/outputs/models/FTCPTC"
+Train Data Rows:    11235
+Train Data Columns: 100
+Label Column:       label
+Problem Type:       binary
+Preprocessing data ...
+Selected class <--> label mapping:  class 1 = 1, class 0 = 0
+Using Feature Generators to preprocess the data ...
+Fitting AutoMLPipelineFeatureGenerator...
+	Available Memory:                    413695.07 MB
+	Train Data (Original)  Memory Usage: 8.57 MB (0.0% of available memory)
+	Inferring data type of each feature based on column values. Set feature_metadata_in to manually specify special dtypes of the features.
+	Stage 1 Generators:
+		Fitting AsTypeFeatureGenerator...
+	Stage 2 Generators:
+		Fitting FillNaFeatureGenerator...
+	Stage 3 Generators:
+		Fitting IdentityFeatureGenerator...
+	Stage 4 Generators:
+		Fitting DropUniqueFeatureGenerator...
+	Stage 5 Generators:
+		Fitting DropDuplicatesFeatureGenerator...
+	Unused Original Features (Count: 14): ['original_firstorder_TotalEnergy', 'original_glszm_GrayLevelNonUniformity', 'original_glszm_GrayLevelNonUniformityNormalized', 'original_glszm_GrayLevelVariance', 'original_glszm_HighGrayLevelZoneEmphasis', 'original_glszm_LargeAreaEmphasis', 'original_glszm_LargeAreaHighGrayLevelEmphasis', 'original_glszm_LowGrayLevelZoneEmphasis', 'original_glszm_SizeZoneNonUniformity', 'original_glszm_SizeZoneNonUniformityNormalized', 'original_glszm_SmallAreaEmphasis', 'original_glszm_SmallAreaLowGrayLevelEmphasis', 'original_glszm_ZonePercentage', 'original_glszm_ZoneVariance']
+		These features were not used to generate any of the output features. Add a feature generator compatible with these features to utilize them.
+		Features can also be unused if they carry very little information, such as being categorical but having almost entirely unique values or being duplicates of other features.
+		These features do not need to be present at inference time.
+		('float', []) : 14 | ['original_firstorder_TotalEnergy', 'original_glszm_GrayLevelNonUniformity', 'original_glszm_GrayLevelNonUniformityNormalized', 'original_glszm_GrayLevelVariance', 'original_glszm_HighGrayLevelZoneEmphasis', ...]
+	Types of features in original data (raw dtype, special dtypes):
+		('float', []) : 86 | ['original_shape2D_Elongation', 'original_shape2D_MajorAxisLength', 'original_shape2D_MaximumDiameter', 'original_shape2D_MeshSurface', 'original_shape2D_MinorAxisLength', ...]
+	Types of features in processed data (raw dtype, special dtypes):
+		('float', []) : 86 | ['original_shape2D_Elongation', 'original_shape2D_MajorAxisLength', 'original_shape2D_MaximumDiameter', 'original_shape2D_MeshSurface', 'original_shape2D_MinorAxisLength', ...]
+	2.8s = Fit runtime
+	86 features in original data used to generate 86 features in processed data.
+	Train Data (Processed) Memory Usage: 7.37 MB (0.0% of available memory)
+Data preprocessing and feature engineering runtime = 2.8s ...
+AutoGluon will gauge predictive performance using evaluation metric: 'accuracy'
+	To change this, specify the eval_metric parameter of Predictor()
+Large model count detected (110 configs) ... Only displaying the first 3 models of each family. To see all, set `verbosity=3`.
+User-specified model hyperparameters to be fit:
+{
+	'NN_TORCH': [{}, {'activation': 'elu', 'dropout_prob': 0.10077639529843717, 'hidden_size': 108, 'learning_rate': 0.002735937344002146, 'num_layers': 4, 'use_batchnorm': True, 'weight_decay': 1.356433327634438e-12, 'ag_args': {'name_suffix': '_r79', 'priority': -2}}, {'activation': 'elu', 'dropout_prob': 0.11897478034205347, 'hidden_size': 213, 'learning_rate': 0.0010474382260641949, 'num_layers': 4, 'use_batchnorm': False, 'weight_decay': 5.594471067786272e-10, 'ag_args': {'name_suffix': '_r22', 'priority': -7}}],
+	'GBM': [{'extra_trees': True, 'ag_args': {'name_suffix': 'XT'}}, {}, {'learning_rate': 0.03, 'num_leaves': 128, 'feature_fraction': 0.9, 'min_data_in_leaf': 3, 'ag_args': {'name_suffix': 'Large', 'priority': 0, 'hyperparameter_tune_kwargs': None}}],
+	'CAT': [{}, {'depth': 6, 'grow_policy': 'SymmetricTree', 'l2_leaf_reg': 2.1542798306067823, 'learning_rate': 0.06864209415792857, 'max_ctr_complexity': 4, 'one_hot_max_size': 10, 'ag_args': {'name_suffix': '_r177', 'priority': -1}}, {'depth': 8, 'grow_policy': 'Depthwise', 'l2_leaf_reg': 2.7997999596449104, 'learning_rate': 0.031375015734637225, 'max_ctr_complexity': 2, 'one_hot_max_size': 3, 'ag_args': {'name_suffix': '_r9', 'priority': -5}}],
+	'XGB': [{}, {'colsample_bytree': 0.6917311125174739, 'enable_categorical': False, 'learning_rate': 0.018063876087523967, 'max_depth': 10, 'min_child_weight': 0.6028633586934382, 'ag_args': {'name_suffix': '_r33', 'priority': -8}}, {'colsample_bytree': 0.6628423832084077, 'enable_categorical': False, 'learning_rate': 0.08775715546881824, 'max_depth': 5, 'min_child_weight': 0.6294123374222513, 'ag_args': {'name_suffix': '_r89', 'priority': -16}}],
+	'FASTAI': [{}, {'bs': 256, 'emb_drop': 0.5411770367537934, 'epochs': 43, 'layers': [800, 400], 'lr': 0.01519848858318159, 'ps': 0.23782946566604385, 'ag_args': {'name_suffix': '_r191', 'priority': -4}}, {'bs': 2048, 'emb_drop': 0.05070411322605811, 'epochs': 29, 'layers': [200, 100], 'lr': 0.08974235041576624, 'ps': 0.10393466140748028, 'ag_args': {'name_suffix': '_r102', 'priority': -11}}],
+	'RF': [{'criterion': 'gini', 'ag_args': {'name_suffix': 'Gini', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'entropy', 'ag_args': {'name_suffix': 'Entr', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'squared_error', 'ag_args': {'name_suffix': 'MSE', 'problem_types': ['regression', 'quantile']}}],
+	'XT': [{'criterion': 'gini', 'ag_args': {'name_suffix': 'Gini', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'entropy', 'ag_args': {'name_suffix': 'Entr', 'problem_types': ['binary', 'multiclass']}}, {'criterion': 'squared_error', 'ag_args': {'name_suffix': 'MSE', 'problem_types': ['regression', 'quantile']}}],
+}
+Fitting 108 L1 models, fit_strategy="sequential" ...
+Fitting model: LightGBMXT_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9317	 = Validation score   (accuracy)
+	13.39s	 = Training   runtime
+	2.94s	 = Validation runtime
+Fitting model: LightGBM_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9314	 = Validation score   (accuracy)
+	12.79s	 = Training   runtime
+	2.25s	 = Validation runtime
+Fitting model: RandomForestGini_BAG_L1 ...
+	0.9315	 = Validation score   (accuracy)
+	1.92s	 = Training   runtime
+	0.37s	 = Validation runtime
+Fitting model: RandomForestEntr_BAG_L1 ...
+	0.9312	 = Validation score   (accuracy)
+	2.1s	 = Training   runtime
+	0.36s	 = Validation runtime
+Fitting model: CatBoost_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.931	 = Validation score   (accuracy)
+	11.56s	 = Training   runtime
+	0.02s	 = Validation runtime
+Fitting model: ExtraTreesGini_BAG_L1 ...
+	0.9316	 = Validation score   (accuracy)
+	0.77s	 = Training   runtime
+	0.37s	 = Validation runtime
+Fitting model: ExtraTreesEntr_BAG_L1 ...
+	0.9316	 = Validation score   (accuracy)
+	0.75s	 = Training   runtime
+	0.4s	 = Validation runtime
+Fitting model: NeuralNetFastAI_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 3: early stopping
+No improvement since epoch 5: early stopping
+No improvement since epoch 9: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 5: early stopping
+	0.9315	 = Validation score   (accuracy)
+	57.31s	 = Training   runtime
+	0.14s	 = Validation runtime
+Fitting model: XGBoost_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9319	 = Validation score   (accuracy)
+	12.74s	 = Training   runtime
+	0.05s	 = Validation runtime
+Fitting model: NeuralNetTorch_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	70.42s	 = Training   runtime
+	0.33s	 = Validation runtime
+Fitting model: LightGBMLarge_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9317	 = Validation score   (accuracy)
+	31.42s	 = Training   runtime
+	2.07s	 = Validation runtime
+Fitting model: CatBoost_r177_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9313	 = Validation score   (accuracy)
+	14.37s	 = Training   runtime
+	0.02s	 = Validation runtime
+Fitting model: NeuralNetTorch_r79_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	104.75s	 = Training   runtime
+	0.35s	 = Validation runtime
+Fitting model: LightGBM_r131_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9315	 = Validation score   (accuracy)
+	17.38s	 = Training   runtime
+	1.79s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r191_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 3: early stopping
+No improvement since epoch 22: early stopping
+No improvement since epoch 3: early stopping
+No improvement since epoch 4: early stopping
+No improvement since epoch 9: early stopping
+No improvement since epoch 3: early stopping
+No improvement since epoch 4: early stopping
+No improvement since epoch 6: early stopping
+	0.931	 = Validation score   (accuracy)
+	84.59s	 = Training   runtime
+	0.15s	 = Validation runtime
+Fitting model: CatBoost_r9_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9316	 = Validation score   (accuracy)
+	327.06s	 = Training   runtime
+	0.31s	 = Validation runtime
+Fitting model: LightGBM_r96_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	48.51s	 = Training   runtime
+	7.04s	 = Validation runtime
+Fitting model: NeuralNetTorch_r22_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	120.44s	 = Training   runtime
+	0.34s	 = Validation runtime
+Fitting model: XGBoost_r33_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9316	 = Validation score   (accuracy)
+	24.14s	 = Training   runtime
+	0.06s	 = Validation runtime
+Fitting model: ExtraTrees_r42_BAG_L1 ...
+	0.9317	 = Validation score   (accuracy)
+	0.85s	 = Training   runtime
+	0.36s	 = Validation runtime
+Fitting model: CatBoost_r137_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	7.28s	 = Training   runtime
+	0.02s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r102_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 4: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 7: early stopping
+No improvement since epoch 7: early stopping
+No improvement since epoch 4: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 8: early stopping
+	0.931	 = Validation score   (accuracy)
+	12.33s	 = Training   runtime
+	0.07s	 = Validation runtime
+Fitting model: CatBoost_r13_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	18.52s	 = Training   runtime
+	0.02s	 = Validation runtime
+Fitting model: RandomForest_r195_BAG_L1 ...
+	0.9316	 = Validation score   (accuracy)
+	14.66s	 = Training   runtime
+	0.37s	 = Validation runtime
+Fitting model: LightGBM_r188_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9318	 = Validation score   (accuracy)
+	29.35s	 = Training   runtime
+	2.57s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r145_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 3: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 3: early stopping
+	0.9313	 = Validation score   (accuracy)
+	129.49s	 = Training   runtime
+	0.25s	 = Validation runtime
+Fitting model: XGBoost_r89_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9316	 = Validation score   (accuracy)
+	9.74s	 = Training   runtime
+	0.05s	 = Validation runtime
+Fitting model: NeuralNetTorch_r30_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	146.29s	 = Training   runtime
+	0.36s	 = Validation runtime
+Fitting model: LightGBM_r130_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.932	 = Validation score   (accuracy)
+	26.24s	 = Training   runtime
+	2.83s	 = Validation runtime
+Fitting model: NeuralNetTorch_r86_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	97.71s	 = Training   runtime
+	0.38s	 = Validation runtime
+Fitting model: CatBoost_r50_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9314	 = Validation score   (accuracy)
+	17.03s	 = Training   runtime
+	0.04s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r11_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 0: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 6: early stopping
+	0.9313	 = Validation score   (accuracy)
+	106.74s	 = Training   runtime
+	0.23s	 = Validation runtime
+Fitting model: XGBoost_r194_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.932	 = Validation score   (accuracy)
+	14.7s	 = Training   runtime
+	0.11s	 = Validation runtime
+Fitting model: ExtraTrees_r172_BAG_L1 ...
+	0.9308	 = Validation score   (accuracy)
+	0.9s	 = Training   runtime
+	0.37s	 = Validation runtime
+Fitting model: CatBoost_r69_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.931	 = Validation score   (accuracy)
+	11.06s	 = Training   runtime
+	0.02s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r103_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 0: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 19: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 1: early stopping
+	0.9309	 = Validation score   (accuracy)
+	56.51s	 = Training   runtime
+	0.15s	 = Validation runtime
+Fitting model: NeuralNetTorch_r14_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	40.79s	 = Training   runtime
+	0.32s	 = Validation runtime
+Fitting model: LightGBM_r161_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9318	 = Validation score   (accuracy)
+	57.61s	 = Training   runtime
+	2.14s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r143_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 0: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 0: early stopping
+	0.9308	 = Validation score   (accuracy)
+	19.35s	 = Training   runtime
+	0.09s	 = Validation runtime
+Fitting model: CatBoost_r70_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9314	 = Validation score   (accuracy)
+	29.93s	 = Training   runtime
+	0.05s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r156_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 9: early stopping
+No improvement since epoch 12: early stopping
+No improvement since epoch 21: early stopping
+No improvement since epoch 11: early stopping
+No improvement since epoch 10: early stopping
+No improvement since epoch 15: early stopping
+No improvement since epoch 10: early stopping
+	0.9316	 = Validation score   (accuracy)
+	12.74s	 = Training   runtime
+	0.06s	 = Validation runtime
+Fitting model: LightGBM_r196_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	22.34s	 = Training   runtime
+	2.25s	 = Validation runtime
+Fitting model: RandomForest_r39_BAG_L1 ...
+	0.9314	 = Validation score   (accuracy)
+	13.36s	 = Training   runtime
+	0.37s	 = Validation runtime
+Fitting model: CatBoost_r167_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9316	 = Validation score   (accuracy)
+	20.17s	 = Training   runtime
+	0.03s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r95_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 2: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 3: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 3: early stopping
+	0.9309	 = Validation score   (accuracy)
+	112.28s	 = Training   runtime
+	0.25s	 = Validation runtime
+Fitting model: NeuralNetTorch_r41_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	79.79s	 = Training   runtime
+	0.34s	 = Validation runtime
+Fitting model: XGBoost_r98_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9309	 = Validation score   (accuracy)
+	17.93s	 = Training   runtime
+	0.11s	 = Validation runtime
+Fitting model: LightGBM_r15_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9311	 = Validation score   (accuracy)
+	11.04s	 = Training   runtime
+	2.6s	 = Validation runtime
+Fitting model: NeuralNetTorch_r158_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	144.91s	 = Training   runtime
+	0.62s	 = Validation runtime
+Fitting model: CatBoost_r86_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9309	 = Validation score   (accuracy)
+	21.04s	 = Training   runtime
+	0.03s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r37_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 2: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 0: early stopping
+	0.9309	 = Validation score   (accuracy)
+	37.85s	 = Training   runtime
+	0.12s	 = Validation runtime
+Fitting model: NeuralNetTorch_r197_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9312	 = Validation score   (accuracy)
+	42.07s	 = Training   runtime
+	0.31s	 = Validation runtime
+Fitting model: CatBoost_r49_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9311	 = Validation score   (accuracy)
+	9.93s	 = Training   runtime
+	0.02s	 = Validation runtime
+Fitting model: ExtraTrees_r49_BAG_L1 ...
+	0.9316	 = Validation score   (accuracy)
+	1.03s	 = Training   runtime
+	0.38s	 = Validation runtime
+Fitting model: LightGBM_r143_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.932	 = Validation score   (accuracy)
+	51.61s	 = Training   runtime
+	1.88s	 = Validation runtime
+Fitting model: RandomForest_r127_BAG_L1 ...
+	0.9308	 = Validation score   (accuracy)
+	15.7s	 = Training   runtime
+	0.34s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r134_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 7: early stopping
+No improvement since epoch 17: early stopping
+No improvement since epoch 16: early stopping
+No improvement since epoch 8: early stopping
+No improvement since epoch 12: early stopping
+No improvement since epoch 16: early stopping
+No improvement since epoch 9: early stopping
+	0.9317	 = Validation score   (accuracy)
+	21.5s	 = Training   runtime
+	0.07s	 = Validation runtime
+Fitting model: RandomForest_r34_BAG_L1 ...
+	0.9308	 = Validation score   (accuracy)
+	7.14s	 = Training   runtime
+	0.32s	 = Validation runtime
+Fitting model: LightGBM_r94_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9314	 = Validation score   (accuracy)
+	9.78s	 = Training   runtime
+	1.77s	 = Validation runtime
+Fitting model: NeuralNetTorch_r143_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.931	 = Validation score   (accuracy)
+	231.14s	 = Training   runtime
+	0.39s	 = Validation runtime
+Fitting model: CatBoost_r128_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9319	 = Validation score   (accuracy)
+	87.17s	 = Training   runtime
+	0.09s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r111_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	12.31s	 = Training   runtime
+	0.07s	 = Validation runtime
+Fitting model: NeuralNetTorch_r31_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	67.82s	 = Training   runtime
+	0.4s	 = Validation runtime
+Fitting model: ExtraTrees_r4_BAG_L1 ...
+	0.9308	 = Validation score   (accuracy)
+	0.81s	 = Training   runtime
+	0.35s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r65_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 15: early stopping
+No improvement since epoch 16: early stopping
+No improvement since epoch 14: early stopping
+No improvement since epoch 15: early stopping
+No improvement since epoch 17: early stopping
+	0.9314	 = Validation score   (accuracy)
+	26.01s	 = Training   runtime
+	0.08s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r88_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 2: early stopping
+No improvement since epoch 12: early stopping
+No improvement since epoch 7: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 3: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 2: early stopping
+	0.931	 = Validation score   (accuracy)
+	17.91s	 = Training   runtime
+	0.08s	 = Validation runtime
+Fitting model: LightGBM_r30_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9314	 = Validation score   (accuracy)
+	23.92s	 = Training   runtime
+	2.8s	 = Validation runtime
+Fitting model: XGBoost_r49_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9315	 = Validation score   (accuracy)
+	13.84s	 = Training   runtime
+	0.05s	 = Validation runtime
+Fitting model: CatBoost_r5_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	7.73s	 = Training   runtime
+	0.02s	 = Validation runtime
+Fitting model: NeuralNetTorch_r87_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	87.16s	 = Training   runtime
+	0.36s	 = Validation runtime
+Fitting model: NeuralNetTorch_r71_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9311	 = Validation score   (accuracy)
+	41.59s	 = Training   runtime
+	0.31s	 = Validation runtime
+Fitting model: CatBoost_r143_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9317	 = Validation score   (accuracy)
+	21.91s	 = Training   runtime
+	0.03s	 = Validation runtime
+Fitting model: ExtraTrees_r178_BAG_L1 ...
+	0.9308	 = Validation score   (accuracy)
+	0.82s	 = Training   runtime
+	0.37s	 = Validation runtime
+Fitting model: RandomForest_r166_BAG_L1 ...
+	0.9315	 = Validation score   (accuracy)
+	1.48s	 = Training   runtime
+	0.38s	 = Validation runtime
+Fitting model: XGBoost_r31_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	5.85s	 = Training   runtime
+	0.05s	 = Validation runtime
+Fitting model: NeuralNetTorch_r185_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	116.58s	 = Training   runtime
+	0.35s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r160_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	98.03s	 = Training   runtime
+	0.25s	 = Validation runtime
+Fitting model: CatBoost_r60_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	8.65s	 = Training   runtime
+	0.02s	 = Validation runtime
+Fitting model: RandomForest_r15_BAG_L1 ...
+	0.9309	 = Validation score   (accuracy)
+	12.3s	 = Training   runtime
+	0.36s	 = Validation runtime
+Fitting model: LightGBM_r135_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9321	 = Validation score   (accuracy)
+	42.3s	 = Training   runtime
+	1.78s	 = Validation runtime
+Fitting model: XGBoost_r22_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9317	 = Validation score   (accuracy)
+	11.61s	 = Training   runtime
+	0.05s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r69_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	89.32s	 = Training   runtime
+	0.23s	 = Validation runtime
+Fitting model: CatBoost_r6_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9318	 = Validation score   (accuracy)
+	16.18s	 = Training   runtime
+	0.05s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r138_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 5: early stopping
+No improvement since epoch 6: early stopping
+No improvement since epoch 15: early stopping
+No improvement since epoch 4: early stopping
+No improvement since epoch 5: early stopping
+No improvement since epoch 4: early stopping
+No improvement since epoch 11: early stopping
+	0.9315	 = Validation score   (accuracy)
+	485.21s	 = Training   runtime
+	0.68s	 = Validation runtime
+Fitting model: LightGBM_r121_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9315	 = Validation score   (accuracy)
+	48.58s	 = Training   runtime
+	2.21s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r172_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 4: early stopping
+No improvement since epoch 4: early stopping
+No improvement since epoch 4: early stopping
+No improvement since epoch 7: early stopping
+	0.9313	 = Validation score   (accuracy)
+	39.39s	 = Training   runtime
+	0.1s	 = Validation runtime
+Fitting model: CatBoost_r180_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9317	 = Validation score   (accuracy)
+	53.89s	 = Training   runtime
+	0.07s	 = Validation runtime
+Fitting model: NeuralNetTorch_r76_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	46.29s	 = Training   runtime
+	0.34s	 = Validation runtime
+Fitting model: ExtraTrees_r197_BAG_L1 ...
+	0.9316	 = Validation score   (accuracy)
+	1.13s	 = Training   runtime
+	0.38s	 = Validation runtime
+Fitting model: NeuralNetTorch_r121_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	169.58s	 = Training   runtime
+	0.46s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r127_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 1: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 2: early stopping
+No improvement since epoch 4: early stopping
+No improvement since epoch 4: early stopping
+No improvement since epoch 1: early stopping
+	0.931	 = Validation score   (accuracy)
+	17.9s	 = Training   runtime
+	0.09s	 = Validation runtime
+Fitting model: RandomForest_r16_BAG_L1 ...
+	0.9315	 = Validation score   (accuracy)
+	19.69s	 = Training   runtime
+	0.38s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r194_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9309	 = Validation score   (accuracy)
+	63.23s	 = Training   runtime
+	0.17s	 = Validation runtime
+Fitting model: CatBoost_r12_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9309	 = Validation score   (accuracy)
+	15.19s	 = Training   runtime
+	0.02s	 = Validation runtime
+Fitting model: NeuralNetTorch_r135_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	140.4s	 = Training   runtime
+	0.4s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r4_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 2: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 1: early stopping
+No improvement since epoch 1: early stopping
+	0.9308	 = Validation score   (accuracy)
+	40.72s	 = Training   runtime
+	0.14s	 = Validation runtime
+Fitting model: ExtraTrees_r126_BAG_L1 ...
+	0.931	 = Validation score   (accuracy)
+	1.26s	 = Training   runtime
+	0.39s	 = Validation runtime
+Fitting model: NeuralNetTorch_r36_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	70.86s	 = Training   runtime
+	0.35s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r100_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9295	 = Validation score   (accuracy)
+	25.4s	 = Training   runtime
+	0.08s	 = Validation runtime
+Fitting model: CatBoost_r163_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9315	 = Validation score   (accuracy)
+	13.91s	 = Training   runtime
+	0.03s	 = Validation runtime
+Fitting model: CatBoost_r198_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	10.57s	 = Training   runtime
+	0.02s	 = Validation runtime
+Fitting model: NeuralNetFastAI_r187_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+No improvement since epoch 0: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 4: early stopping
+No improvement since epoch 0: early stopping
+No improvement since epoch 3: early stopping
+	0.9308	 = Validation score   (accuracy)
+	19.53s	 = Training   runtime
+	0.1s	 = Validation runtime
+Fitting model: NeuralNetTorch_r19_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9312	 = Validation score   (accuracy)
+	63.34s	 = Training   runtime
+	0.34s	 = Validation runtime
+Fitting model: XGBoost_r95_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9315	 = Validation score   (accuracy)
+	9.03s	 = Training   runtime
+	0.05s	 = Validation runtime
+Fitting model: XGBoost_r34_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9316	 = Validation score   (accuracy)
+	20.67s	 = Training   runtime
+	0.07s	 = Validation runtime
+Fitting model: LightGBM_r42_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9321	 = Validation score   (accuracy)
+	32.09s	 = Training   runtime
+	2.38s	 = Validation runtime
+Fitting model: NeuralNetTorch_r1_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	126.74s	 = Training   runtime
+	0.4s	 = Validation runtime
+Fitting model: NeuralNetTorch_r89_BAG_L1 ...
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9308	 = Validation score   (accuracy)
+	108.94s	 = Training   runtime
+	0.37s	 = Validation runtime
+Fitting model: WeightedEnsemble_L2 ...
+	Ensemble Weights: {'LightGBM_r135_BAG_L1': 1.0}
+	0.9321	 = Validation score   (accuracy)
+	0.43s	 = Training   runtime
+	0.0s	 = Validation runtime
+AutoGluon training complete, total runtime = 5295.57s ... Best model: WeightedEnsemble_L2 | Estimated inference throughput: 791.0 rows/s (1405 batch size)
+Enabling decision threshold calibration (calibrate_decision_threshold='auto', metric is valid, problem_type is 'binary')
+Calibrating decision threshold to optimize metric accuracy | Checking 51 thresholds...
+Calibrating decision threshold via fine-grained search | Checking 38 thresholds...
+	Base Threshold: 0.500	| val: 0.9321
+	Best Threshold: 0.500	| val: 0.9321
+TabularPredictor saved. To load, use: predictor = TabularPredictor.load("/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/outputs/models/FTCPTC")
