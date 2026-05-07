@@ -3,9 +3,9 @@ autogluon_model/
 csv_data/
 
 # 核心输出/模型目录（防止被 git clean 删除）
-models/
+binary_class/outputs/models/FTCPTC_resampled/models/
 shap_analysis_outputs/
-models/
+
 
 # 日志/缓存
 test_logs/
