@@ -25,11 +25,9 @@ __pycache__/
 *.joblib
 
 # 输出结果文件
-*.csv
 *.pdf
 *.png
 *.svg
-*.txt
 *.json
 
 # Python缓存

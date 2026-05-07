@@ -1,5 +1,4 @@
 import argparse
-import math
 import os
 from typing import Dict, List, Optional, Tuple
 
@@ -64,16 +63,16 @@ def parse_args() -> argparse.Namespace:
     )
     p.add_argument("--save_resampled_csv", type=str, default=None)
     p.add_argument(
-        "--max_neg_count",
+        "--target_class0_count",
         type=int,
-        default=None,
-        help="optional cap on class-0 samples kept in the training data before balancing",
+        default=-1,
+        help="target number of class-0 samples after resampling; use -1 to keep the original count",
     )
     p.add_argument(
-        "--target_neg_pos_ratio",
-        type=float,
-        default=None,
-        help="optional target negative-to-positive ratio after balancing, e.g. 3.0 means about 3:1",
+        "--target_class1_count",
+        type=int,
+        default=-1,
+        help="target number of class-1 samples after resampling; use -1 to keep the original count",
     )
     return p.parse_args()
 
@@ -130,12 +129,12 @@ def _sample_group(group: pd.DataFrame, n_samples: int, seed: int) -> pd.DataFram
     )
 
 
-def _binary_resample_with_ratio(
+def _binary_resample_with_target_counts(
     df: pd.DataFrame,
     label_col: str,
     seed: int,
-    max_neg_count: Optional[int],
-    target_neg_pos_ratio: Optional[float],
+    target_class0_count: int,
+    target_class1_count: int,
 ) -> pd.DataFrame:
     counts = _class_counts(df, label_col)
     n_neg = int(counts.get(0, 0))
@@ -146,20 +145,17 @@ def _binary_resample_with_ratio(
     neg_df = df[df[label_col] == 0]
     pos_df = df[df[label_col] == 1]
 
-    target_neg = n_neg
-    if max_neg_count is not None:
-        if max_neg_count <= 0:
-            raise ValueError(f"max_neg_count must be positive, got {max_neg_count}")
-        target_neg = min(target_neg, int(max_neg_count))
+    target_neg = n_neg if target_class0_count == -1 else int(target_class0_count)
+    target_pos = n_pos if target_class1_count == -1 else int(target_class1_count)
 
-    if target_neg_pos_ratio is not None:
-        if target_neg_pos_ratio <= 0:
-            raise ValueError(
-                f"target_neg_pos_ratio must be positive, got {target_neg_pos_ratio}"
-            )
-        target_pos = max(n_pos, int(math.ceil(target_neg / target_neg_pos_ratio)))
-    else:
-        target_pos = n_pos
+    if target_neg <= 0:
+        raise ValueError(
+            f"target_class0_count must be -1 or a positive integer, got {target_class0_count}"
+        )
+    if target_pos <= 0:
+        raise ValueError(
+            f"target_class1_count must be -1 or a positive integer, got {target_class1_count}"
+        )
 
     sampled_neg = _sample_group(neg_df, n_samples=target_neg, seed=seed)
     sampled_pos = _sample_group(pos_df, n_samples=target_pos, seed=seed)
@@ -174,16 +170,16 @@ def _resample_train_df(
     strategy: str,
     target_mode: str,
     seed: int,
-    max_neg_count: Optional[int] = None,
-    target_neg_pos_ratio: Optional[float] = None,
+    target_class0_count: int = -1,
+    target_class1_count: int = -1,
 ) -> pd.DataFrame:
-    if max_neg_count is not None or target_neg_pos_ratio is not None:
-        return _binary_resample_with_ratio(
+    if target_class0_count != -1 or target_class1_count != -1:
+        return _binary_resample_with_target_counts(
             df=df,
             label_col=label_col,
             seed=seed,
-            max_neg_count=max_neg_count,
-            target_neg_pos_ratio=target_neg_pos_ratio,
+            target_class0_count=target_class0_count,
+            target_class1_count=target_class1_count,
         )
 
     if strategy == "none":
@@ -386,11 +382,11 @@ def main() -> None:
     _print_class_counts("fit_input_before_resample", fit_input_counts)
     _append_balance_rows(balance_rows, "fit_input_before_resample", fit_input_counts)
 
-    if args.max_neg_count is not None or args.target_neg_pos_ratio is not None:
+    if args.target_class0_count != -1 or args.target_class1_count != -1:
         print(
-            "Using ratio-controlled balancing: "
-            f"max_neg_count={args.max_neg_count}, "
-            f"target_neg_pos_ratio={args.target_neg_pos_ratio}"
+            "Using target-count balancing: "
+            f"target_class0_count={args.target_class0_count}, "
+            f"target_class1_count={args.target_class1_count}"
         )
 
     fit_train_df = _resample_train_df(
@@ -399,8 +395,8 @@ def main() -> None:
         strategy=args.resample_strategy,
         target_mode=args.resample_target,
         seed=args.seed,
-        max_neg_count=args.max_neg_count,
-        target_neg_pos_ratio=args.target_neg_pos_ratio,
+        target_class0_count=args.target_class0_count,
+        target_class1_count=args.target_class1_count,
     )
     resampled_counts = _class_counts(fit_train_df, args.label)
     _print_class_counts("fit_train_after_resample", resampled_counts)
