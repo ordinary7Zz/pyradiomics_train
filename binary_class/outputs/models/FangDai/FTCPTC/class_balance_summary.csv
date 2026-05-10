@@ -1,0 +1,5 @@
+stage,n_rows,n_neg,n_pos,pos_ratio,imbalance_ratio_neg_to_pos
+train_original,159,79,80,0.5031446540880503,0.9875
+fit_input_before_resample,159,79,80,0.5031446540880503,0.9875
+fit_train_after_resample,159,79,80,0.5031446540880503,0.9875
+test::FTCPTC_test,40,20,20,0.5,1.0
