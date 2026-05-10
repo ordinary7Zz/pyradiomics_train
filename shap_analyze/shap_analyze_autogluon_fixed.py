@@ -895,12 +895,31 @@ def _compute_shap_for_model(
                 pass
         
         # Method 2: Try model_info and load from path
-        if model is None and hasattr(predictor, "model_info") and model_name in predictor.model_info:
+        if model is None and hasattr(predictor, "model_info"):
             try:
-                model_info = predictor.model_info[model_name]
-                if isinstance(model_info, dict) and "path" in model_info:
+                model_info_attr = predictor.model_info
+                model_info = None
+                if callable(model_info_attr):
+                    try:
+                        model_info = model_info_attr()
+                    except TypeError:
+                        try:
+                            model_info = model_info_attr(model=model_name)
+                        except Exception:
+                            model_info = None
+                else:
+                    model_info = model_info_attr
+
+                selected_model_info = None
+                if isinstance(model_info, dict):
+                    if "path" in model_info:
+                        selected_model_info = model_info
+                    elif model_name in model_info:
+                        selected_model_info = model_info[model_name]
+
+                if isinstance(selected_model_info, dict) and "path" in selected_model_info:
                     from autogluon.common.loaders import load_pkl
-                    model_path = model_info["path"]
+                    model_path = selected_model_info["path"]
                     if not os.path.isabs(model_path):
                         model_path = os.path.join(predictor.path, model_path)
                     model = load_pkl.load(path=model_path)
