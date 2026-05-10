@@ -51,48 +51,6 @@ binary_class 目录说明
   - class_balance_summary.csv   （仅 train_binary_task_resampled.py 输出）
 - 总汇总：binary_class/outputs/reports/run_summary.csv
 
-推荐运行方式：
-
-单任务基础版：
-python binary_class/extract_base_radiomics.py \
-  --image_dir /path/to/images \
-  --mask_dir /path/to/masks \
-  --label_json /path/to/test_labels.json \
-  --output_csv binary_class/outputs/base_features/base_features.csv \
-  --skip_fail
-
-python binary_class/build_binary_task_csv.py \
-  --base_features_csv binary_class/outputs/base_features/base_features.csv \
-  --label_json /path/to/test_labels.json \
-  --task LNM_CN01 \
-  --output_csv binary_class/outputs/task_csvs/LNM_CN01.csv
-
-python -m binary_class.train_binary_task \
-  --train_csv binary_class/outputs/task_csvs/LNM_CN01.csv \
-  --save_dir binary_class/outputs/models/LNM_CN01
-
-单任务重采样版（推荐用于类别不平衡任务）：
-python -m binary_class.train_binary_task_resampled \
-  --train_csv binary_class/outputs/task_csvs/LNM_CN01.csv \
-  --save_dir binary_class/outputs/models/LNM_CN01_resampled \
-  --eval_metric roc_auc \
-  --model_set tree_fast \
-  --time_limit 1800 \
-  --resample_strategy oversample \
-  --resample_target median \
-  --seed 42
-
-若任务类别极不平衡，推荐使用“目标数量重采样”：
-python -m binary_class.train_binary_task_resampled \
-  --train_csv binary_class/outputs/task_csvs/FTCPTC.csv \
-  --save_dir binary_class/outputs/models/FTCPTC_resampled \
-  --eval_metric roc_auc \
-  --model_set tree_full \
-  --time_limit 3600 \
-  --target_class0_count 4000 \
-  --target_class1_count 1000 \
-  --seed 42
-
 说明：
 - --resample_strategy / --resample_target：通用重采样模式
 - --target_class0_count / --target_class1_count：分别指定训练时 0 类和 1 类的目标数量
@@ -102,54 +60,6 @@ python -m binary_class.train_binary_task_resampled \
 - 当传入 --target_class0_count 或 --target_class1_count 且其值不为 -1 时，会优先使用目标数量重采样
 - 如需保存重采样后的训练表，可附加：
   --save_resampled_csv binary_class/outputs/task_csvs/FTCPTC_resampled_train.csv
-
-带测试集评估的重采样训练示例：
-python -m binary_class.train_binary_task_resampled \
-  --train_csv binary_class/outputs/task_csvs/train_FTCPTC.csv \
-  --test_csv binary_class/outputs/task_csvs/test_FTCPTC.csv \
-  --test_names FTCPTC_test \
-  --save_dir binary_class/outputs/models/FTCPTC_resampled_2000_1000 \
-  --eval_metric roc_auc \
-  --model_set tree_full \
-  --time_limit 3600 \
-  --target_class0_count 2000 \
-  --target_class1_count 1000 \
-  --threshold 0.5 \
-  --ece_bins 10 \
-  --ci_bootstrap_iters 1000 \
-  --ci_level 0.95 \
-  --ci_seed 42 \
-  --seed 42
-
-病人级训练推荐流程：
-python binary_class/build_patient_task_csv.py \
-  --input_csv binary_class/outputs/task_csvs/train_FTCPTC.csv \
-  --output_csv binary_class/outputs/task_csvs/train_FTCPTC_patient.csv \
-  --summary_csv binary_class/outputs/task_csvs/train_FTCPTC_patient_summary.csv \
-  --mapping_csv binary_class/outputs/task_csvs/train_FTCPTC_patient_mapping.csv
-
-python binary_class/build_patient_task_csv.py \
-  --input_csv binary_class/outputs/task_csvs/test_FTCPTC.csv \
-  --output_csv binary_class/outputs/task_csvs/test_FTCPTC_patient.csv \
-  --summary_csv binary_class/outputs/task_csvs/test_FTCPTC_patient_summary.csv \
-  --mapping_csv binary_class/outputs/task_csvs/test_FTCPTC_patient_mapping.csv
-
-python -m binary_class.train_binary_task_resampled \
-  --train_csv binary_class/outputs/task_csvs/train_FTCPTC_patient.csv \
-  --test_csv binary_class/outputs/task_csvs/test_FTCPTC_patient.csv \
-  --test_names FTCPTC_test_patient \
-  --save_dir binary_class/outputs/models/FTCPTC_patient_tree_fast \
-  --eval_metric roc_auc \
-  --model_set tree_fast \
-  --time_limit 1800 \
-  --target_class0_count -1 \
-  --target_class1_count -1 \
-  --threshold 0.5 \
-  --ece_bins 10 \
-  --ci_bootstrap_iters 1000 \
-  --ci_level 0.95 \
-  --ci_seed 42 \
-  --seed 42
 
 批量所有任务：
 python binary_class/run_all_binary_tasks.py \
@@ -176,3 +86,89 @@ python binary_class/run_all_binary_tasks.py \
 - 若希望兼顾效果与速度，可优先使用 `--model_set tree_full --time_limit 3600`
 - 若标签是病人级、样本却是图像级，建议先构建病人级 CSV，再复用现有训练脚本做病人级训练与评估
 - 建议重点关注 test_results.csv 中的 AUPRC、Recall、F1、Specificity，而不只看 AUROC
+
+LymphUs数据集：
+python binary_class/extract_base_radiomics.py \
+  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis/center1/images \
+  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis/center1/masks \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis/LymphUs_train_labels.json \
+  --output_csv binary_class/outputs/base_features/LymphUs/train_base_features.csv \
+  --skip_fail
+
+python binary_class/extract_base_radiomics.py \
+  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis/center2/images \
+  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis/center2/masks \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis/LymphUs_test_labels.json \
+  --output_csv binary_class/outputs/base_features/LymphUs/test_base_features.csv \
+  --skip_fail
+
+python binary_class/build_binary_task_csv.py \
+  --base_features_csv binary_class/outputs/base_features/LymphUs/train_base_features.csv \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis/LymphUs_train_labels.json \
+  --task LNM_CN01 \
+  --output_csv binary_class/outputs/task_csvs/LymphUs/train_LNM_CN01.csv
+
+python binary_class/build_binary_task_csv.py \
+  --base_features_csv binary_class/outputs/base_features/LymphUs/test_base_features.csv \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis/LymphUs_test_labels.json \
+  --task LNM_CN01 \
+  --output_csv binary_class/outputs/task_csvs/LymphUs/test_LNM_CN01.csv
+
+python -m binary_class.train_binary_task_resampled \
+  --train_csv binary_class/outputs/task_csvs/LymphUs/train_LNM_CN01.csv \
+  --test_csv binary_class/outputs/task_csvs/LymphUs/test_LNM_CN01.csv \
+  --test_names LymphUs_test \
+  --save_dir binary_class/outputs/models/LymphUs/LNM_CN01 \
+  --eval_metric roc_auc \
+  --model_set tree_full \
+  --time_limit 3600 \
+  --resample_strategy none \
+  --threshold 0.5 \
+  --ece_bins 10 \
+  --ci_bootstrap_iters 1000 \
+  --ci_level 0.95 \
+  --ci_seed 42 \
+  --seed 42
+
+FangDai数据集：
+python binary_class/extract_base_radiomics.py \
+  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/FangDai_Thyroid_Ultrasound_Images_cropped \
+  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/FangDai_Thyroid_Ultrasound_Images_cropped_predictions \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/FangDai_Thyroid_Ultrasound_Images_cropped/FangDai_train_labels.json \
+  --output_csv binary_class/outputs/base_features/FangDai/train_base_features.csv \
+  --skip_fail
+
+python binary_class/extract_base_radiomics.py \
+  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/FangDai_Thyroid_Ultrasound_Images_cropped \
+  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/FangDai_Thyroid_Ultrasound_Images_cropped_predictions \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/FangDai_Thyroid_Ultrasound_Images_cropped/FangDai_test_labels.json \
+  --output_csv binary_class/outputs/base_features/FangDai/test_base_features.csv \
+  --skip_fail
+
+python binary_class/build_binary_task_csv.py \
+  --base_features_csv binary_class/outputs/base_features/FangDai/train_base_features.csv \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/FangDai_Thyroid_Ultrasound_Images_cropped/FangDai_train_labels.json \
+  --task FTCPTC \
+  --output_csv binary_class/outputs/task_csvs/FangDai/train_FTCPTC.csv
+
+python binary_class/build_binary_task_csv.py \
+  --base_features_csv binary_class/outputs/base_features/FangDai/test_base_features.csv \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/FangDai_Thyroid_Ultrasound_Images_cropped/FangDai_test_labels.json \
+  --task FTCPTC \
+  --output_csv binary_class/outputs/task_csvs/FangDai/test_FTCPTC.csv
+
+python -m binary_class.train_binary_task_resampled \
+  --train_csv binary_class/outputs/task_csvs/FangDai/train_FTCPTC.csv \
+  --test_csv binary_class/outputs/task_csvs/FangDai/test_FTCPTC.csv \
+  --test_names FTCPTC_test \
+  --save_dir binary_class/outputs/models/FangDai/FTCPTC \
+  --eval_metric roc_auc \
+  --model_set tree_full \
+  --time_limit 3600 \
+  --resample_strategy none \
+  --threshold 0.5 \
+  --ece_bins 10 \
+  --ci_bootstrap_iters 1000 \
+  --ci_level 0.95 \
+  --ci_seed 42 \
+  --seed 42
