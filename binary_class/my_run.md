@@ -89,36 +89,36 @@ python binary_class/run_all_binary_tasks.py \
 
 LymphUs数据集：
 python binary_class/extract_base_radiomics.py \
-  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis/center1/images \
-  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis/center1/masks \
-  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis/LymphUs_train_labels.json \
-  --output_csv binary_class/outputs/base_features/LymphUs/train_base_features.csv \
+  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis_fake/images \
+  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis_fake/masks \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis_fake/LymphUs_train_labels.json \
+  --output_csv binary_class/outputs/base_features/LymphUs_fake/train_base_features.csv \
   --skip_fail
 
 python binary_class/extract_base_radiomics.py \
-  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis/center2/images \
-  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis/center2/masks \
-  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis/LymphUs_test_labels.json \
-  --output_csv binary_class/outputs/base_features/LymphUs/test_base_features.csv \
+  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis_fake/images \
+  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis_fake/masks \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis_fake/LymphUs_test_labels.json \
+  --output_csv binary_class/outputs/base_features/LymphUs_fake/test_base_features.csv \
   --skip_fail
 
 python binary_class/build_binary_task_csv.py \
-  --base_features_csv binary_class/outputs/base_features/LymphUs/train_base_features.csv \
-  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis/LymphUs_train_labels.json \
+  --base_features_csv binary_class/outputs/base_features/LymphUs_fake/train_base_features.csv \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis_fake/LymphUs_train_labels.json \
   --task LNM_CN01 \
-  --output_csv binary_class/outputs/task_csvs/LymphUs/train_LNM_CN01.csv
+  --output_csv binary_class/outputs/task_csvs/LymphUs_fake/train_LNM_CN01.csv
 
 python binary_class/build_binary_task_csv.py \
-  --base_features_csv binary_class/outputs/base_features/LymphUs/test_base_features.csv \
-  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis/LymphUs_test_labels.json \
+  --base_features_csv binary_class/outputs/base_features/LymphUs_fake/test_base_features.csv \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis_fake/LymphUs_test_labels.json \
   --task LNM_CN01 \
-  --output_csv binary_class/outputs/task_csvs/LymphUs/test_LNM_CN01.csv
+  --output_csv binary_class/outputs/task_csvs/LymphUs_fake/test_LNM_CN01.csv
 
 python -m binary_class.train_binary_task_resampled \
-  --train_csv binary_class/outputs/task_csvs/LymphUs/train_LNM_CN01.csv \
-  --test_csv binary_class/outputs/task_csvs/LymphUs/test_LNM_CN01.csv \
+  --train_csv binary_class/outputs/task_csvs/LymphUs_fake/train_LNM_CN01.csv \
+  --test_csv binary_class/outputs/task_csvs/LymphUs_fake/test_LNM_CN01.csv \
   --test_names LymphUs_test \
-  --save_dir binary_class/outputs/models/LymphUs/LNM_CN01 \
+  --save_dir binary_class/outputs/models/LymphUs_fake \
   --eval_metric roc_auc \
   --model_set tree_full \
   --time_limit 3600 \
