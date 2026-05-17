@@ -172,3 +172,46 @@ python -m binary_class.train_binary_task_resampled \
   --ci_level 0.95 \
   --ci_seed 42 \
   --seed 42
+
+整理后的FTCPTC数据集：
+python binary_class/extract_base_radiomics.py \
+  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/FangDai_Thyroid_Ultrasound_Images_cropped \
+  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/FangDai_Thyroid_Ultrasound_Images_cropped_predictions \
+  --label_json /mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/my_json/train_labels_filtered_by_csv.json \
+  --output_csv binary_class/outputs/base_features/FTCPTC_FangDai/train_base_features.csv \
+  --skip_fail
+
+python binary_class/extract_base_radiomics.py \
+  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/FangDai_Thyroid_Ultrasound_Images_cropped \
+  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/FangDai_Thyroid_Ultrasound_Images_cropped_predictions \
+  --label_json /mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/my_json/test_labels_filtered_by_csv.json \
+  --output_csv binary_class/outputs/base_features/FTCPTC_FangDai/test_base_features.csv \
+  --skip_fail
+
+python binary_class/build_binary_task_csv.py \
+  --base_features_csv binary_class/outputs/base_features/FTCPTC_FangDai/train_base_features.csv \
+  --label_json /mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/my_json/train_labels_filtered_by_csv.json \
+  --task FTCPTC \
+  --output_csv binary_class/outputs/task_csvs/FTCPTC_FangDai/train_FTCPTC.csv
+
+python binary_class/build_binary_task_csv.py \
+  --base_features_csv binary_class/outputs/base_features/FTCPTC_FangDai/test_base_features.csv \
+  --label_json /mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/my_json/test_labels_filtered_by_csv.json \
+  --task FTCPTC \
+  --output_csv binary_class/outputs/task_csvs/FTCPTC_FangDai/test_FTCPTC.csv
+
+python -m binary_class.train_binary_task_resampled \
+  --train_csv binary_class/outputs/task_csvs/FTCPTC_FangDai/train_FTCPTC.csv \
+  --test_csv binary_class/outputs/task_csvs/FTCPTC_FangDai/test_FTCPTC.csv \
+  --test_names FTCPTC_test \
+  --save_dir binary_class/outputs/models/FTCPTC_FangDai/FTCPTC \
+  --eval_metric roc_auc \
+  --model_set tree_full \
+  --time_limit 3600 \
+  --resample_strategy none \
+  --threshold 0.5 \
+  --ece_bins 10 \
+  --ci_bootstrap_iters 1000 \
+  --ci_level 0.95 \
+  --ci_seed 42 \
+  --seed 42
