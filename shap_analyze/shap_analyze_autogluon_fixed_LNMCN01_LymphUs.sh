@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
-MODEL_DIR="./binary_class/outputs/models/LymphUs"
-TRAIN_CSV="./binary_class/outputs/task_csvs/LymphUs/train_LNM_CN01.csv"
-OUTPUT_DIR="./binary_class/shap_analysis_outputs/LymphUs/LNM_CN01"
+MODEL_DIR="./binary_class/outputs/models/LymphUs_fake"
+TRAIN_CSV="./binary_class/outputs/task_csvs/LymphUs_fake/train_LNM_CN01.csv"
+OUTPUT_DIR="./binary_class/shap_analysis_outputs/LymphUs_fake/LNM_CN01"
 
 python shap_analyze/shap_analyze_autogluon_fixed.py \
   --model_dir "$MODEL_DIR" \
   --train_csv "$TRAIN_CSV" \
   --label "label" \
   --output_dir "$OUTPUT_DIR" \
-  --main_models LightGBMXT_BAG_L1 \
-  --plot_beeswarm_for LightGBMXT_BAG_L1 \
+  --main_models LightGBM_BAG_L1 \
+  --plot_beeswarm_for LightGBM_BAG_L1 \
   --background_samples 100 \
   --explain_samples 2000 \
   --skip_neural_net \
