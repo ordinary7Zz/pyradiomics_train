@@ -1,10 +1,39 @@
 import argparse
 import os
-import shutil
-import time
+from typing import Any, Dict, Optional
 
 import pandas as pd
 from autogluon.tabular import TabularPredictor
+
+
+MODEL_SET_CHOICES = ["all", "tree_fast", "tree_full", "gbm_cat", "gbm_only"]
+
+
+def _get_model_hyperparameters(model_set: str) -> Optional[Dict[str, Any]]:
+    if model_set == "all":
+        return None
+    if model_set == "tree_fast":
+        return {
+            "GBM": {},
+            "CAT": {},
+        }
+    if model_set == "tree_full":
+        return {
+            "GBM": {},
+            "CAT": {},
+            "XGB": {},
+        }
+    if model_set == "gbm_cat":
+        return {
+            "GBM": {},
+            "CAT": {},
+        }
+    if model_set == "gbm_only":
+        return {
+            "GBM": {},
+        }
+    raise ValueError(f"Unsupported model_set: {model_set}")
+
 
 def parse_args():
     p = argparse.ArgumentParser(description="Train AutoGluon Tabular classifier on radiomics features.")
@@ -27,6 +56,7 @@ def parse_args():
     p.add_argument("--save_dir", type=str, required=True, help="output directory for AutoGluon")
 
     p.add_argument("--presets", type=str, default="best_quality")
+    p.add_argument("--model_set", type=str, default="all", choices=MODEL_SET_CHOICES)
     p.add_argument("--time_limit", type=int, default=None, help="seconds")
     p.add_argument("--holdout_frac", type=float, default=0.2, help="used when test_csv is not provided")
     p.add_argument("--seed", type=int, default=42)
@@ -46,15 +76,11 @@ def _prepare_df(df: pd.DataFrame, label_col: str) -> pd.DataFrame:
     if label_col not in df.columns:
         raise ValueError(f"Missing label column: {label_col}")
 
-    # Drop non-feature columns if present
     drop_cols = [c for c in ["image_path", "mask_path", "filename"] if c in df.columns]
     if drop_cols:
         df = df.drop(columns=drop_cols)
 
-    # Remove unlabeled rows
     df = df[df[label_col] != -1].copy()
-
-    # Ensure label is int for classification
     df[label_col] = df[label_col].astype(int)
 
     return df
@@ -77,11 +103,21 @@ def main() -> None:
         log_file_path="auto"
     )
 
+    hyperparameters = _get_model_hyperparameters(args.model_set)
+    print(
+        "Training configuration: "
+        f"presets={args.presets}, "
+        f"model_set={args.model_set}, "
+        f"time_limit={args.time_limit}"
+    )
+
     fit_common_kwargs = dict(
         presets=args.presets,
         time_limit=args.time_limit,
         ag_args_fit={"random_seed": args.seed},
     )
+    if hyperparameters is not None:
+        fit_common_kwargs["hyperparameters"] = hyperparameters
 
     test_csvs = args.test_csv
     if test_csvs is not None:
@@ -106,6 +142,11 @@ def main() -> None:
             test_df = _prepare_df(test_df, args.label)
             perf = predictor.evaluate(test_df)
             print(f"Test performance [{name}]: {perf}")
+    else:
+        predictor.fit(
+            train_data=train_df,
+            **fit_common_kwargs,
+        )
 
     lb = predictor.leaderboard(silent=True)
     lb_path = os.path.join(args.save_dir, "leaderboard.csv")
