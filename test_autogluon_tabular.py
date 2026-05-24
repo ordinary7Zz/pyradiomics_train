@@ -1,6 +1,6 @@
 import argparse
 import os
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 import pandas as pd
 from autogluon.tabular import TabularPredictor
@@ -38,7 +38,7 @@ def parse_args() -> argparse.Namespace:
         "--threshold",
         type=float,
         default=0.5,
-        help="Probability threshold for computing sensitivity/specificity (default: 0.5)",
+        help="Probability threshold for computing binary metrics (default: 0.5)",
     )
     p.add_argument(
         "--out_csv",
@@ -46,6 +46,10 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Optional: save per-dataset metrics table to this CSV path",
     )
+    p.add_argument("--mask_source", type=str, default=None, help="Optional mask source tag to include in results")
+    p.add_argument("--train_dataset", type=str, default=None, help="Optional train dataset tag to include in results")
+    p.add_argument("--task_name", type=str, default=None, help="Optional task tag to include in results")
+    p.add_argument("--feature_csv", type=str, default=None, help="Optional training feature CSV path to include in results")
     return p.parse_args()
 
 
@@ -68,8 +72,31 @@ def _default_name(csv_path: str) -> str:
     return name
 
 
+def _get_positive_proba(proba: pd.DataFrame) -> pd.Series:
+    if isinstance(proba, pd.Series):
+        return proba.astype(float)
+    if 1 in proba.columns:
+        return proba[1].astype(float)
+    return proba.iloc[:, -1].astype(float)
+
+
+def _safe_auroc(y_true: pd.Series, y_score: pd.Series) -> float:
+    try:
+        from sklearn.metrics import roc_auc_score
+    except Exception:
+        return float("nan")
+
+    yy = y_true.to_numpy()
+    ss = y_score.to_numpy()
+    if len(pd.unique(yy)) != 2:
+        return float("nan")
+    try:
+        return float(roc_auc_score(yy, ss))
+    except Exception:
+        return float("nan")
+
+
 def _safe_auprc(y_true: pd.Series, y_score: pd.Series) -> float:
-    """AUPRC (Average Precision). Returns NaN if sklearn is unavailable or invalid input."""
     try:
         from sklearn.metrics import average_precision_score
     except Exception:
@@ -85,21 +112,48 @@ def _safe_auprc(y_true: pd.Series, y_score: pd.Series) -> float:
         return float("nan")
 
 
-def _sens_spec(y_true: pd.Series, y_pred: pd.Series) -> Dict[str, float]:
-    """Sensitivity=Recall for positive class; Specificity=True negative rate."""
+def _specificity(y_true: pd.Series, y_pred: pd.Series) -> float:
     yy = y_true.to_numpy()
     pp = y_pred.to_numpy()
     if len(pd.unique(yy)) != 2:
-        return {"sensitivity": float("nan"), "specificity": float("nan")}
-
-    tp = int(((yy == 1) & (pp == 1)).sum())
+        return float("nan")
     tn = int(((yy == 0) & (pp == 0)).sum())
     fp = int(((yy == 0) & (pp == 1)).sum())
-    fn = int(((yy == 1) & (pp == 0)).sum())
+    return float(tn / (tn + fp)) if (tn + fp) > 0 else float("nan")
 
-    sensitivity = tp / (tp + fn) if (tp + fn) > 0 else float("nan")
-    specificity = tn / (tn + fp) if (tn + fp) > 0 else float("nan")
-    return {"sensitivity": float(sensitivity), "specificity": float(specificity)}
+
+def _compute_binary_metrics(y_true: pd.Series, y_score: pd.Series, threshold: float) -> Dict[str, float]:
+    try:
+        from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
+    except Exception:
+        accuracy_score = f1_score = precision_score = recall_score = None
+
+    y_pred = (y_score >= float(threshold)).astype(int)
+    metrics: Dict[str, float] = {
+        "auroc": _safe_auroc(y_true, y_score),
+        "auprc": _safe_auprc(y_true, y_score),
+        "acc": float("nan"),
+        "prec": float("nan"),
+        "recall": float("nan"),
+        "f1": float("nan"),
+        "specificity": _specificity(y_true, y_pred),
+    }
+    if accuracy_score is not None:
+        try:
+            metrics["acc"] = float(accuracy_score(y_true.to_numpy(), y_pred.to_numpy()))
+            metrics["prec"] = float(precision_score(y_true.to_numpy(), y_pred.to_numpy(), zero_division=0))
+            metrics["recall"] = float(recall_score(y_true.to_numpy(), y_pred.to_numpy(), zero_division=0))
+            metrics["f1"] = float(f1_score(y_true.to_numpy(), y_pred.to_numpy(), zero_division=0))
+        except Exception:
+            pass
+    return metrics
+
+
+def _extract_auroc(perf: Dict[str, float], metrics: Dict[str, float]) -> float:
+    for key in ("roc_auc", "auroc"):
+        if key in perf and pd.notna(perf[key]):
+            return float(perf[key])
+    return float(metrics.get("auroc", float("nan")))
 
 
 def main() -> None:
@@ -127,29 +181,36 @@ def main() -> None:
             silent=True,
         )
 
-        # Extra metrics: AUPRC + sensitivity/specificity
-        # Sensitivity is equivalent to Recall for the positive class.
         y_true = df[args.label]
-        proba = predictor.predict_proba(df)
-        if 1 in proba.columns:
-            pos_proba = proba[1]
-        else:
-            # Fallback if positive class column is not labeled as '1'
-            pos_proba = proba.iloc[:, -1]
-        y_pred = (pos_proba >= float(args.threshold)).astype(int)
-
-        perf["auprc"] = _safe_auprc(y_true, pos_proba)
-        perf.update(_sens_spec(y_true, y_pred))
+        pos_proba = _get_positive_proba(predictor.predict_proba(df))
+        metrics = _compute_binary_metrics(y_true, pos_proba, threshold=float(args.threshold))
 
         row: Dict[str, object] = {
             "dataset": name,
             "csv": csv_path,
             "n_rows": int(df.shape[0]),
+            "mask_source": args.mask_source,
+            "train_dataset": args.train_dataset,
+            "task": args.task_name,
+            "model_dir": args.model_dir,
+            "feature_csv": args.feature_csv,
+            "auroc": _extract_auroc(perf, metrics),
+            "auprc": float(metrics.get("auprc", float("nan"))),
+            "acc": float(metrics.get("acc", float("nan"))),
+            "sensitivity": float(metrics.get("recall", float("nan"))),
+            "specificity": float(metrics.get("specificity", float("nan"))),
         }
         row.update(perf)
+        row["recall"] = float(metrics.get("recall", float("nan")))
+        row["precision"] = float(metrics.get("prec", float("nan")))
+        row["f1"] = float(metrics.get("f1", float("nan")))
+        row["ece"] = float(metrics.get("ece", float("nan")))
         rows.append(row)
 
-        print(f"[{name}] rows={row['n_rows']} perf={perf}")
+        print(
+            f"[{name}] rows={row['n_rows']} auroc={row['auroc']:.6f} auprc={row['auprc']:.6f} "
+            f"acc={row['acc']:.6f} sensitivity={row['sensitivity']:.6f} specificity={row['specificity']:.6f}"
+        )
 
     results = pd.DataFrame(rows)
 
