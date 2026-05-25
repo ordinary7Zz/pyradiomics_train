@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-MODEL_DIR="./binary_class/outputs/models/FTCPTC"
-TRAIN_CSV="./binary_class/outputs/task_csvs/train_FTCPTC.csv"
-OUTPUT_DIR="./binary_class/shap_analysis_outputs/FTCPTC"
+MODEL_DIR="./binary_class/outputs/models/FTCPTC_FangDai/FTCPTC"
+TRAIN_CSV="./binary_class/outputs/task_csvs/FTCPTC_FangDai/train_FTCPTC.csv"
+OUTPUT_DIR="./binary_class/shap_analysis_outputs/FTCPTC_FangDai"
 
 python shap_analyze/shap_analyze_autogluon_fixed.py \
   --model_dir "$MODEL_DIR" \

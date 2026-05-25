@@ -1,2 +1,0 @@
-dataset,csv,n_rows,n_neg,n_pos,auroc,auprc,acc,prec,recall,f1,specificity,ece
-FTCPTC_test_patient,binary_class/outputs/task_csvs/test_FTCPTC_patient.csv,63,42,21,0.63718820861678,0.44679761647154315,0.6666666666666666,0.5,0.14285714285714285,0.2222222222222222,0.9285714285714286,0.10227293249160523
