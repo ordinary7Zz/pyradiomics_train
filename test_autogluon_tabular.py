@@ -46,7 +46,9 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Optional: save per-dataset metrics table to this CSV path",
     )
-    p.add_argument("--mask_source", type=str, default=None, help="Optional mask source tag to include in results")
+    p.add_argument("--mask_source", type=str, default=None, help="Optional test mask source tag to include in results")
+    p.add_argument("--train_mask_source", type=str, default=None, help="Optional training mask source tag to include in results")
+    p.add_argument("--test_mask_source", type=str, default=None, help="Optional test mask source tag to include in results")
     p.add_argument("--train_dataset", type=str, default=None, help="Optional train dataset tag to include in results")
     p.add_argument("--task_name", type=str, default=None, help="Optional task tag to include in results")
     p.add_argument("--feature_csv", type=str, default=None, help="Optional training feature CSV path to include in results")
@@ -160,6 +162,7 @@ def main() -> None:
     args = parse_args()
 
     predictor = TabularPredictor.load(args.model_dir)
+    test_mask_source = args.test_mask_source or args.mask_source
 
     test_csvs: List[str] = args.test_csv
 
@@ -189,7 +192,9 @@ def main() -> None:
             "dataset": name,
             "csv": csv_path,
             "n_rows": int(df.shape[0]),
-            "mask_source": args.mask_source,
+            "train_mask_source": args.train_mask_source,
+            "test_mask_source": test_mask_source,
+            "mask_source": test_mask_source,
             "train_dataset": args.train_dataset,
             "task": args.task_name,
             "model_dir": args.model_dir,

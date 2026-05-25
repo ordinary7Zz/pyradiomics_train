@@ -48,12 +48,23 @@ pip install -r pyradiomics_train/requirements.txt
 
 ```bash
 python extract_radiomics_2d.py \
-  --image_dir /path/to/images \
-  --mask_dir /path/to/gt_masks \
-  --label_json /path/to/labels.json \
+  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN5K/train/images \
+  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN5K/train/masks \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN5K/train/TN5K_train_label.json \
   --task malignancy \
   --mask_source gt \
-  --output_csv /path/to/gt_radiomics_malignancy.csv \
+  --perturb_seed 42 \
+  --output_csv csv_data/gt/TN5K_train.csv \
+  --skip_fail
+
+python extract_radiomics_2d.py \
+  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN5K/test/images \
+  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN5K/test/masks \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN5K/test/TN5K_test_label.json \
+  --task malignancy \
+  --mask_source gt \
+  --perturb_seed 42 \
+  --output_csv csv_data/gt/TN5K_test.csv \
   --skip_fail
 ```
 
@@ -61,23 +72,23 @@ python extract_radiomics_2d.py \
 
 ```bash
 python extract_radiomics_2d.py \
-  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN3K/train/images \
-  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN3K/train/masks \
-  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN3K/train/TN3K_train_label.json \
+  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN5K/train/images \
+  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN5K/train/masks \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN5K/train/TN5K_train_label.json \
   --task malignancy \
   --mask_source gt_mild_perturb \
   --perturb_seed 42 \
-  --output_csv csv_data/gt_mild_perturb/TN3K_train.csv \
+  --output_csv csv_data/gt_mild_perturb/TN5K_train.csv \
   --skip_fail
 
 python extract_radiomics_2d.py \
-  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN3K/test/images \
-  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN3K/test/masks \
-  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN3K/test/TN3K_test_label.json \
+  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN5K/test/images \
+  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN5K/test/masks \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN5K/test/TN5K_test_label.json \
   --task malignancy \
   --mask_source gt_mild_perturb \
   --perturb_seed 42 \
-  --output_csv csv_data/gt_mild_perturb/TN3K_test.csv \
+  --output_csv csv_data/gt_mild_perturb/TN5K_test.csv \
   --skip_fail
 ```
 
@@ -85,23 +96,23 @@ python extract_radiomics_2d.py \
 
 ```bash
 python extract_radiomics_2d.py \
-  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN3K/train/images \
-  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN3K/train/masks \
-  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN3K/train/TN3K_train_label.json \
+  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN5K/train/images \
+  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN5K/train/masks \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN5K/train/TN5K_train_label.json \
   --task malignancy \
   --mask_source gt_moderate_perturb \
   --perturb_seed 42 \
-  --output_csv csv_data/gt_moderate_perturb/TN3K_train.csv \
+  --output_csv csv_data/gt_moderate_perturb/TN5K_train.csv \
   --skip_fail
 
 python extract_radiomics_2d.py \
-  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN3K/test/images \
-  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN3K/test/masks \
-  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN3K/test/TN3K_test_label.json \
+  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN5K/test/images \
+  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN5K/test/masks \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN5K/test/TN5K_test_label.json \
   --task malignancy \
   --mask_source gt_moderate_perturb \
   --perturb_seed 42 \
-  --output_csv csv_data/gt_moderate_perturb/TN3K_test.csv \
+  --output_csv csv_data/gt_moderate_perturb/TN5K_test.csv \
   --skip_fail
 ```
 
@@ -109,12 +120,23 @@ python extract_radiomics_2d.py \
 
 ```bash
 python extract_radiomics_2d.py \
-  --image_dir /path/to/images \
-  --mask_dir /path/to/pred_masks \
-  --label_json /path/to/labels.json \
+  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN5K/train/images \
+  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/pred_masks/train/TN5K \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN5K/train/TN5K_train_label.json \
   --task malignancy \
   --mask_source pred \
-  --output_csv /path/to/pred_radiomics_malignancy.csv \
+  --perturb_seed 42 \
+  --output_csv csv_data/pred/TN5K_train.csv \
+  --skip_fail
+
+python extract_radiomics_2d.py \
+  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN5K/test/images \
+  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/pred_masks/test/TN5K \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/TN5K/test/TN5K_test_label.json \
+  --task malignancy \
+  --mask_source pred \
+  --perturb_seed 42 \
+  --output_csv csv_data/pred/TN5K_test.csv \
   --skip_fail
 ```
 
@@ -157,40 +179,88 @@ bash pyradiomics_train/scripts/run_mask_source_experiment.sh extract_all dataset
 
 它们都只是不同来源的 radiomics 特征 CSV。只要 CSV 列结构一致，训练和测试命令本身不需要改，只需要替换输入 CSV 路径即可。
 
-### 用单个 CSV（内部自动划分 holdout，推荐先用 `--model_set tree_fast` 加快训练）
+### 用单个 CSV（内部自动划分 holdout，推荐先用 `--model_set tree_full` 加快训练）
 
 ```bash
 python train_autogluon_tabular.py \
-  --train_csv csv_data/gt_mild_perturb/TN3K_train.csv \
+  --train_csv csv_data/gt_mild_perturb/TN5K_train.csv \
   --label label \
   --save_dir /path/to/ag_malignancy \
-  --model_set tree_fast
+  --model_set tree_full
 ```
 
-### 用显式 train/test CSV（推荐先用 `--model_set tree_fast`）
+### 用显式 train/test CSV（推荐先用 `--model_set tree_full`）
 
 ```bash
 python train_autogluon_tabular.py \
-  --train_csv csv_data/gt_mild_perturb/TN3K_train.csv \
-  --test_csv csv_data/gt_mild_perturb/TN3K_test.csv \
+  --train_csv csv_data/gt_mild_perturb/TN5K_train.csv \
+  --test_csv csv_data/gt_mild_perturb/TN5K_test.csv \
   --label label \
   --save_dir autogluon_model/gt_mild_perturb \
-  --model_set tree_fast
+  --model_set tree_full
 ```
 
-### 例子：使用 gt_mild_perturb 的训练特征进行训练
+### 例子：
 
 ```bash
 python train_autogluon_tabular.py \
-  --train_csv pyradiomics_train/csv_data/gt_mild_perturb/dataset_3_train.csv \
+  --train_csv csv_data/gt/TN5K_train.csv \
+  --test_csv csv_data/gt/TN5K_test.csv \
   --label label \
-  --save_dir pyradiomics_train/autogluon_model/gt_mild_perturb/dataset_3/autogluon_model_$(date +%Y%m%d_%H%M%S) \
-  --model_set tree_fast \
+  --save_dir autogluon_model/gt/TN5K \
+  --model_set tree_full \
   --eval_metric roc_auc \
   --presets best_quality \
   --time_limit 600 \
   --seed 42
 ```
+Test performance [TN5K_test]: {'roc_auc': 0.8608414404060233, 'accuracy': 0.852, 'balanced_accuracy': 0.7730714659858929, 'mcc': 0.6020935382637363, 'f1': 0.9031413612565445, 'precision': 0.8657465495608532, 'recall': 0.9439124487004104}
+Saved leaderboard: autogluon_model/gt/TN5K/leaderboard.csv
+
+```bash
+python train_autogluon_tabular.py \
+  --train_csv csv_data/gt_mild_perturb/TN5K_train.csv \
+  --test_csv csv_data/gt_mild_perturb/TN5K_test.csv \
+  --label label \
+  --save_dir autogluon_model/gt_mild_perturb/TN5K \
+  --model_set tree_full \
+  --eval_metric roc_auc \
+  --presets best_quality \
+  --time_limit 600 \
+  --seed 42
+```
+Test performance [TN5K_test]: {'roc_auc': 0.8453155274386058, 'accuracy': 0.827, 'balanced_accuracy': 0.7465736705333124, 'mcc': 0.5350328961105683, 'f1': 0.8861092824226465, 'precision': 0.8540609137055838, 'recall': 0.920656634746922}
+Saved leaderboard: autogluon_model/gt_mild_perturb/TN5K/leaderboard.csv
+
+```bash
+python train_autogluon_tabular.py \
+  --train_csv csv_data/gt_moderate_perturb/TN5K_train.csv \
+  --test_csv csv_data/gt_moderate_perturb/TN5K_test.csv \
+  --label label \
+  --save_dir autogluon_model/gt_moderate_perturb/TN5K \
+  --model_set tree_full \
+  --eval_metric roc_auc \
+  --presets best_quality \
+  --time_limit 600 \
+  --seed 42
+```
+Test performance [TN5K_test]: {'roc_auc': 0.8671575831854311, 'accuracy': 0.846, 'balanced_accuracy': 0.7560453419718367, 'mcc': 0.5823923042322434, 'f1': 0.9002590673575129, 'precision': 0.8548585485854858, 'recall': 0.9507523939808481}
+Saved leaderboard: autogluon_model/gt_moderate_perturb/TN5K/leaderboard.csv
+
+```bash
+python train_autogluon_tabular.py \
+  --train_csv csv_data/pred/TN5K_train.csv \
+  --test_csv csv_data/pred/TN5K_test.csv \
+  --label label \
+  --save_dir autogluon_model/pred/TN5K \
+  --model_set tree_full \
+  --eval_metric roc_auc \
+  --presets best_quality \
+  --time_limit 600 \
+  --seed 42
+```
+Test performance [TN5K_test]: {'roc_auc': 0.8538947004409094, 'accuracy': 0.823, 'balanced_accuracy': 0.7144691541352428, 'mcc': 0.5112020582368589, 'f1': 0.8869009584664537, 'precision': 0.8321342925659473, 'recall': 0.9493844049247606}
+Saved leaderboard: autogluon_model/pred/TN5K/leaderboard.csv
 
 输出：
 - `--save_dir`：AutoGluon 模型目录
@@ -217,27 +287,127 @@ python test_autogluon_tabular.py \
   --out_csv /path/to/test_results.csv
 ```
 
-### 例子：评估 gt_mild_perturb 训练得到的模型
+### 例子：
 
 ```bash
 python test_autogluon_tabular.py \
-  --model_dir pyradiomics_train/autogluon_model/gt_mild_perturb/dataset_3/autogluon_model_YYYYMMDD_HHMMSS \
-  --test_csv \
-    pyradiomics_train/csv_data/gt_mild_perturb/TN3K_radiomics_2d_features.csv \
-    pyradiomics_train/csv_data/gt_mild_perturb/ThyroidXL_radiomics_2d_features.csv \
-    pyradiomics_train/csv_data/gt_mild_perturb/TN5K_radiomics_2d_features.csv \
-  --test_names TN3K ThyroidXL TN5K \
-  --mask_source gt_mild_perturb \
-  --train_dataset dataset_3 \
+  --model_dir autogluon_model/gt/TN5K \
+  --test_csv csv_data/gt/TN5K_test.csv \
+  --test_names TN5K \
+  --mask_source gt \
+  --train_dataset TN5K \
   --task_name malignancy \
-  --feature_csv pyradiomics_train/csv_data/gt_mild_perturb/dataset_3_train.csv \
-  --out_csv pyradiomics_train/test_logs/gt_mild_perturb/dataset_3/test_results.csv
+  --feature_csv csv_data/gt/TN5K_train.csv \
+  --out_csv test_logs/gt/TN5K_results.csv
 ```
+
+```bash
+python test_autogluon_tabular.py \
+  --model_dir autogluon_model/gt_mild_perturb/TN5K \
+  --test_csv csv_data/gt_mild_perturb/TN5K_test.csv \
+  --test_names TN5K \
+  --mask_source gt_mild_perturb \
+  --train_dataset TN5K \
+  --task_name malignancy \
+  --feature_csv csv_data/gt_mild_perturb/TN5K_train.csv \
+  --out_csv test_logs/gt_mild_perturb/TN5K_results.csv
+```
+
+```bash
+python test_autogluon_tabular.py \
+  --model_dir autogluon_model/gt_moderate_perturb/TN5K \
+  --test_csv csv_data/gt_moderate_perturb/TN5K_test.csv \
+  --test_names TN5K \
+  --mask_source gt_moderate_perturb \
+  --train_dataset TN5K \
+  --task_name malignancy \
+  --feature_csv csv_data/gt_moderate_perturb/TN5K_train.csv \
+  --out_csv test_logs/gt_moderate_perturb/TN5K_results.csv
+```
+
+
+```bash
+python test_autogluon_tabular.py \
+  --model_dir autogluon_model/pred/TN5K \
+  --test_csv csv_data/pred/TN5K_test.csv \
+  --test_names TN5K \
+  --mask_source pred \
+  --train_dataset TN5K \
+  --task_name malignancy \
+  --feature_csv csv_data/pred/TN5K_train.csv \
+  --out_csv test_logs/pred/TN5K_results.csv
+```
+
+
+
+### 16 组 train×test 交叉实验
+
+如果你已经按上面的 split 约定准备好了 4 种 mask_source 的特征 CSV：
+- `csv_data/gt/<DATASET>_train.csv`
+- `csv_data/gt/<DATASET>_test.csv`
+- `csv_data/gt_mild_perturb/<DATASET>_train.csv`
+- `csv_data/gt_mild_perturb/<DATASET>_test.csv`
+- `csv_data/gt_moderate_perturb/<DATASET>_train.csv`
+- `csv_data/gt_moderate_perturb/<DATASET>_test.csv`
+- `csv_data/pred/<DATASET>_train.csv`
+- `csv_data/pred/<DATASET>_test.csv`
+
+可以直接运行：
+
+```bash
+bash pyradiomics_train/scripts/run_mask_source_cross_experiments.sh TN5K
+```
+
+脚本会固定 4 个 `train_mask_source`：
+- `gt`
+- `gt_mild_perturb`
+- `gt_moderate_perturb`
+- `pred`
+
+并对 4 个 `test_mask_source` 全部做交叉评估，共输出 16 组结果：
+- `gt -> gt`
+- `gt -> gt_mild_perturb`
+- `gt -> gt_moderate_perturb`
+- `gt -> pred`
+- `...`
+- `pred -> pred`
+
+默认参数与当前 README 示例保持一致：
+- `LABEL_COL=label`
+- `TASK_NAME=malignancy`
+- `MODEL_SET=tree_full`
+- `EVAL_METRIC=roc_auc`
+- `PRESETS=best_quality`
+- `TIME_LIMIT=600`
+- `SEED=42`
+
+这些参数都可以通过环境变量覆盖，例如：
+
+```bash
+TIME_LIMIT=1200 MODEL_SET=all bash pyradiomics_train/scripts/run_mask_source_cross_experiments.sh TN5K
+```
+
+输出目录默认位于：
+- `cross_mask_runs/<DATASET>/<RUN_ID>/models/`：4 个训练模型
+- `cross_mask_runs/<DATASET>/<RUN_ID>/results/`：16 个单独结果 CSV
+- `cross_mask_runs/<DATASET>/<RUN_ID>/summary/all_results_long.csv`：长表汇总
+- `cross_mask_runs/<DATASET>/<RUN_ID>/summary/auroc_4x4.csv`：AUROC 交叉矩阵
+- `cross_mask_runs/<DATASET>/<RUN_ID>/summary/auprc_4x4.csv`
+- `cross_mask_runs/<DATASET>/<RUN_ID>/summary/acc_4x4.csv`
+- `cross_mask_runs/<DATASET>/<RUN_ID>/summary/sensitivity_4x4.csv`
+- `cross_mask_runs/<DATASET>/<RUN_ID>/summary/specificity_4x4.csv`
+
+交叉实验的结果 CSV 会额外记录：
+- `train_mask_source`
+- `test_mask_source`
+
+这样可以直接区分模型训练时和测试时使用的 mask 来源。
 
 ### 四种 mask_source 的使用方式
 
 对于另外三种设置，只需要替换对应的特征 CSV 与模型目录：
 - `gt` → `pyradiomics_train/csv_data/gt/...`
+- `gt_mild_perturb` → `pyradiomics_train/csv_data/gt_mild_perturb/...`
 - `gt_moderate_perturb` → `pyradiomics_train/csv_data/gt_moderate_perturb/...`
 - `pred` → `pyradiomics_train/csv_data/pred/...`
 
