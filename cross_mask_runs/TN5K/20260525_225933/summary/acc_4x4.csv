@@ -1,0 +1,5 @@
+train_mask_source,gt,gt_mild_perturb,gt_moderate_perturb,pred
+gt,0.852,0.827,0.794,0.782
+gt_mild_perturb,0.841,0.827,0.813,0.794
+gt_moderate_perturb,0.812,0.827,0.846,0.794
+pred,0.811,0.802,0.781,0.823

@@ -1,0 +1,2 @@
+[TN5K] rows=1000 auroc=0.825935 auprc=0.912758 acc=0.781000 sensitivity=0.829001 specificity=0.650558
+Saved: /mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/cross_mask_runs/TN5K/20260525_225933/results/train_pred__test_gt_moderate_perturb.csv

@@ -1,0 +1,3 @@
+Training configuration: presets=best_quality, model_set=tree_full, time_limit=600
+Test performance [TN5K]: {'roc_auc': 0.8608414404060233, 'accuracy': 0.852, 'balanced_accuracy': 0.7730714659858929, 'mcc': 0.6020935382637363, 'f1': 0.9031413612565445, 'precision': 0.8657465495608532, 'recall': 0.9439124487004104}
+Saved leaderboard: /mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/cross_mask_runs/TN5K/20260525_225933/models/train_gt/leaderboard.csv
