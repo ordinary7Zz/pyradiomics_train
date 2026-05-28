@@ -4,7 +4,7 @@
 主要功能：
 - 加载AutoGluon模型与训练CSV，构建背景样本和解释样本。
 - 针对主模型计算SHAP值，输出标准化CSV结果。
-- 可选生成beeswarm和waterfall图，并保存分析摘要。
+- 可选生成beeswarm、waterfall和紧凑版局部SHAP条形图，并保存分析摘要。
 
 输出目录默认为 <model_dir>/shap_analysis。
 """
@@ -22,7 +22,13 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from plots.plotting_utils import save_beeswarm_plot, save_waterfall_plot, short_feature_name
+from plots.plotting_utils import (
+    paper_friendly_name,
+    save_beeswarm_plot,
+    save_current_figure,
+    save_waterfall_plot,
+    short_feature_name,
+)
 
 np = None
 pd = None
@@ -51,6 +57,11 @@ def _require_tabular_predictor():
         from autogluon.tabular import TabularPredictor as _TabularPredictor
         TabularPredictor = _TabularPredictor
     return TabularPredictor
+
+
+def _require_matplotlib_pyplot():
+    import matplotlib.pyplot as _plt
+    return _plt
 
 
 def parse_args() -> argparse.Namespace:
@@ -108,7 +119,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument(
         "--plot_waterfall",
         action="store_true",
-        help="Generate SHAP waterfall plots for typical correct and incorrect samples",
+        help="Generate SHAP waterfall plots and compact local SHAP bars for typical correct and incorrect samples",
     )
     p.add_argument(
         "--waterfall_samples",
@@ -511,6 +522,68 @@ def _is_bag_model(model_name: str) -> bool:
     return "_BAG_" in model_name
 
 
+def _save_compact_shap_bar_plot(
+    shap_values,
+    feature_names,
+    out_path: str,
+    max_display: int,
+    *,
+    export_formats=("png", "svg"),
+    dpi: int = 300,
+    figsize: Optional[Tuple[float, float]] = None,
+) -> list[str]:
+    np_mod = _require_numpy()
+    plt_mod = _require_matplotlib_pyplot()
+
+    shap_arr = np_mod.asarray(shap_values).reshape(-1)
+    feature_names = list(feature_names)
+    if len(shap_arr) != len(feature_names):
+        raise ValueError("shap_values and feature_names must have the same length")
+
+    max_display = max(1, min(int(max_display), len(shap_arr)))
+    top_indices = np_mod.argsort(np_mod.abs(shap_arr))[-max_display:][::-1]
+    display_values = shap_arr[top_indices]
+    display_names = [feature_names[i] for i in top_indices]
+
+    if figsize is None:
+        height = max(2.05, 0.42 * len(display_names) + 0.45)
+        width = 3.3 if len(display_names) <= 5 else 3.8
+        figsize = (width, height)
+
+    fig, ax = plt_mod.subplots(figsize=figsize, facecolor="white")
+    fig.patch.set_facecolor("white")
+    ax.set_facecolor("white")
+
+    y_pos = np_mod.arange(len(display_names))
+    pos_color = "#c44e52"
+    neg_color = "#4c72b0"
+    colors = [pos_color if value >= 0 else neg_color for value in display_values]
+
+    ax.barh(y_pos, display_values, color=colors, height=0.58, edgecolor="none", linewidth=0)
+    ax.axvline(0, color="#6f6f6f", lw=0.75, zorder=0)
+    ax.set_yticks(y_pos)
+    ax.set_yticklabels(display_names, fontsize=7.5, color="#222222")
+    ax.invert_yaxis()
+    ax.set_xlabel("SHAP value", fontsize=8.5, labelpad=3, color="#222222")
+    ax.grid(axis="x", linestyle="--", alpha=0.12, linewidth=0.5, color="#9a9a9a")
+    for side in ["top", "right", "left"]:
+        ax.spines[side].set_visible(False)
+    ax.spines["bottom"].set_color("#b0b0b0")
+    ax.spines["bottom"].set_linewidth(0.7)
+    ax.tick_params(axis="y", length=0, pad=2)
+    ax.tick_params(axis="x", labelsize=7.5, colors="#222222", length=2.5, width=0.6)
+    ax.margins(y=0.08)
+
+    max_abs = float(np_mod.max(np_mod.abs(display_values))) if len(display_values) else 0.0
+    if max_abs > 0:
+        ax.set_xlim(-max_abs * 1.10, max_abs * 1.10)
+
+    plt_mod.tight_layout(pad=0.35)
+    saved_paths = save_current_figure(out_path, export_formats=export_formats, dpi=dpi, bbox_inches="tight")
+    plt_mod.close(fig)
+    return saved_paths
+
+
 def _plot_waterfall_samples(
     predictor: TabularPredictor,
     results: Dict,
@@ -788,32 +861,49 @@ def _plot_waterfall_samples(
                     display_shap = top_shap
                     display_feature_names = [short_feature_name(name) for name in top_feature_names]
 
+                    compact_feature_names = [paper_friendly_name(name) for name in top_feature_names]
+
                     display_feature_values = np.array(top_feature_values)
                     if display_feature_values.ndim > 1:
                         display_feature_values = display_feature_values.flatten()
 
                     base_value = float(np.mean(proba_positive))
 
-                    plot_file = os.path.join(
+                    waterfall_plot_file = os.path.join(
                         output_dir, f"{model_name}_waterfall_{filename_tag}_{i+1}.png"
                     )
-                    saved_paths = save_waterfall_plot(
+                    waterfall_saved_paths = save_waterfall_plot(
                         display_shap,
                         display_feature_values,
                         display_feature_names,
                         base_value,
-                        plot_file,
+                        waterfall_plot_file,
                         max_display,
-                        export_formats=("png", "svg", "pdf"),
+                        export_formats=("png", "svg"),
                         dpi=150,
                         figsize=(12, 8),
                         bbox_inches="tight",
                     )
-                    print(f"    Saved: {', '.join(saved_paths)}")
+
+                    compact_bar_file = os.path.join(
+                        output_dir, f"{model_name}_compact_shap_bar_{filename_tag}_{i+1}.png"
+                    )
+                    compact_bar_saved_paths = _save_compact_shap_bar_plot(
+                        display_shap,
+                        compact_feature_names,
+                        compact_bar_file,
+                        max_display,
+                        export_formats=("png", "svg"),
+                        dpi=300,
+                    )
+                    print(
+                        f"    Saved waterfall: {', '.join(waterfall_saved_paths)}; "
+                        f"compact bar: {', '.join(compact_bar_saved_paths)}"
+                    )
 
                     if sample_ids_array is not None:
                         img_name = sample_ids_array[idx] if idx < len(sample_ids_array) else None
-                        base, _ = os.path.splitext(plot_file)
+                        base, _ = os.path.splitext(waterfall_plot_file)
                         waterfall_records.append(
                             {
                                 "model": model_name,
@@ -823,7 +913,7 @@ def _plot_waterfall_samples(
                                 "true_label": int(y_explain[idx]),
                                 "pred_label": int(y_pred[idx]),
                                 "prob_positive": float(proba_positive[idx]),
-                                # 记录基础文件名（不含扩展名），实际生成 png/svg/pdf 三个文件
+                                # 记录基础文件名（不含扩展名），实际生成 png/svg 两个文件，并额外输出 compact bar 图
                                 "plot_file": os.path.basename(base),
                             }
                         )
@@ -845,7 +935,7 @@ def _plot_waterfall_samples(
         if specified_indices is not None:
             _plot_category(specified_indices, "specified", "sample", "Specified-sample")
     
-    print(f"  Waterfall plots saved to: {output_dir}")
+    print(f"  Waterfall and compact bar plots saved to: {output_dir}")
     
     # Save mapping from plotted waterfall figures to image names (only selected samples)
     if sample_ids_array is not None and waterfall_records:
