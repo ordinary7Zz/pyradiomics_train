@@ -119,13 +119,13 @@ def parse_args() -> argparse.Namespace:
     p.add_argument(
         "--plot_waterfall",
         action="store_true",
-        help="Generate SHAP waterfall plots and compact local SHAP bars for typical correct and incorrect samples",
+        help="Generate SHAP waterfall plots and compact local SHAP bars with balanced positive/negative samples",
     )
     p.add_argument(
         "--waterfall_samples",
         type=int,
         default=3,
-        help="Number of typical samples to plot for each category (correct/incorrect) (default: 3)",
+        help="Total samples per category, split between positive and negative examples when possible (default: 3)",
     )
     p.add_argument(
         "--sample_filename",
@@ -597,15 +597,15 @@ def _plot_waterfall_samples(
     n_top_features: int = 5,
 ) -> None:
     """
-    Identify typical correct and incorrect samples and plot SHAP waterfall plots.
-    
+    Identify balanced positive/negative samples and plot SHAP waterfall plots.
+
     Args:
         predictor: AutoGluon predictor
         results: Dictionary containing SHAP results for each model
         X_explain: Features to explain
         y_explain: True labels
         output_dir: Output directory for plots
-        n_samples: Number of samples to plot for each category
+        n_samples: Total samples per category, split between positive and negative when possible
         label_col: Label column name
     """
     try:
@@ -650,10 +650,10 @@ def _plot_waterfall_samples(
     # Identify correct and incorrect predictions
     correct_mask = (y_pred == y_explain)
     incorrect_mask = ~correct_mask
-    
+
     print(f"  Correct predictions: {correct_mask.sum()}/{len(y_explain)} ({correct_mask.sum()/len(y_explain)*100:.1f}%)")
     print(f"  Incorrect predictions: {incorrect_mask.sum()}/{len(y_explain)} ({incorrect_mask.sum()/len(y_explain)*100:.1f}%)")
-    
+
     # ---- 1) 基于“分类效果”划分为最好/中等/最差三类样本 ----
     # 定义一个“质量分数”：正确且置信度高 -> 分数高；错误且置信度高 -> 分数低（取负）
     conf_pred = np.where(
@@ -667,67 +667,76 @@ def _plot_waterfall_samples(
         -conf_pred,
     )
 
-    sorted_idx = np.argsort(quality_score)[::-1]  # 从高到低
-    n_total = len(sorted_idx)
-    if n_total == 0:
-        best_indices = medium_indices = worst_indices = np.array([], dtype=int)
-    else:
-        per_group = min(n_samples, max(1, n_total // 3)) if n_total >= 3 else min(n_samples, n_total)
+    y_true = np.asarray(y_explain)
+    positive_indices = np.where(y_true == 1)[0]
+    negative_indices = np.where(y_true == 0)[0]
+    positive_target = (n_samples + 1) // 2
+    negative_target = n_samples // 2
 
-        best_indices = sorted_idx[:per_group]
-        worst_indices = sorted_idx[-per_group:] if per_group <= n_total else sorted_idx
+    def _sort_indices_by_score(indices: np.ndarray, scores: np.ndarray) -> np.ndarray:
+        if len(indices) == 0:
+            return np.array([], dtype=int)
+        return indices[np.argsort(scores[indices])[::-1]]
 
-        # 中等样本从中间区域取，不与 best / worst 重叠
-        if n_total > 2 * per_group:
-            mid_start = n_total // 2 - per_group // 2
-            mid_start = max(per_group, mid_start)
-            mid_end = min(n_total - per_group, mid_start + per_group)
-            medium_indices = sorted_idx[mid_start:mid_start + per_group]
+    def _split_quality_groups(sorted_indices: np.ndarray, count: int) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+        if count <= 0 or len(sorted_indices) == 0:
+            empty = np.array([], dtype=int)
+            return empty, empty, empty
+
+        count = min(count, len(sorted_indices))
+        best = sorted_indices[:count]
+        worst = sorted_indices[-count:] if count <= len(sorted_indices) else sorted_indices
+
+        if len(sorted_indices) > 2 * count:
+            mid_start = len(sorted_indices) // 2 - count // 2
+            mid_start = max(count, mid_start)
+            mid_start = min(mid_start, len(sorted_indices) - count)
+            medium = sorted_indices[mid_start:mid_start + count]
         else:
-            medium_indices = np.array([], dtype=int)
+            medium = np.array([], dtype=int)
+
+        return best, medium, worst
+
+    def _sort_by_confidence(indices: np.ndarray) -> np.ndarray:
+        if len(indices) == 0:
+            return np.array([], dtype=int)
+        return indices[np.argsort(conf_pred[indices])[::-1]]
+
+    pos_quality_sorted = _sort_indices_by_score(positive_indices, quality_score)
+    neg_quality_sorted = _sort_indices_by_score(negative_indices, quality_score)
+
+    pos_best, pos_medium, pos_worst = _split_quality_groups(pos_quality_sorted, positive_target)
+    neg_best, neg_medium, neg_worst = _split_quality_groups(neg_quality_sorted, negative_target)
+
+    pos_correct = _sort_by_confidence(positive_indices[correct_mask[positive_indices]])
+    pos_incorrect = _sort_by_confidence(positive_indices[incorrect_mask[positive_indices]])
+    neg_correct = _sort_by_confidence(negative_indices[correct_mask[negative_indices]])
+    neg_incorrect = _sort_by_confidence(negative_indices[incorrect_mask[negative_indices]])
+
+    best_indices = np.concatenate([pos_best, neg_best])
+    medium_indices = np.concatenate([pos_medium, neg_medium])
+    worst_indices = np.concatenate([pos_worst, neg_worst])
+    correct_indices = np.concatenate([pos_correct, neg_correct])
+    incorrect_indices = np.concatenate([pos_incorrect, neg_incorrect])
+
+    best_indices = _sort_indices_by_score(best_indices, quality_score)
+    medium_indices = _sort_indices_by_score(medium_indices, quality_score)
+    worst_indices = _sort_indices_by_score(worst_indices, quality_score)
+    correct_indices = _sort_by_confidence(correct_indices)
+    incorrect_indices = _sort_by_confidence(incorrect_indices)
 
     print(
-        f"  Selected for quality groups - best: {len(best_indices)}, "
-        f"medium: {len(medium_indices)}, worst: {len(worst_indices)}"
+        f"  Balanced waterfall targets - total: {n_samples}, positive: {positive_target}, negative: {negative_target}"
+    )
+    print(
+        f"  Selected counts - best: {len(best_indices)}, medium: {len(medium_indices)}, worst: {len(worst_indices)}, "
+        f"correct: {len(correct_indices)}, incorrect: {len(incorrect_indices)}"
     )
 
-    # Select typical samples for each category
-    # For correct: high confidence (high probability for predicted class)
-    # For incorrect: high confidence (high probability for wrong class)
-    
-    correct_indices = np.where(correct_mask)[0]
-    incorrect_indices = np.where(incorrect_mask)[0]
-    
-    if len(correct_indices) == 0:
-        print("  Warning: No correct predictions found. Cannot plot correct samples.")
-    if len(incorrect_indices) == 0:
-        print("  Warning: No incorrect predictions found. Cannot plot incorrect samples.")
-    
-    # For correct predictions: select samples with highest confidence
-    # Confidence is the probability of the predicted class
-    if len(correct_indices) > 0:
-        correct_preds = y_pred[correct_indices]
-        correct_confidences = np.where(
-            correct_preds == 1,
-            proba_positive[correct_indices],
-            1 - proba_positive[correct_indices]
-        )
-        correct_top_idx = correct_indices[np.argsort(correct_confidences)[-n_samples:][::-1]]
-    else:
-        correct_top_idx = []
-    
-    # For incorrect predictions: select samples with highest confidence (wrong prediction)
-    # Confidence is the probability of the incorrectly predicted class
-    if len(incorrect_indices) > 0:
-        incorrect_preds = y_pred[incorrect_indices]
-        incorrect_confidences = np.where(
-            incorrect_preds == 1,
-            proba_positive[incorrect_indices],
-            1 - proba_positive[incorrect_indices]
-        )
-        incorrect_top_idx = incorrect_indices[np.argsort(incorrect_confidences)[-n_samples:][::-1]]
-    else:
-        incorrect_top_idx = []
+    if len(positive_indices) == 0:
+        print("  Warning: No positive samples found. Positive half will be empty.")
+    if len(negative_indices) == 0:
+        print("  Warning: No negative samples found. Negative half will be empty.")
     
     # Prepare aligned image IDs (if available) and container for selected samples
     sample_ids_array = None
@@ -922,11 +931,11 @@ def _plot_waterfall_samples(
                     import traceback
                     traceback.print_exc()
 
-        # 原先的正确/错误样本绘制仍然保留
-        _plot_category(correct_top_idx, "correct", "correct", "Correct")
-        _plot_category(incorrect_top_idx, "incorrect", "incorrect", "Incorrect")
+        # 按正负例混合绘制正确/错误样本，以及最好/中等/最差三类样本
+        _plot_category(correct_indices, "correct", "correct", "Correct")
+        _plot_category(incorrect_indices, "incorrect", "incorrect", "Incorrect")
 
-        # 新增：分类效果最好/中等/最差三类样本
+        # 分类效果最好/中等/最差三类样本
         _plot_category(best_indices, "best", "best", "Best-quality")
         _plot_category(medium_indices, "medium", "medium", "Medium-quality")
         _plot_category(worst_indices, "worst", "worst", "Worst-quality")
