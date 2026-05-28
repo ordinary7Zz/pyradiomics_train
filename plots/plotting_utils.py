@@ -66,6 +66,9 @@ GROUP_PREFIX = {
     "ngtdm": "TEX(NGTDM)",
 }
 
+TOKEN_REWRITE = {}
+
+
 def _require_numpy():
     global np
     if np is None:
@@ -98,12 +101,12 @@ def _require_shap():
     return shap
 
 
+def _split_camel(text: str) -> str:
     return re.sub(r"(?<!^)(?=[A-Z])", " ", text).strip()
 
 
 def _rewrite_tokens(phrase: str) -> str:
     return " ".join(TOKEN_REWRITE.get(token, token) for token in phrase.split())
-
 
 def _truncate_display_name(name: str, max_len: int = 28) -> str:
     if len(name) <= max_len:
