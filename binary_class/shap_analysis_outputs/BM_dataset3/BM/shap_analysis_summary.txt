@@ -1,0 +1,28 @@
+SHAP Analysis Summary
+==================================================
+
+Model directory: ./binary_class/outputs/models/BM_dataset3/BM
+Training CSV: ./binary_class/outputs/task_csvs/BM_dataset3/train_BM.csv
+Background samples: 100
+Explained samples: 2000
+Main models analyzed: 1
+
+Ensemble weights:
+  CatBoost_BAG_L1: 0.4670
+  LightGBM_BAG_L1: 0.2670
+  XGBoost_BAG_L1: 0.2670
+
+Model: LightGBM_BAG_L1
+  Mean absolute SHAP sum: 10346.7243
+  Top 10 features:
+    original_shape2D_Sphericity: 1.100935
+    original_shape2D_Elongation: 0.854193
+    original_firstorder_Energy: 0.236585
+    original_shape2D_PerimeterSurfaceRatio: 0.233894
+    original_firstorder_Skewness: 0.187691
+    original_glrlm_LongRunHighGrayLevelEmphasis: 0.186201
+    original_firstorder_Median: 0.153532
+    original_glrlm_ShortRunEmphasis: 0.128327
+    original_firstorder_90Percentile: 0.124276
+    original_shape2D_Perimeter: 0.122508
+
