@@ -566,37 +566,19 @@ def _save_compact_shap_bar_plot(
         candidates = [
             paper_friendly_name(raw_name),
             short_feature_name(raw_name),
-            _abbreviate_feature_name(raw_name, max_len=22),
+            _abbreviate_feature_name(raw_name, max_len=18),
         ]
         for candidate in candidates:
-            wrapped = textwrap.wrap(
-                candidate,
-                width=14,
-                break_long_words=True,
-                break_on_hyphens=False,
-            )
-            if not wrapped:
-                wrapped = [candidate]
-            if len(wrapped) <= 2:
-                return "\n".join(wrapped)
-        wrapped = textwrap.wrap(
-            candidates[-1],
-            width=14,
-            break_long_words=True,
-            break_on_hyphens=False,
-        )
-        if not wrapped:
-            wrapped = [candidates[-1]]
-        if len(wrapped) > 2:
-            wrapped = wrapped[:2]
-            wrapped[-1] = wrapped[-1].rstrip("…").rstrip() + "…"
-        return "\n".join(wrapped)
+            candidate = candidate.replace("\n", " ").strip()
+            if len(candidate) <= 18:
+                return candidate
+        return _abbreviate_feature_name(raw_name, max_len=18)
 
     display_labels = [_compact_label(name) for name in display_names]
 
     if figsize is None:
-        height = max(1.9, 0.40 * len(display_labels) + 0.85)
-        figsize = (4.0, height)
+        height = max(2.2, 0.52 * len(display_labels) + 1.15)
+        figsize = (3.15, height)
 
     fig, ax = plt_mod.subplots(figsize=figsize, facecolor="white")
     fig.patch.set_facecolor("white")
@@ -608,12 +590,12 @@ def _save_compact_shap_bar_plot(
     pos_color = "#c44e52"
     neg_color = "#4c72b0"
     colors = [pos_color if value >= 0 else neg_color for value in display_values]
-    ax.barh(y_pos, display_values, color=colors, height=0.78, edgecolor="none", linewidth=0, zorder=2)
+    ax.barh(y_pos, display_values, color=colors, height=0.88, edgecolor="none", linewidth=0, zorder=2)
     ax.axvline(0, color="#6f6f6f", lw=0.85, zorder=1)
 
     max_abs = float(np_mod.max(np_mod.abs(display_values))) if len(display_values) else 0.0
     if max_abs > 0:
-        ax.set_xlim(-max_abs * 1.06, max_abs * 1.06)
+        ax.set_xlim(-max_abs * 1.32, max_abs * 1.32)
 
     from matplotlib.transforms import blended_transform_factory
 
@@ -634,7 +616,6 @@ def _save_compact_shap_bar_plot(
             va="center",
             fontsize=ytick_fontsize,
             color="#222222",
-            linespacing=1.02,
             clip_on=False,
             zorder=3,
         )
@@ -644,7 +625,7 @@ def _save_compact_shap_bar_plot(
         wrapped_title = "\n".join(
             textwrap.wrap(
                 title,
-                width=28,
+                width=22,
                 break_long_words=False,
                 break_on_hyphens=False,
             )
@@ -653,9 +634,9 @@ def _save_compact_shap_bar_plot(
             wrapped_title = title
 
     if wrapped_title:
-        ax.set_title(wrapped_title, fontsize=title_fontsize, pad=6, color="#111111")
+        ax.set_title(wrapped_title, fontsize=title_fontsize, pad=4, color="#111111")
 
-    ax.set_xlabel("SHAP value", fontsize=xlabel_fontsize, labelpad=3, color="#222222")
+    ax.set_xlabel("SHAP value", fontsize=xlabel_fontsize, labelpad=2, color="#222222")
     ax.set_yticks([])
     ax.tick_params(axis="y", left=False, labelleft=False)
     ax.grid(axis="x", linestyle="--", alpha=0.12, linewidth=0.5, color="#9a9a9a")
@@ -664,9 +645,9 @@ def _save_compact_shap_bar_plot(
     ax.spines["bottom"].set_color("#b0b0b0")
     ax.spines["bottom"].set_linewidth(0.7)
     ax.tick_params(axis="x", labelsize=max(7, xlabel_fontsize - 1), colors="#222222", length=2.5, width=0.6)
-    ax.margins(x=0.01, y=0.08)
+    ax.margins(x=0.01, y=0.03)
 
-    fig.subplots_adjust(left=0.03, right=0.99, top=0.90, bottom=0.16)
+    fig.subplots_adjust(left=0.04, right=0.99, top=0.86, bottom=0.22)
     saved_paths = save_current_figure(out_path, export_formats=export_formats, dpi=dpi, bbox_inches="tight")
     plt_mod.close(fig)
     return saved_paths
@@ -1008,12 +989,12 @@ def _plot_waterfall_samples(
                         compact_bar_file,
                         max_display,
                         title=f"{model_name} {title_tag} SHAP",
-                        title_fontsize=11.5,
-                        xlabel_fontsize=9.5,
-                        ytick_fontsize=9.5,
+                        title_fontsize=10.5,
+                        xlabel_fontsize=9.0,
+                        ytick_fontsize=8.8,
                         export_formats=("png", "svg"),
                         dpi=300,
-                        figsize=(4.0, 1.55 + 0.38 * max_display),
+                        figsize=(3.15, 2.2 + 0.52 * max_display),
                     )
                     print(
                         f"    Saved waterfall: {', '.join(waterfall_saved_paths)}; "
