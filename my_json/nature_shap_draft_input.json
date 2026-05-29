@@ -21,17 +21,17 @@
     {
       "panel_label": "a",
       "title": "Benign vs malignant",
-      "image_path": "shap_analysis_outputs/Malignancy_Cls/LightGBMXT_BAG_L1_beeswarm.png"
+      "image_path": "shap_analysis_outputs/BM_dataset3/BM/LightGBM_BAG_L1_beeswarm.png"
     },
     {
       "panel_label": "b",
       "title": "Lymph node metastasis",
-      "image_path": "binary_class/shap_analysis_outputs/LNM_CN01/LightGBMXT_BAG_L1_beeswarm.png"
+      "image_path": "binary_class/shap_analysis_outputs/LymphUs_fake/LNM_CN01/LightGBM_BAG_L1_beeswarm.png"
     },
     {
       "panel_label": "c",
       "title": "FTC vs PTC",
-      "image_path": "binary_class/shap_analysis_outputs/FTCPTC/LightGBMXT_BAG_L1_beeswarm.png"
+      "image_path": "binary_class/shap_analysis_outputs/FTCPTC_FangDai/LightGBMXT_BAG_L1_beeswarm.png"
     }
   ],
   "sample_panels": [
