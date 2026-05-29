@@ -234,13 +234,13 @@ python binary_class/extract_base_radiomics.py \
 python binary_class/build_binary_task_csv.py \
   --base_features_csv binary_class/outputs/base_features/BM_dataset3/train_base_features.csv \
   --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Superimposed_multitask/dataset_3/train/dataset_3_train_label.json \
-  --task maligancy \
+  --task malignancy \
   --output_csv binary_class/outputs/task_csvs/BM_dataset3/train_BM.csv
 
 python binary_class/build_binary_task_csv.py \
   --base_features_csv binary_class/outputs/base_features/BM_dataset3/test_base_features.csv \
   --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Superimposed_multitask/dataset_3/test/dataset_3_test_label.json \
-  --task FTCPTC \
+  --task malignancy \
   --output_csv binary_class/outputs/task_csvs/BM_dataset3/test_BM.csv
 
 python -m binary_class.train_binary_task_resampled \
