@@ -15,6 +15,7 @@ import argparse
 import os
 import re
 import sys
+import textwrap
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
@@ -560,67 +561,95 @@ def _save_compact_shap_bar_plot(
     top_indices = np_mod.argsort(np_mod.abs(shap_arr))[-max_display:][::-1]
     display_values = shap_arr[top_indices]
     display_names = [feature_names[i] for i in top_indices]
-    display_labels = [_abbreviate_feature_name(name, max_len=18) for name in display_names]
+
+    def _compact_label(raw_name: str) -> str:
+        candidates = [
+            paper_friendly_name(raw_name),
+            short_feature_name(raw_name),
+            _abbreviate_feature_name(raw_name, max_len=24),
+        ]
+        for candidate in candidates:
+            wrapped = textwrap.wrap(
+                candidate,
+                width=16,
+                break_long_words=True,
+                break_on_hyphens=False,
+            )
+            if not wrapped:
+                wrapped = [candidate]
+            if len(wrapped) <= 2:
+                return "\n".join(wrapped)
+        wrapped = textwrap.wrap(
+            candidates[-1],
+            width=16,
+            break_long_words=True,
+            break_on_hyphens=False,
+        )
+        if not wrapped:
+            wrapped = [candidates[-1]]
+        if len(wrapped) > 2:
+            wrapped = wrapped[:2]
+            wrapped[-1] = wrapped[-1].rstrip("…").rstrip() + "…"
+        return "\n".join(wrapped)
+
+    display_labels = [_compact_label(name) for name in display_names]
 
     if figsize is None:
-        width = max(2.6, 0.62 * len(display_names) + 0.9)
-        height = max(2.9, 0.82 * len(display_names) + 1.2)
-        figsize = (width, height)
+        height = max(1.65, 0.38 * len(display_labels) + 0.45)
+        figsize = (4.8, height)
 
-    fig, ax = plt_mod.subplots(figsize=figsize, facecolor="white")
+    fig = plt_mod.figure(figsize=figsize, facecolor="white")
     fig.patch.set_facecolor("white")
-    ax.set_facecolor("white")
+    gs = fig.add_gridspec(1, 2, width_ratios=[1.35, 3.9], wspace=0.03)
+    ax_label = fig.add_subplot(gs[0, 0])
+    ax_bar = fig.add_subplot(gs[0, 1])
 
-    x_pos = np_mod.arange(len(display_names))
+    y_pos = np_mod.arange(len(display_labels))
+    y_limits = (len(display_labels) - 0.5, -0.5)
+
+    ax_label.set_facecolor("white")
+    ax_label.set_xlim(0, 1)
+    ax_label.set_ylim(*y_limits)
+    ax_label.axis("off")
+    for y, label in zip(y_pos, display_labels):
+        ax_label.text(
+            0.98,
+            y,
+            label,
+            ha="right",
+            va="center",
+            fontsize=ytick_fontsize,
+            color="#222222",
+            linespacing=1.03,
+            clip_on=True,
+        )
+
+    ax_bar.set_facecolor("white")
     pos_color = "#c44e52"
     neg_color = "#4c72b0"
     colors = [pos_color if value >= 0 else neg_color for value in display_values]
-
-    ax.bar(x_pos, display_values, color=colors, width=0.58, edgecolor="none", linewidth=0)
-    ax.axhline(0, color="#6f6f6f", lw=0.75, zorder=0)
-
-    ax.set_xticks(x_pos)
-    ax.set_xticklabels([])
-    ax.tick_params(axis="x", length=0)
-    ax.tick_params(axis="y", labelsize=xlabel_fontsize - 1, colors="#222222", length=2.5, width=0.6)
-    ax.set_ylabel("SHAP value", fontsize=xlabel_fontsize, labelpad=4, color="#222222")
-
+    ax_bar.barh(y_pos, display_values, color=colors, height=0.62, edgecolor="none", linewidth=0)
+    ax_bar.axvline(0, color="#6f6f6f", lw=0.75, zorder=0)
+    ax_bar.set_ylim(*y_limits)
+    ax_bar.set_yticks([])
+    ax_bar.tick_params(axis="y", left=False, labelleft=False)
+    ax_bar.set_xlabel("SHAP value", fontsize=xlabel_fontsize, labelpad=4, color="#222222")
     if title:
-        ax.set_title(title, fontsize=title_fontsize, pad=7, color="#111111")
-
-    ax.grid(axis="y", linestyle="--", alpha=0.12, linewidth=0.5, color="#9a9a9a")
-    for side in ["top", "right", "bottom"]:
-        ax.spines[side].set_visible(False)
-    ax.spines["left"].set_color("#b0b0b0")
-    ax.spines["left"].set_linewidth(0.7)
+        ax_bar.set_title(title, fontsize=title_fontsize, pad=8, color="#111111")
+    ax_bar.grid(axis="x", linestyle="--", alpha=0.12, linewidth=0.5, color="#9a9a9a")
+    for side in ["top", "right", "left"]:
+        ax_bar.spines[side].set_visible(False)
+    ax_bar.spines["bottom"].set_color("#b0b0b0")
+    ax_bar.spines["bottom"].set_linewidth(0.7)
+    ax_bar.tick_params(axis="x", labelsize=xlabel_fontsize - 1, colors="#222222", length=2.5, width=0.6)
+    ax_bar.margins(x=0.02)
 
     max_abs = float(np_mod.max(np_mod.abs(display_values))) if len(display_values) else 0.0
     if max_abs > 0:
-        ax.set_ylim(-max_abs * 1.15, max_abs * 1.32)
+        ax_bar.set_xlim(-max_abs * 1.12, max_abs * 1.12)
 
-    label_offset = max_abs * 0.03 if max_abs > 0 else 0.02
-    for x, value, label in zip(x_pos, display_values, display_labels):
-        if value >= 0:
-            y = value + label_offset
-            va = "bottom"
-        else:
-            y = value - label_offset
-            va = "top"
-        ax.text(
-            x,
-            y,
-            label,
-            ha="center",
-            va=va,
-            fontsize=ytick_fontsize,
-            color="#222222",
-            rotation=0,
-            clip_on=False,
-        )
-
-    ax.margins(x=0.12)
-    plt_mod.tight_layout(pad=0.28)
-    saved_paths = save_current_figure(out_path, export_formats=export_formats, dpi=dpi, bbox_inches="tight")
+    fig.subplots_adjust(left=0.02, right=0.995, top=0.92, bottom=0.12)
+    saved_paths = save_current_figure(out_path, export_formats=export_formats, dpi=dpi, bbox_inches=None)
     plt_mod.close(fig)
     return saved_paths
 
@@ -966,7 +995,7 @@ def _plot_waterfall_samples(
                         ytick_fontsize=11.5,
                         export_formats=("png", "svg"),
                         dpi=300,
-                        figsize=(3.35, 1.95 + 0.62 * max_display),
+                        figsize=(4.8, 1.0 + 0.34 * max_display),
                     )
                     print(
                         f"    Saved waterfall: {', '.join(waterfall_saved_paths)}; "
