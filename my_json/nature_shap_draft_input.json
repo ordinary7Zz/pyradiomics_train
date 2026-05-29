@@ -50,7 +50,7 @@
       "image_title": "Representative best sample",
       "image_caption": "LNM_CN01 / Benign",
       "ultrasound_path": "/mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis_fake/images/62_Benign_center1.png",
-      "compact_shap_path": "binary_class/shap_analysis_outputs/LNM_CN01/LightGBMXT_BAG_L1_compact_shap_bar_best_1.png",
+      "compact_shap_path": "binary_class/shap_analysis_outputs/LymphUs_fake/LNM_CN01/LightGBM_BAG_L1_compact_shap_bar_best_1.png",
       "compact_shap_title": "Compact local SHAP bar"
     },
     {
@@ -77,7 +77,7 @@
       "image_title": "Representative worst sample",
       "image_caption": "LNM_CN01 / Malignant",
       "ultrasound_path": "/mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis_fake/images/48_Malignant_center1.png",
-      "compact_shap_path": "binary_class/shap_analysis_outputs/LNM_CN01/LightGBMXT_BAG_L1_compact_shap_bar_best_6.png",
+      "compact_shap_path": "binary_class/shap_analysis_outputs/LymphUs_fake/LNM_CN01/LightGBM_BAG_L1_compact_shap_bar_best_6.png",
       "compact_shap_title": "Compact local SHAP bar"
     },
     {
