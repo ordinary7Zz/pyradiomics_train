@@ -678,65 +678,80 @@ def _plot_waterfall_samples(
             return np.array([], dtype=int)
         return indices[np.argsort(scores[indices])[::-1]]
 
-    def _split_quality_groups(sorted_indices: np.ndarray, count: int) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def _take_middle(sorted_indices: np.ndarray, count: int) -> np.ndarray:
         if count <= 0 or len(sorted_indices) == 0:
-            empty = np.array([], dtype=int)
-            return empty, empty, empty
-
+            return np.array([], dtype=int)
         count = min(count, len(sorted_indices))
-        best = sorted_indices[:count]
-        worst = sorted_indices[-count:] if count <= len(sorted_indices) else sorted_indices
+        center = len(sorted_indices) // 2
+        start = max(0, center - count // 2)
+        end = start + count
+        if end > len(sorted_indices):
+            end = len(sorted_indices)
+            start = max(0, end - count)
+        return sorted_indices[start:end]
 
-        if len(sorted_indices) > 2 * count:
-            mid_start = len(sorted_indices) // 2 - count // 2
-            mid_start = max(count, mid_start)
-            mid_start = min(mid_start, len(sorted_indices) - count)
-            medium = sorted_indices[mid_start:mid_start + count]
-        else:
-            medium = np.array([], dtype=int)
+    def _take_best(sorted_indices: np.ndarray, count: int) -> np.ndarray:
+        if count <= 0 or len(sorted_indices) == 0:
+            return np.array([], dtype=int)
+        return sorted_indices[: min(count, len(sorted_indices))]
 
-        return best, medium, worst
+    def _take_worst(sorted_indices: np.ndarray, count: int) -> np.ndarray:
+        if count <= 0 or len(sorted_indices) == 0:
+            return np.array([], dtype=int)
+        count = min(count, len(sorted_indices))
+        return sorted_indices[-count:]
 
     def _sort_by_confidence(indices: np.ndarray) -> np.ndarray:
         if len(indices) == 0:
             return np.array([], dtype=int)
         return indices[np.argsort(conf_pred[indices])[::-1]]
 
-    pos_quality_sorted = _sort_indices_by_score(positive_indices, quality_score)
-    neg_quality_sorted = _sort_indices_by_score(negative_indices, quality_score)
+    def _select_balanced_quality(indices: np.ndarray, count: int, mode: str) -> np.ndarray:
+        sorted_indices = _sort_indices_by_score(indices, quality_score)
+        if mode == "best":
+            return _take_best(sorted_indices, count)
+        if mode == "medium":
+            return _take_middle(sorted_indices, count)
+        if mode == "worst":
+            return _take_worst(sorted_indices, count)
+        raise ValueError(f"Unknown quality mode: {mode}")
 
-    pos_best, pos_medium, pos_worst = _split_quality_groups(pos_quality_sorted, positive_target)
-    neg_best, neg_medium, neg_worst = _split_quality_groups(neg_quality_sorted, negative_target)
+    def _select_balanced_correct(indices: np.ndarray, count: int) -> np.ndarray:
+        selected = indices[correct_mask[indices]]
+        return _take_best(_sort_by_confidence(selected), count)
 
-    pos_correct = _sort_by_confidence(positive_indices[correct_mask[positive_indices]])
-    pos_incorrect = _sort_by_confidence(positive_indices[incorrect_mask[positive_indices]])
-    neg_correct = _sort_by_confidence(negative_indices[correct_mask[negative_indices]])
-    neg_incorrect = _sort_by_confidence(negative_indices[incorrect_mask[negative_indices]])
+    pos_best = _select_balanced_quality(positive_indices, positive_target, "best")
+    neg_best = _select_balanced_quality(negative_indices, negative_target, "best")
+    pos_medium = _select_balanced_quality(positive_indices, positive_target, "medium")
+    neg_medium = _select_balanced_quality(negative_indices, negative_target, "medium")
+    pos_worst = _select_balanced_quality(positive_indices, positive_target, "worst")
+    neg_worst = _select_balanced_quality(negative_indices, negative_target, "worst")
+    pos_correct = _select_balanced_correct(positive_indices, positive_target)
+    neg_correct = _select_balanced_correct(negative_indices, negative_target)
 
-    best_indices = np.concatenate([pos_best, neg_best])
-    medium_indices = np.concatenate([pos_medium, neg_medium])
-    worst_indices = np.concatenate([pos_worst, neg_worst])
-    correct_indices = np.concatenate([pos_correct, neg_correct])
-    incorrect_indices = np.concatenate([pos_incorrect, neg_incorrect])
-
-    best_indices = _sort_indices_by_score(best_indices, quality_score)
-    medium_indices = _sort_indices_by_score(medium_indices, quality_score)
-    worst_indices = _sort_indices_by_score(worst_indices, quality_score)
-    correct_indices = _sort_by_confidence(correct_indices)
-    incorrect_indices = _sort_by_confidence(incorrect_indices)
+    best_indices = _sort_indices_by_score(np.concatenate([pos_best, neg_best]), quality_score)
+    medium_indices = _sort_indices_by_score(np.concatenate([pos_medium, neg_medium]), quality_score)
+    worst_indices = _sort_indices_by_score(np.concatenate([pos_worst, neg_worst]), quality_score)
+    correct_indices = _sort_by_confidence(np.concatenate([pos_correct, neg_correct]))
 
     print(
-        f"  Balanced waterfall targets - total: {n_samples}, positive: {positive_target}, negative: {negative_target}"
+        f"  Balanced waterfall targets per category - total: {n_samples}, positive: {positive_target}, negative: {negative_target}"
     )
     print(
         f"  Selected counts - best: {len(best_indices)}, medium: {len(medium_indices)}, worst: {len(worst_indices)}, "
-        f"correct: {len(correct_indices)}, incorrect: {len(incorrect_indices)}"
+        f"correct: {len(correct_indices)}"
     )
 
     if len(positive_indices) == 0:
         print("  Warning: No positive samples found. Positive half will be empty.")
     if len(negative_indices) == 0:
         print("  Warning: No negative samples found. Negative half will be empty.")
+    if len(positive_indices) < positive_target:
+        print("  Warning: Not enough positive samples to fill the positive half for every category.")
+    if len(negative_indices) < negative_target:
+        print("  Warning: Not enough negative samples to fill the negative half for every category.")
+    if len(pos_correct) < positive_target or len(neg_correct) < negative_target:
+        print("  Warning: Not enough correctly predicted positive/negative samples to fill the balanced correct category.")
     
     # Prepare aligned image IDs (if available) and container for selected samples
     sample_ids_array = None
@@ -931,14 +946,11 @@ def _plot_waterfall_samples(
                     import traceback
                     traceback.print_exc()
 
-        # 按正负例混合绘制正确/错误样本，以及最好/中等/最差三类样本
-        _plot_category(correct_indices, "correct", "correct", "Correct")
-        _plot_category(incorrect_indices, "incorrect", "incorrect", "Incorrect")
-
-        # 分类效果最好/中等/最差三类样本
+        # 按正负例均衡绘制四个类别：best / medium / worst / correct
         _plot_category(best_indices, "best", "best", "Best-quality")
         _plot_category(medium_indices, "medium", "medium", "Medium-quality")
         _plot_category(worst_indices, "worst", "worst", "Worst-quality")
+        _plot_category(correct_indices, "correct", "correct", "Correct")
 
         # 新增：用户指定文件名对应的样本
         if specified_indices is not None:
