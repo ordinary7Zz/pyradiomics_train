@@ -215,3 +215,46 @@ python -m binary_class.train_binary_task_resampled \
   --ci_level 0.95 \
   --ci_seed 42 \
   --seed 42
+
+良恶性二分类数据集：
+python binary_class/extract_base_radiomics.py \
+  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Superimposed_multitask/dataset_3/train/images \
+  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Superimposed_multitask/dataset_3/train/masks \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Superimposed_multitask/dataset_3/train/dataset_3_train_label.json \
+  --output_csv binary_class/outputs/base_features/BM_dataset3/train_base_features.csv \
+  --skip_fail
+
+python binary_class/extract_base_radiomics.py \
+  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Superimposed_multitask/dataset_3/test/images \
+  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Superimposed_multitask/dataset_3/test/masks \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Superimposed_multitask/dataset_3/test/dataset_3_test_label.json \
+  --output_csv binary_class/outputs/base_features/BM_dataset3/test_base_features.csv \
+  --skip_fail
+
+python binary_class/build_binary_task_csv.py \
+  --base_features_csv binary_class/outputs/base_features/BM_dataset3/train_base_features.csv \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Superimposed_multitask/dataset_3/train/dataset_3_train_label.json \
+  --task maligancy \
+  --output_csv binary_class/outputs/task_csvs/BM_dataset3/train_BM.csv
+
+python binary_class/build_binary_task_csv.py \
+  --base_features_csv binary_class/outputs/base_features/BM_dataset3/test_base_features.csv \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Superimposed_multitask/dataset_3/test/dataset_3_test_label.json \
+  --task FTCPTC \
+  --output_csv binary_class/outputs/task_csvs/BM_dataset3/test_BM.csv
+
+python -m binary_class.train_binary_task_resampled \
+  --train_csv binary_class/outputs/task_csvs/BM_dataset3/train_BM.csv \
+  --test_csv binary_class/outputs/task_csvs/BM_dataset3/test_BM.csv \
+  --test_names BM_test \
+  --save_dir binary_class/outputs/models/BM_dataset3/BM \
+  --eval_metric roc_auc \
+  --model_set tree_full \
+  --time_limit 3600 \
+  --resample_strategy none \
+  --threshold 0.5 \
+  --ece_bins 10 \
+  --ci_bootstrap_iters 1000 \
+  --ci_level 0.95 \
+  --ci_seed 42 \
+  --seed 42
