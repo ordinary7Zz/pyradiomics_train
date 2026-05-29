@@ -21,7 +21,7 @@
     {
       "panel_label": "a",
       "title": "Benign vs malignant",
-      "image_path": "shap_analysis_outputs/BM_dataset3/BM/LightGBM_BAG_L1_beeswarm.png"
+      "image_path": "binary_class/shap_analysis_outputs/BM_dataset3/BM/LightGBM_BAG_L1_beeswarm.png"
     },
     {
       "panel_label": "b",
