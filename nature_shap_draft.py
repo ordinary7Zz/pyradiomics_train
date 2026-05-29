@@ -254,7 +254,7 @@ def _draw_beeswarm_panel(ax, panel: Dict[str, Any]) -> None:
         ax.spines[side].set_visible(False)
     title = panel.get("title")
     if title:
-        ax.set_title(title, pad=10, fontweight="semibold")
+        ax.set_title(title, pad=4, fontweight="semibold")
     label = panel.get("panel_label") or panel.get("label")
     if label:
         add_panel_label(ax, label)
@@ -277,7 +277,7 @@ def _draw_sample_panel(fig, spec, panel: Dict[str, Any]) -> None:
     if image_title:
         ax_img.text(
             0.02,
-            1.02,
+            1.005,
             image_title,
             transform=ax_img.transAxes,
             ha="left",
