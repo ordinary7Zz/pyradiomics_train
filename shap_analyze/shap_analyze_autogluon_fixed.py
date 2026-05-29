@@ -560,43 +560,66 @@ def _save_compact_shap_bar_plot(
     top_indices = np_mod.argsort(np_mod.abs(shap_arr))[-max_display:][::-1]
     display_values = shap_arr[top_indices]
     display_names = [feature_names[i] for i in top_indices]
+    display_labels = [_abbreviate_feature_name(name, max_len=18) for name in display_names]
 
     if figsize is None:
-        height = max(1.55, 0.34 * len(display_names) + 0.22)
-        width = 5.4 if len(display_names) <= 5 else 6.2
+        width = max(2.6, 0.62 * len(display_names) + 0.9)
+        height = max(2.9, 0.82 * len(display_names) + 1.2)
         figsize = (width, height)
 
     fig, ax = plt_mod.subplots(figsize=figsize, facecolor="white")
     fig.patch.set_facecolor("white")
     ax.set_facecolor("white")
 
-    y_pos = np_mod.arange(len(display_names))
+    x_pos = np_mod.arange(len(display_names))
     pos_color = "#c44e52"
     neg_color = "#4c72b0"
     colors = [pos_color if value >= 0 else neg_color for value in display_values]
 
-    ax.barh(y_pos, display_values, color=colors, height=0.68, edgecolor="none", linewidth=0)
-    ax.axvline(0, color="#6f6f6f", lw=0.75, zorder=0)
-    ax.set_yticks(y_pos)
-    ax.set_yticklabels(display_names, fontsize=ytick_fontsize, color="#222222")
-    ax.invert_yaxis()
-    ax.set_xlabel("SHAP value", fontsize=xlabel_fontsize, labelpad=4, color="#222222")
+    ax.bar(x_pos, display_values, color=colors, width=0.58, edgecolor="none", linewidth=0)
+    ax.axhline(0, color="#6f6f6f", lw=0.75, zorder=0)
+
+    ax.set_xticks(x_pos)
+    ax.set_xticklabels([])
+    ax.tick_params(axis="x", length=0)
+    ax.tick_params(axis="y", labelsize=xlabel_fontsize - 1, colors="#222222", length=2.5, width=0.6)
+    ax.set_ylabel("SHAP value", fontsize=xlabel_fontsize, labelpad=4, color="#222222")
+
     if title:
-        ax.set_title(title, fontsize=title_fontsize, pad=8, color="#111111")
-    ax.grid(axis="x", linestyle="--", alpha=0.12, linewidth=0.5, color="#9a9a9a")
-    for side in ["top", "right", "left"]:
+        ax.set_title(title, fontsize=title_fontsize, pad=7, color="#111111")
+
+    ax.grid(axis="y", linestyle="--", alpha=0.12, linewidth=0.5, color="#9a9a9a")
+    for side in ["top", "right", "bottom"]:
         ax.spines[side].set_visible(False)
-    ax.spines["bottom"].set_color("#b0b0b0")
-    ax.spines["bottom"].set_linewidth(0.7)
-    ax.tick_params(axis="y", length=0, pad=2)
-    ax.tick_params(axis="x", labelsize=xlabel_fontsize - 1, colors="#222222", length=2.5, width=0.6)
-    ax.margins(y=0.10)
+    ax.spines["left"].set_color("#b0b0b0")
+    ax.spines["left"].set_linewidth(0.7)
 
     max_abs = float(np_mod.max(np_mod.abs(display_values))) if len(display_values) else 0.0
     if max_abs > 0:
-        ax.set_xlim(-max_abs * 1.12, max_abs * 1.12)
+        ax.set_ylim(-max_abs * 1.15, max_abs * 1.32)
 
-    plt_mod.tight_layout(pad=0.35)
+    label_offset = max_abs * 0.03 if max_abs > 0 else 0.02
+    for x, value, label in zip(x_pos, display_values, display_labels):
+        if value >= 0:
+            y = value + label_offset
+            va = "bottom"
+        else:
+            y = value - label_offset
+            va = "top"
+        ax.text(
+            x,
+            y,
+            label,
+            ha="center",
+            va=va,
+            fontsize=ytick_fontsize,
+            color="#222222",
+            rotation=0,
+            clip_on=False,
+        )
+
+    ax.margins(x=0.12)
+    plt_mod.tight_layout(pad=0.28)
     saved_paths = save_current_figure(out_path, export_formats=export_formats, dpi=dpi, bbox_inches="tight")
     plt_mod.close(fig)
     return saved_paths
@@ -943,7 +966,7 @@ def _plot_waterfall_samples(
                         ytick_fontsize=11.5,
                         export_formats=("png", "svg"),
                         dpi=300,
-                        figsize=(6.6, 1.35 + 0.36 * max_display),
+                        figsize=(3.35, 1.95 + 0.62 * max_display),
                     )
                     print(
                         f"    Saved waterfall: {', '.join(waterfall_saved_paths)}; "

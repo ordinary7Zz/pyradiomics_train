@@ -63,7 +63,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from matplotlib.gridspec import GridSpec, GridSpecFromSubplotSpec
 from matplotlib.patches import FancyBboxPatch
-from PIL import Image, ImageOps
+from PIL import Image
 
 plt = None
 np = None
@@ -130,7 +130,7 @@ def _normalize_image_size(value: Any, *, key: str, default: Tuple[int, int]) -> 
     return (width, height)
 
 
-def _resize_with_padding(image: Any, target_size: Tuple[int, int], *, grayscale: bool) -> Any:
+def _resize_to_size(image: Any, target_size: Tuple[int, int], *, grayscale: bool) -> Any:
     np_mod = _require_numpy()
     resample = getattr(Image, "Resampling", Image).LANCZOS
     width, height = target_size
@@ -151,7 +151,7 @@ def _resize_with_padding(image: Any, target_size: Tuple[int, int], *, grayscale:
             arr /= max_value
 
         pil_image = Image.fromarray((arr * 255).round().astype(np_mod.uint8), mode="L")
-        resized = ImageOps.pad(pil_image, (width, height), method=resample, color=255)
+        resized = pil_image.resize((width, height), resample=resample)
         return np_mod.asarray(resized).astype(np_mod.float32) / 255.0
 
     arr = np_mod.asarray(image)
@@ -171,7 +171,7 @@ def _resize_with_padding(image: Any, target_size: Tuple[int, int], *, grayscale:
             arr = np_mod.clip(arr, 0, 255).astype(np_mod.uint8)
 
     pil_image = Image.fromarray(arr, mode="RGB")
-    resized = ImageOps.pad(pil_image, (width, height), method=resample, color=(255, 255, 255))
+    resized = pil_image.resize((width, height), resample=resample)
     return np_mod.asarray(resized)
 
 
@@ -274,7 +274,7 @@ def _load_color_image(path: str | Path, target_size: Tuple[int, int] | None = No
     plt_mod = _require_matplotlib_pyplot()
     image = plt_mod.imread(path)
     if target_size is not None:
-        image = _resize_with_padding(image, target_size, grayscale=False)
+        image = _resize_to_size(image, target_size, grayscale=False)
     return image
 
 
@@ -297,7 +297,7 @@ def _load_ultrasound_image(path: str | Path, target_size: Tuple[int, int] | None
     if max_value > 0:
         gray /= max_value
     if target_size is not None:
-        gray = _resize_with_padding(gray, target_size, grayscale=True)
+        gray = _resize_to_size(gray, target_size, grayscale=True)
     return gray
 
 
