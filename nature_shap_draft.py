@@ -82,7 +82,7 @@ DEFAULT_SAMPLE_COLS = 3
 DEFAULT_IMAGE_SIZES = {
     "ultrasound": (768, 768),
     "beeswarm": (1200, 800),
-    "waterfall": (960, 540),
+    "waterfall": (540, 960),
 }
 
 

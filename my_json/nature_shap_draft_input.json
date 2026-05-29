@@ -10,7 +10,7 @@
     "image_sizes": {
       "ultrasound": [768, 768],
       "beeswarm": [1200, 800],
-      "waterfall": [960, 540]
+      "waterfall": [540, 960]
     }
   },
   "layout": {
