@@ -195,6 +195,11 @@ scripts 目录分成两类：
 第 5 步：做 SHAP 分析（可选）
 - 运行 shap_analyze_autogluon_fixed.py 或 shap_analyze_autogluon_assets.py
 - 输出解释结果和图表
+- 如果要把已经生成的 SHAP 图和超声样本图拼成一张论文风格总图，可以再运行 nature_shap_draft.py
+  - 它本身不计算 SHAP，只负责把外部准备好的图片按版式合成
+  - 通过 --config 传入一个 JSON 配置文件，里面要显式写出每张图片的路径
+  - 配置里通常包含 figure、layout、beeswarm_panels、sample_panels 这几部分
+  - 运行后会生成 PNG / PDF 拼图文件，例如 out/nature_shap_draft.png 和 out/nature_shap_draft.pdf
 
 五、项目中最关键的文件
 1. extract_radiomics_2d.py

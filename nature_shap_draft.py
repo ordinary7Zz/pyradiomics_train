@@ -132,7 +132,7 @@ def _normalize_panel_list(
 
 def load_manifest(config_path: str | Path) -> Dict[str, Any]:
     config_file = Path(config_path).expanduser().resolve()
-    base_dir = config_file.parent
+    base_dir = config_file.parent.parent if config_file.parent.name == "my_json" else config_file.parent
     raw = _load_json(config_file)
 
     figure_cfg = raw.get("figure", {})
@@ -325,7 +325,7 @@ def _draw_sample_panel(fig, spec, panel: Dict[str, Any]) -> None:
 def build_figure(config_path: str | Path) -> Tuple[Path, Path]:
     plt_mod = _require_matplotlib_pyplot()
     manifest = load_manifest(config_path)
-    figure_cfg = manifest["figure"]
+    figure_cfg = manifest.get("figure") if isinstance(manifest.get("figure"), dict) else {}
     layout_cfg = manifest["layout"] if isinstance(manifest["layout"], dict) else {}
 
     beeswarm_panels = manifest["beeswarm_panels"]
@@ -333,8 +333,8 @@ def build_figure(config_path: str | Path) -> Tuple[Path, Path]:
     sample_cols = manifest["sample_cols"]
     sample_rows = len(sample_panels) // sample_cols
 
-    figsize = tuple(figure_cfg["figsize"])
-    height_ratios = [figure_cfg["top_ratio"]] + [figure_cfg["sample_ratio"]] * sample_rows
+    figsize = tuple(figure_cfg.get("figsize", manifest["figsize"]))
+    height_ratios = [float(figure_cfg.get("top_ratio", manifest["top_ratio"]))] + [float(figure_cfg.get("sample_ratio", manifest["sample_ratio"]))] * sample_rows
 
     fig = plt_mod.figure(figsize=figsize, constrained_layout=False)
     fig.subplots_adjust(
@@ -362,7 +362,7 @@ def build_figure(config_path: str | Path) -> Tuple[Path, Path]:
         col = idx % sample_cols
         _draw_sample_panel(fig, gs[row, col], panel)
 
-    footer_text = figure_cfg.get("footer_text")
+    footer_text = figure_cfg.get("footer_text", manifest["footer_text"])
     if footer_text:
         fig.text(
             0.5,
@@ -374,7 +374,7 @@ def build_figure(config_path: str | Path) -> Tuple[Path, Path]:
             color="#333333",
         )
 
-    figure_title = figure_cfg.get("title")
+    figure_title = figure_cfg.get("title", manifest["figure_title"])
     if figure_title:
         fig.suptitle(
             figure_title,
@@ -383,8 +383,8 @@ def build_figure(config_path: str | Path) -> Tuple[Path, Path]:
             fontweight="semibold",
         )
 
-    output_png = Path(figure_cfg["output_png"])
-    output_pdf = Path(figure_cfg["output_pdf"])
+    output_png = Path(figure_cfg.get("output_png", manifest["output_png"]))
+    output_pdf = Path(figure_cfg.get("output_pdf", manifest["output_pdf"]))
     output_png.parent.mkdir(parents=True, exist_ok=True)
     output_pdf.parent.mkdir(parents=True, exist_ok=True)
 
