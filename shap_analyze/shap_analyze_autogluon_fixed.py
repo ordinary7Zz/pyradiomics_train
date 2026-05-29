@@ -566,12 +566,12 @@ def _save_compact_shap_bar_plot(
         candidates = [
             paper_friendly_name(raw_name),
             short_feature_name(raw_name),
-            _abbreviate_feature_name(raw_name, max_len=24),
+            _abbreviate_feature_name(raw_name, max_len=22),
         ]
         for candidate in candidates:
             wrapped = textwrap.wrap(
                 candidate,
-                width=16,
+                width=14,
                 break_long_words=True,
                 break_on_hyphens=False,
             )
@@ -581,7 +581,7 @@ def _save_compact_shap_bar_plot(
                 return "\n".join(wrapped)
         wrapped = textwrap.wrap(
             candidates[-1],
-            width=16,
+            width=14,
             break_long_words=True,
             break_on_hyphens=False,
         )
@@ -595,61 +595,79 @@ def _save_compact_shap_bar_plot(
     display_labels = [_compact_label(name) for name in display_names]
 
     if figsize is None:
-        height = max(1.65, 0.38 * len(display_labels) + 0.45)
-        figsize = (4.8, height)
+        height = max(1.9, 0.40 * len(display_labels) + 0.85)
+        figsize = (4.0, height)
 
-    fig = plt_mod.figure(figsize=figsize, facecolor="white")
+    fig, ax = plt_mod.subplots(figsize=figsize, facecolor="white")
     fig.patch.set_facecolor("white")
-    gs = fig.add_gridspec(1, 2, width_ratios=[1.35, 3.9], wspace=0.03)
-    ax_label = fig.add_subplot(gs[0, 0])
-    ax_bar = fig.add_subplot(gs[0, 1])
+    ax.set_facecolor("white")
 
     y_pos = np_mod.arange(len(display_labels))
-    y_limits = (len(display_labels) - 0.5, -0.5)
+    ax.set_ylim(len(display_labels) - 0.5, -0.5)
 
-    ax_label.set_facecolor("white")
-    ax_label.set_xlim(0, 1)
-    ax_label.set_ylim(*y_limits)
-    ax_label.axis("off")
-    for y, label in zip(y_pos, display_labels):
-        ax_label.text(
-            0.98,
-            y,
-            label,
-            ha="right",
-            va="center",
-            fontsize=ytick_fontsize,
-            color="#222222",
-            linespacing=1.03,
-            clip_on=True,
-        )
-
-    ax_bar.set_facecolor("white")
     pos_color = "#c44e52"
     neg_color = "#4c72b0"
     colors = [pos_color if value >= 0 else neg_color for value in display_values]
-    ax_bar.barh(y_pos, display_values, color=colors, height=0.62, edgecolor="none", linewidth=0)
-    ax_bar.axvline(0, color="#6f6f6f", lw=0.75, zorder=0)
-    ax_bar.set_ylim(*y_limits)
-    ax_bar.set_yticks([])
-    ax_bar.tick_params(axis="y", left=False, labelleft=False)
-    ax_bar.set_xlabel("SHAP value", fontsize=xlabel_fontsize, labelpad=4, color="#222222")
-    if title:
-        ax_bar.set_title(title, fontsize=title_fontsize, pad=8, color="#111111")
-    ax_bar.grid(axis="x", linestyle="--", alpha=0.12, linewidth=0.5, color="#9a9a9a")
-    for side in ["top", "right", "left"]:
-        ax_bar.spines[side].set_visible(False)
-    ax_bar.spines["bottom"].set_color("#b0b0b0")
-    ax_bar.spines["bottom"].set_linewidth(0.7)
-    ax_bar.tick_params(axis="x", labelsize=xlabel_fontsize - 1, colors="#222222", length=2.5, width=0.6)
-    ax_bar.margins(x=0.02)
+    ax.barh(y_pos, display_values, color=colors, height=0.78, edgecolor="none", linewidth=0, zorder=2)
+    ax.axvline(0, color="#6f6f6f", lw=0.85, zorder=1)
 
     max_abs = float(np_mod.max(np_mod.abs(display_values))) if len(display_values) else 0.0
     if max_abs > 0:
-        ax_bar.set_xlim(-max_abs * 1.12, max_abs * 1.12)
+        ax.set_xlim(-max_abs * 1.06, max_abs * 1.06)
 
-    fig.subplots_adjust(left=0.02, right=0.995, top=0.92, bottom=0.12)
-    saved_paths = save_current_figure(out_path, export_formats=export_formats, dpi=dpi, bbox_inches=None)
+    from matplotlib.transforms import blended_transform_factory
+
+    label_transform = blended_transform_factory(ax.transAxes, ax.transData)
+    for y, value, label in zip(y_pos, display_values, display_labels):
+        if value < 0:
+            x_pos = 0.985
+            ha = "right"
+        else:
+            x_pos = 0.015
+            ha = "left"
+        ax.text(
+            x_pos,
+            y,
+            label,
+            transform=label_transform,
+            ha=ha,
+            va="center",
+            fontsize=ytick_fontsize,
+            color="#222222",
+            linespacing=1.02,
+            clip_on=False,
+            zorder=3,
+        )
+
+    wrapped_title = None
+    if title:
+        wrapped_title = "\n".join(
+            textwrap.wrap(
+                title,
+                width=28,
+                break_long_words=False,
+                break_on_hyphens=False,
+            )
+        )
+        if not wrapped_title:
+            wrapped_title = title
+
+    if wrapped_title:
+        ax.set_title(wrapped_title, fontsize=title_fontsize, pad=6, color="#111111")
+
+    ax.set_xlabel("SHAP value", fontsize=xlabel_fontsize, labelpad=3, color="#222222")
+    ax.set_yticks([])
+    ax.tick_params(axis="y", left=False, labelleft=False)
+    ax.grid(axis="x", linestyle="--", alpha=0.12, linewidth=0.5, color="#9a9a9a")
+    for side in ["top", "right", "left"]:
+        ax.spines[side].set_visible(False)
+    ax.spines["bottom"].set_color("#b0b0b0")
+    ax.spines["bottom"].set_linewidth(0.7)
+    ax.tick_params(axis="x", labelsize=max(7, xlabel_fontsize - 1), colors="#222222", length=2.5, width=0.6)
+    ax.margins(x=0.01, y=0.08)
+
+    fig.subplots_adjust(left=0.03, right=0.99, top=0.90, bottom=0.16)
+    saved_paths = save_current_figure(out_path, export_formats=export_formats, dpi=dpi, bbox_inches="tight")
     plt_mod.close(fig)
     return saved_paths
 
@@ -990,12 +1008,12 @@ def _plot_waterfall_samples(
                         compact_bar_file,
                         max_display,
                         title=f"{model_name} {title_tag} SHAP",
-                        title_fontsize=15.5,
-                        xlabel_fontsize=12.5,
-                        ytick_fontsize=11.5,
+                        title_fontsize=11.5,
+                        xlabel_fontsize=9.5,
+                        ytick_fontsize=9.5,
                         export_formats=("png", "svg"),
                         dpi=300,
-                        figsize=(4.8, 1.0 + 0.34 * max_display),
+                        figsize=(4.0, 1.55 + 0.38 * max_display),
                     )
                     print(
                         f"    Saved waterfall: {', '.join(waterfall_saved_paths)}; "
