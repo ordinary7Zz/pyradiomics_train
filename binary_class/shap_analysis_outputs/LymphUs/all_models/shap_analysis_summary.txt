@@ -1,0 +1,28 @@
+SHAP Analysis Summary
+==================================================
+
+Model directory: ./binary_class/outputs/models/LymphUs
+Training CSV: ./binary_class/outputs/task_csvs/LymphUs/train_LNM_CN01.csv
+Background samples: 100
+Explained samples: 180
+Main models analyzed: 1
+
+Ensemble weights:
+  NeuralNetFastAI_r143_BAG_L1: 0.7390
+  XGBoost_r98_BAG_L1: 0.1740
+  ExtraTrees_r172_BAG_L1: 0.0870
+
+Model: LightGBMXT_BAG_L1
+  Mean absolute SHAP sum: 683.2849
+  Top 10 features:
+    original_shape2D_Elongation: 0.676036
+    original_shape2D_MinorAxisLength: 0.444512
+    original_shape2D_PerimeterSurfaceRatio: 0.443163
+    original_shape2D_Sphericity: 0.392723
+    original_glrlm_GrayLevelNonUniformity: 0.242387
+    original_firstorder_Energy: 0.138033
+    original_glrlm_RunLengthNonUniformity: 0.131430
+    original_shape2D_PixelSurface: 0.104415
+    original_firstorder_Minimum: 0.086775
+    original_gldm_GrayLevelNonUniformity: 0.086542
+

@@ -1,0 +1,28 @@
+SHAP Analysis Summary
+==================================================
+
+Model directory: ./binary_class/outputs/models/FTCPTC_FangDai/FTCPTC
+Training CSV: ./binary_class/outputs/task_csvs/FTCPTC_FangDai/train_FTCPTC.csv
+Background samples: 100
+Explained samples: 532
+Main models analyzed: 1
+
+Ensemble weights:
+  CatBoost_BAG_L1: 0.6190
+  LightGBM_BAG_L1: 0.2860
+  XGBoost_BAG_L1: 0.0950
+
+Model: LightGBMXT_BAG_L1
+  Mean absolute SHAP sum: 1216.3087
+  Top 10 features:
+    original_glrlm_GrayLevelNonUniformity: 0.164805
+    original_glcm_Imc2: 0.121630
+    original_shape2D_Sphericity: 0.106215
+    original_ngtdm_Strength: 0.101347
+    original_glrlm_RunEntropy: 0.091918
+    original_glrlm_ShortRunLowGrayLevelEmphasis: 0.087746
+    original_glcm_ClusterShade: 0.069729
+    original_ngtdm_Coarseness: 0.069506
+    original_shape2D_Elongation: 0.064294
+    original_firstorder_Skewness: 0.050735
+

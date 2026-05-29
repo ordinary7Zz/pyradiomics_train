@@ -1,0 +1,27 @@
+SHAP Analysis Summary
+==================================================
+
+Model directory: ./binary_class/outputs/models/LymphUs_fake
+Training CSV: ./binary_class/outputs/task_csvs/LymphUs_fake/train_LNM_CN01.csv
+Background samples: 100
+Explained samples: 220
+Main models analyzed: 1
+
+Ensemble weights:
+  CatBoost_BAG_L1: 0.8890
+  XGBoost_BAG_L1: 0.1110
+
+Model: LightGBM_BAG_L1
+  Mean absolute SHAP sum: 5190.2175
+  Top 10 features:
+    original_shape2D_Elongation: 4.146565
+    original_shape2D_Sphericity: 2.415352
+    original_gldm_GrayLevelNonUniformity: 1.401514
+    original_shape2D_MinorAxisLength: 1.369140
+    original_firstorder_Energy: 1.261257
+    original_ngtdm_Strength: 0.800379
+    original_glrlm_LowGrayLevelRunEmphasis: 0.745835
+    original_glrlm_LongRunLowGrayLevelEmphasis: 0.637140
+    original_firstorder_Kurtosis: 0.625483
+    original_glcm_Idn: 0.609320
+

@@ -1,0 +1,30 @@
+SHAP Analysis Summary
+==================================================
+
+Model directory: ./autogluon_model/gtmask/dataset_3/autogluon_model_20260106_215755
+Training CSV: ./csv_data/train_with_gtmask/dataset_3_radiomics_2d_features.csv
+Background samples: 100
+Explained samples: 2000
+Main models analyzed: 1
+
+Ensemble weights:
+  NeuralNetFastAI_BAG_L1: 0.5240
+  LightGBMXT_BAG_L1: 0.1900
+  CatBoost_BAG_L1: 0.1430
+  LightGBM_BAG_L1: 0.0950
+  XGBoost_BAG_L1: 0.0480
+
+Model: LightGBMXT_BAG_L1
+  Mean absolute SHAP sum: 14622.7744
+  Top 10 features:
+    original_shape2D_Sphericity: 1.414641
+    original_shape2D_Elongation: 1.148496
+    original_glrlm_LongRunHighGrayLevelEmphasis: 0.243073
+    original_firstorder_Skewness: 0.232783
+    original_shape2D_PerimeterSurfaceRatio: 0.229090
+    original_firstorder_Energy: 0.194558
+    original_shape2D_Perimeter: 0.168336
+    original_glrlm_ShortRunHighGrayLevelEmphasis: 0.152933
+    original_glszm_SmallAreaHighGrayLevelEmphasis: 0.137439
+    original_ngtdm_Contrast: 0.133516
+
