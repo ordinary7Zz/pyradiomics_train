@@ -4,7 +4,10 @@ csv_data/
 
 # 核心输出/模型目录（防止被 git clean 删除）
 binary_class/outputs/models/*/models/
-shap_analysis_outputs/
+shap_analysis_outputs/*
+!shap_analysis_outputs/**/
+!shap_analysis_outputs/**/*.csv
+!shap_analysis_outputs/**/*.txt
 
 
 # 日志/缓存
