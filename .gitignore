@@ -36,3 +36,5 @@ __pycache__/
 # Python缓存
 *.pyc
 *.pyo
+
+!my_json/*
