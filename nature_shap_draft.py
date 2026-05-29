@@ -19,7 +19,12 @@ JSON 结构示意
     "output_png": "out/nature_shap_draft.png",
     "top_ratio": 1.28,
     "sample_ratio": 1.0,
-    "sample_cols": 3
+    "sample_cols": 3,
+    "image_sizes": {
+      "ultrasound": [768, 768],
+      "beeswarm": [1200, 800],
+      "waterfall": [960, 540]
+    }
   },
   "layout": {
     "left": 0.03,
@@ -58,6 +63,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from matplotlib.gridspec import GridSpec, GridSpecFromSubplotSpec
 from matplotlib.patches import FancyBboxPatch
+from PIL import Image, ImageOps
 
 plt = None
 np = None
@@ -73,6 +79,11 @@ DEFAULT_FIGSIZE = (20, 15.5)
 DEFAULT_TOP_RATIO = 1.28
 DEFAULT_SAMPLE_RATIO = 1.0
 DEFAULT_SAMPLE_COLS = 3
+DEFAULT_IMAGE_SIZES = {
+    "ultrasound": (768, 768),
+    "beeswarm": (1200, 800),
+    "waterfall": (960, 540),
+}
 
 
 def _require_numpy():
@@ -106,6 +117,62 @@ def _load_json(path: Path) -> Dict[str, Any]:
     if not isinstance(data, dict):
         raise ValueError("Configuration JSON must contain an object at the top level.")
     return data
+
+
+def _normalize_image_size(value: Any, *, key: str, default: Tuple[int, int]) -> Tuple[int, int]:
+    size = default if value in (None, "") else value
+    if not isinstance(size, (list, tuple)) or len(size) != 2:
+        raise ValueError(f"'{key}' must be a two-item list like [width, height].")
+    width = int(size[0])
+    height = int(size[1])
+    if width <= 0 or height <= 0:
+        raise ValueError(f"'{key}' must contain positive integers.")
+    return (width, height)
+
+
+def _resize_with_padding(image: Any, target_size: Tuple[int, int], *, grayscale: bool) -> Any:
+    np_mod = _require_numpy()
+    resample = getattr(Image, "Resampling", Image).LANCZOS
+    width, height = target_size
+
+    if grayscale:
+        arr = np_mod.asarray(image)
+        if arr.ndim == 3:
+            rgb = arr[..., :3].astype(np_mod.float32)
+            if rgb.max() > 1.0:
+                rgb /= 255.0
+            arr = np_mod.dot(rgb, [0.299, 0.587, 0.114]).astype(np_mod.float32)
+        else:
+            arr = arr.astype(np_mod.float32)
+
+        arr -= arr.min()
+        max_value = arr.max()
+        if max_value > 0:
+            arr /= max_value
+
+        pil_image = Image.fromarray((arr * 255).round().astype(np_mod.uint8), mode="L")
+        resized = ImageOps.pad(pil_image, (width, height), method=resample, color=255)
+        return np_mod.asarray(resized).astype(np_mod.float32) / 255.0
+
+    arr = np_mod.asarray(image)
+    if arr.ndim == 2:
+        if np_mod.issubdtype(arr.dtype, np_mod.floating):
+            arr = np_mod.clip(arr, 0.0, 1.0)
+            arr = (arr * 255).round().astype(np_mod.uint8)
+        else:
+            arr = np_mod.clip(arr, 0, 255).astype(np_mod.uint8)
+        arr = np_mod.stack([arr, arr, arr], axis=-1)
+    else:
+        arr = arr[..., :3]
+        if np_mod.issubdtype(arr.dtype, np_mod.floating):
+            arr = np_mod.clip(arr, 0.0, 1.0)
+            arr = (arr * 255).round().astype(np_mod.uint8)
+        else:
+            arr = np_mod.clip(arr, 0, 255).astype(np_mod.uint8)
+
+    pil_image = Image.fromarray(arr, mode="RGB")
+    resized = ImageOps.pad(pil_image, (width, height), method=resample, color=(255, 255, 255))
+    return np_mod.asarray(resized)
 
 
 def _normalize_panel_list(
@@ -147,6 +214,21 @@ def load_manifest(config_path: str | Path) -> Dict[str, Any]:
     if not isinstance(sample_panels, list):
         raise ValueError("'sample_panels' must be a list.")
 
+    image_sizes_cfg = figure_cfg.get("image_sizes", {})
+    if image_sizes_cfg is None:
+        image_sizes_cfg = {}
+    if not isinstance(image_sizes_cfg, dict):
+        raise ValueError("'image_sizes' must be an object when provided.")
+
+    image_sizes = {
+        name: _normalize_image_size(
+            image_sizes_cfg.get(name),
+            key=f"figure.image_sizes.{name}",
+            default=default,
+        )
+        for name, default in DEFAULT_IMAGE_SIZES.items()
+    }
+
     normalized = {
         "figure_title": figure_cfg.get("title", DEFAULT_FIGURE_TITLE),
         "footer_text": figure_cfg.get("footer_text", DEFAULT_FOOTER_TEXT),
@@ -156,6 +238,7 @@ def load_manifest(config_path: str | Path) -> Dict[str, Any]:
         "sample_ratio": float(figure_cfg.get("sample_ratio", DEFAULT_SAMPLE_RATIO)),
         "sample_cols": int(raw.get("sample_cols", figure_cfg.get("sample_cols", DEFAULT_SAMPLE_COLS))),
         "layout": raw.get("layout", {}),
+        "image_sizes": image_sizes,
         "beeswarm_panels": _normalize_panel_list(
             base_dir,
             beeswarm_panels,
@@ -187,12 +270,15 @@ def load_manifest(config_path: str | Path) -> Dict[str, Any]:
     return normalized
 
 
-def _load_color_image(path: str | Path):
+def _load_color_image(path: str | Path, target_size: Tuple[int, int] | None = None):
     plt_mod = _require_matplotlib_pyplot()
-    return plt_mod.imread(path)
+    image = plt_mod.imread(path)
+    if target_size is not None:
+        image = _resize_with_padding(image, target_size, grayscale=False)
+    return image
 
 
-def _load_ultrasound_image(path: str | Path):
+def _load_ultrasound_image(path: str | Path, target_size: Tuple[int, int] | None = None):
     np_mod = _require_numpy()
     plt_mod = _require_matplotlib_pyplot()
 
@@ -210,6 +296,8 @@ def _load_ultrasound_image(path: str | Path):
     max_value = gray.max()
     if max_value > 0:
         gray /= max_value
+    if target_size is not None:
+        gray = _resize_with_padding(gray, target_size, grayscale=True)
     return gray
 
 
@@ -245,8 +333,8 @@ def _add_framed_axes(ax) -> None:
     )
 
 
-def _draw_beeswarm_panel(ax, panel: Dict[str, Any]) -> None:
-    image = _load_color_image(panel["image_path"])
+def _draw_beeswarm_panel(ax, panel: Dict[str, Any], target_size: Tuple[int, int]) -> None:
+    image = _load_color_image(panel["image_path"], target_size)
     ax.imshow(image)
     ax.set_xticks([])
     ax.set_yticks([])
@@ -261,12 +349,18 @@ def _draw_beeswarm_panel(ax, panel: Dict[str, Any]) -> None:
     _add_framed_axes(ax)
 
 
-def _draw_sample_panel(fig, spec, panel: Dict[str, Any]) -> None:
+def _draw_sample_panel(
+    fig,
+    spec,
+    panel: Dict[str, Any],
+    ultrasound_size: Tuple[int, int],
+    waterfall_size: Tuple[int, int],
+) -> None:
     inner = GridSpecFromSubplotSpec(1, 2, subplot_spec=spec, width_ratios=[1.08, 1.0], wspace=0.05)
     ax_img = fig.add_subplot(inner[0, 0])
     ax_shap = fig.add_subplot(inner[0, 1])
 
-    ultrasound = _load_ultrasound_image(panel["ultrasound_path"])
+    ultrasound = _load_ultrasound_image(panel["ultrasound_path"], ultrasound_size)
     ax_img.imshow(ultrasound, cmap="gray", vmin=0, vmax=1)
     ax_img.set_xticks([])
     ax_img.set_yticks([])
@@ -305,7 +399,7 @@ def _draw_sample_panel(fig, spec, panel: Dict[str, Any]) -> None:
             bbox=dict(boxstyle="round,pad=0.18", facecolor="black", edgecolor="none", alpha=0.5),
         )
 
-    shap_image = _load_color_image(panel["compact_shap_path"])
+    shap_image = _load_color_image(panel["compact_shap_path"], waterfall_size)
     ax_shap.imshow(shap_image)
     ax_shap.set_xticks([])
     ax_shap.set_yticks([])
@@ -329,6 +423,7 @@ def build_figure(config_path: str | Path) -> Tuple[Path, Path]:
     beeswarm_panels = manifest["beeswarm_panels"]
     sample_panels = manifest["sample_panels"]
     sample_cols = manifest["sample_cols"]
+    image_sizes = manifest["image_sizes"]
     sample_rows = len(sample_panels) // sample_cols
 
     figsize = tuple(figure_cfg.get("figsize", manifest["figsize"]))
@@ -353,12 +448,12 @@ def build_figure(config_path: str | Path) -> Tuple[Path, Path]:
 
     for col, panel in enumerate(beeswarm_panels):
         ax = fig.add_subplot(gs[0, col])
-        _draw_beeswarm_panel(ax, panel)
+        _draw_beeswarm_panel(ax, panel, image_sizes["beeswarm"])
 
     for idx, panel in enumerate(sample_panels):
         row = 1 + idx // sample_cols
         col = idx % sample_cols
-        _draw_sample_panel(fig, gs[row, col], panel)
+        _draw_sample_panel(fig, gs[row, col], panel, image_sizes["ultrasound"], image_sizes["waterfall"])
 
     footer_text = figure_cfg.get("footer_text", manifest["footer_text"])
     if footer_text:

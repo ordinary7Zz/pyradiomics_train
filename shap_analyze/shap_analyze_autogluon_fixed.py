@@ -522,12 +522,28 @@ def _is_bag_model(model_name: str) -> bool:
     return "_BAG_" in model_name
 
 
+def _abbreviate_feature_name(feature_name: str, max_len: int = 24) -> str:
+    pretty_name = paper_friendly_name(feature_name)
+    if len(pretty_name) <= max_len:
+        return pretty_name
+
+    short_name = short_feature_name(feature_name)
+    if len(short_name) <= max_len:
+        return short_name
+
+    return pretty_name[: max(1, max_len - 1)].rstrip() + "…"
+
+
 def _save_compact_shap_bar_plot(
     shap_values,
     feature_names,
     out_path: str,
     max_display: int,
     *,
+    title: Optional[str] = None,
+    title_fontsize: float = 14.0,
+    xlabel_fontsize: float = 11.0,
+    ytick_fontsize: float = 10.0,
     export_formats=("png", "svg"),
     dpi: int = 300,
     figsize: Optional[Tuple[float, float]] = None,
@@ -546,8 +562,8 @@ def _save_compact_shap_bar_plot(
     display_names = [feature_names[i] for i in top_indices]
 
     if figsize is None:
-        height = max(2.05, 0.42 * len(display_names) + 0.45)
-        width = 3.3 if len(display_names) <= 5 else 3.8
+        height = max(1.55, 0.34 * len(display_names) + 0.22)
+        width = 5.4 if len(display_names) <= 5 else 6.2
         figsize = (width, height)
 
     fig, ax = plt_mod.subplots(figsize=figsize, facecolor="white")
@@ -559,24 +575,26 @@ def _save_compact_shap_bar_plot(
     neg_color = "#4c72b0"
     colors = [pos_color if value >= 0 else neg_color for value in display_values]
 
-    ax.barh(y_pos, display_values, color=colors, height=0.58, edgecolor="none", linewidth=0)
+    ax.barh(y_pos, display_values, color=colors, height=0.68, edgecolor="none", linewidth=0)
     ax.axvline(0, color="#6f6f6f", lw=0.75, zorder=0)
     ax.set_yticks(y_pos)
-    ax.set_yticklabels(display_names, fontsize=7.5, color="#222222")
+    ax.set_yticklabels(display_names, fontsize=ytick_fontsize, color="#222222")
     ax.invert_yaxis()
-    ax.set_xlabel("SHAP value", fontsize=8.5, labelpad=3, color="#222222")
+    ax.set_xlabel("SHAP value", fontsize=xlabel_fontsize, labelpad=4, color="#222222")
+    if title:
+        ax.set_title(title, fontsize=title_fontsize, pad=8, color="#111111")
     ax.grid(axis="x", linestyle="--", alpha=0.12, linewidth=0.5, color="#9a9a9a")
     for side in ["top", "right", "left"]:
         ax.spines[side].set_visible(False)
     ax.spines["bottom"].set_color("#b0b0b0")
     ax.spines["bottom"].set_linewidth(0.7)
     ax.tick_params(axis="y", length=0, pad=2)
-    ax.tick_params(axis="x", labelsize=7.5, colors="#222222", length=2.5, width=0.6)
-    ax.margins(y=0.08)
+    ax.tick_params(axis="x", labelsize=xlabel_fontsize - 1, colors="#222222", length=2.5, width=0.6)
+    ax.margins(y=0.10)
 
     max_abs = float(np_mod.max(np_mod.abs(display_values))) if len(display_values) else 0.0
     if max_abs > 0:
-        ax.set_xlim(-max_abs * 1.10, max_abs * 1.10)
+        ax.set_xlim(-max_abs * 1.12, max_abs * 1.12)
 
     plt_mod.tight_layout(pad=0.35)
     saved_paths = save_current_figure(out_path, export_formats=export_formats, dpi=dpi, bbox_inches="tight")
@@ -618,12 +636,12 @@ def _plot_waterfall_samples(
     # Enlarge fonts for all elements in the generated figures
     plt.rcParams.update(
         {
-            "font.size": 16,
-            "axes.titlesize": 18,
-            "axes.labelsize": 16,
-            "xtick.labelsize": 14,
-            "ytick.labelsize": 14,
-            "legend.fontsize": 14,
+            "font.size": 18,
+            "axes.titlesize": 22,
+            "axes.labelsize": 18,
+            "xtick.labelsize": 16,
+            "ytick.labelsize": 16,
+            "legend.fontsize": 16,
         }
     )
     
@@ -883,7 +901,7 @@ def _plot_waterfall_samples(
                             top_feature_values = [np.nan] * len(top_indices)
 
                     display_shap = top_shap
-                    display_feature_names = [short_feature_name(name) for name in top_feature_names]
+                    display_feature_names = [_abbreviate_feature_name(name, max_len=26) for name in top_feature_names]
 
                     compact_feature_names = [paper_friendly_name(name) for name in top_feature_names]
 
@@ -903,9 +921,11 @@ def _plot_waterfall_samples(
                         base_value,
                         waterfall_plot_file,
                         max_display,
+                        title=f"{model_name} {title_tag} SHAP",
+                        title_fontsize=20,
                         export_formats=("png", "svg"),
                         dpi=150,
-                        figsize=(12, 8),
+                        figsize=(13.0, 9.0),
                         bbox_inches="tight",
                     )
 
@@ -917,8 +937,13 @@ def _plot_waterfall_samples(
                         compact_feature_names,
                         compact_bar_file,
                         max_display,
+                        title=f"{model_name} {title_tag} SHAP",
+                        title_fontsize=15.5,
+                        xlabel_fontsize=12.5,
+                        ytick_fontsize=11.5,
                         export_formats=("png", "svg"),
                         dpi=300,
+                        figsize=(6.6, 1.35 + 0.36 * max_display),
                     )
                     print(
                         f"    Saved waterfall: {', '.join(waterfall_saved_paths)}; "

@@ -6,7 +6,12 @@
     "output_png": "binary_class/plot_out/nature_shap_draft.png",
     "top_ratio": 1.28,
     "sample_ratio": 1.0,
-    "sample_cols": 3
+    "sample_cols": 3,
+    "image_sizes": {
+      "ultrasound": [768, 768],
+      "beeswarm": [1200, 800],
+      "waterfall": [960, 540]
+    }
   },
   "layout": {
     "left": 0.03,
@@ -84,7 +89,7 @@
       "title": "FTC vs PTC",
       "image_title": "Representative worst sample",
       "image_caption": "FTCPTC / PTC",
-      "ultrasound_path": "/mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Malignant_ultrasound_images_cropped/FangDai/PTC/A_b17171011093956.png",
+      "ultrasound_path": "/mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Malignant_ultrasound_images_cropped/FangDai/FTC/B_000103587_20130527_US_1_4.png",
       "compact_shap_path": "binary_class/shap_analysis_outputs/FTCPTC_FangDai/LightGBMXT_BAG_L1_compact_shap_bar_best_1.png",
       "compact_shap_title": "Compact local SHAP bar"
     }

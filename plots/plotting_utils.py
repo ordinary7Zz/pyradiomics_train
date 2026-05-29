@@ -303,6 +303,8 @@ def save_waterfall_plot(
     out_path: str,
     max_display: int,
     *,
+    title: Optional[str] = None,
+    title_fontsize: float = 18.0,
     export_formats: Sequence[str] = ("png", "svg", "pdf"),
     dpi: int = 150,
     figsize: tuple[int, int] = (12, 8),
@@ -323,6 +325,8 @@ def save_waterfall_plot(
 
     plt_mod.figure(figsize=figsize)
     shap_mod.plots.waterfall(explanation[0], show=False, max_display=max_display)
+    if title:
+        plt_mod.gcf().suptitle(title, fontsize=title_fontsize, y=0.98)
     plt_mod.tight_layout()
     saved_paths = save_current_figure(
         out_path,
