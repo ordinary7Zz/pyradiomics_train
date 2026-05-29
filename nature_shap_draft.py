@@ -17,7 +17,6 @@ JSON 结构示意
     "footer_text": "Top row: ...",
     "figsize": [20, 15.5],
     "output_png": "out/nature_shap_draft.png",
-    "output_pdf": "out/nature_shap_draft.pdf",
     "top_ratio": 1.28,
     "sample_ratio": 1.0,
     "sample_cols": 3
@@ -153,7 +152,6 @@ def load_manifest(config_path: str | Path) -> Dict[str, Any]:
         "footer_text": figure_cfg.get("footer_text", DEFAULT_FOOTER_TEXT),
         "figsize": tuple(figure_cfg.get("figsize", DEFAULT_FIGSIZE)),
         "output_png": str(_resolve_path(base_dir, figure_cfg.get("output_png", DEFAULT_OUTPUT_PNG))),
-        "output_pdf": str(_resolve_path(base_dir, figure_cfg.get("output_pdf", DEFAULT_OUTPUT_PDF))),
         "top_ratio": float(figure_cfg.get("top_ratio", DEFAULT_TOP_RATIO)),
         "sample_ratio": float(figure_cfg.get("sample_ratio", DEFAULT_SAMPLE_RATIO)),
         "sample_cols": int(raw.get("sample_cols", figure_cfg.get("sample_cols", DEFAULT_SAMPLE_COLS))),
@@ -384,14 +382,11 @@ def build_figure(config_path: str | Path) -> Tuple[Path, Path]:
         )
 
     output_png = Path(figure_cfg.get("output_png", manifest["output_png"]))
-    output_pdf = Path(figure_cfg.get("output_pdf", manifest["output_pdf"]))
     output_png.parent.mkdir(parents=True, exist_ok=True)
-    output_pdf.parent.mkdir(parents=True, exist_ok=True)
 
     fig.savefig(output_png, dpi=600, bbox_inches="tight")
-    fig.savefig(output_pdf, dpi=600, bbox_inches="tight")
     plt_mod.close(fig)
-    return output_png, output_pdf
+    return output_png
 
 
 def parse_args() -> argparse.Namespace:
@@ -408,9 +403,8 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    png, pdf = build_figure(args.config)
+    png = build_figure(args.config)
     print(f"Saved: {png}")
-    print(f"Saved: {pdf}")
 
 
 if __name__ == "__main__":
