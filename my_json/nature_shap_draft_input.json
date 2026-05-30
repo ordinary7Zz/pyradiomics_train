@@ -5,7 +5,7 @@
     "image_sizes": {
       "ultrasound": [1200, 1200],
       "beeswarm": [2400, 1650],
-      "compact_shap_bar": [1200, 1200]
+      "compact_shap_bar": [1400, 1200]
     }
   },
   "layout": {
