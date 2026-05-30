@@ -15,8 +15,6 @@ def save_compact_shap_bar_plot(
     out_path: str,
     max_display: int,
     *,
-    title: Optional[str] = None,
-    title_fontsize: float = 14.0,
     xlabel_fontsize: float = 11.0,
     ytick_fontsize: float = 10.0,
     export_formats=("png", "svg"),
@@ -79,9 +77,6 @@ def save_compact_shap_bar_plot(
             clip_on=False,
             zorder=3,
         )
-
-    if title:
-        ax.set_title(title, fontsize=title_fontsize, pad=4, color="#111111")
 
     ax.set_xlabel("SHAP value", fontsize=xlabel_fontsize, labelpad=2, color="#222222")
     ax.set_yticks([])
@@ -399,8 +394,6 @@ def plot_waterfall_samples(
                         compact_feature_names,
                         compact_bar_file,
                         max_display,
-                        title=f"{model_name} {title_tag} SHAP",
-                        title_fontsize=10.5,
                         xlabel_fontsize=9.0,
                         ytick_fontsize=8.8,
                         export_formats=("png", "svg"),
