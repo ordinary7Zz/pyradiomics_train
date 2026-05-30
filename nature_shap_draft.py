@@ -15,24 +15,28 @@ JSON 结构示意
   "figure": {
     "title": "Nature-style draft: ...",
     "footer_text": "Top row: ...",
-    "figsize": [20, 15.5],
     "output_png": "out/nature_shap_draft.png",
-    "top_ratio": 1.28,
-    "sample_ratio": 1.0,
-    "sample_cols": 3,
     "image_sizes": {
       "ultrasound": [768, 768],
       "beeswarm": [1200, 800],
-      "waterfall": [960, 540]
+      "compact_shap_bar": [540, 768]
     }
   },
   "layout": {
-    "left": 0.03,
-    "right": 0.993,
-    "top": 0.962,
-    "bottom": 0.055,
-    "wspace": 0.10,
-    "hspace": 0.14
+    "dpi": 300,
+    "page_margin_x_px": 40,
+    "page_margin_top_px": 22,
+    "page_margin_bottom_px": 22,
+    "figure_title_band_px": 72,
+    "figure_title_gap_px": 18,
+    "footer_band_px": 52,
+    "footer_gap_px": 18,
+    "top_row_title_band_px": 56,
+    "sample_row_title_band_px": 56,
+    "col_gap_px": 28,
+    "row_gap_px": 36,
+    "section_gap_px": 44,
+    "inner_panel_gap_px": 18
   },
   "beeswarm_panels": [
     {
@@ -59,9 +63,8 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Tuple
 
-from matplotlib.gridspec import GridSpec, GridSpecFromSubplotSpec
 from matplotlib.patches import FancyBboxPatch
 from PIL import Image
 
@@ -74,16 +77,64 @@ DEFAULT_FOOTER_TEXT = (
     "paired with compact local SHAP bars."
 )
 DEFAULT_OUTPUT_PNG = Path("out") / "nature_shap_draft.png"
-DEFAULT_OUTPUT_PDF = Path("out") / "nature_shap_draft.pdf"
-DEFAULT_FIGSIZE = (20, 15.5)
-DEFAULT_TOP_RATIO = 1.28
-DEFAULT_SAMPLE_RATIO = 1.0
 DEFAULT_SAMPLE_COLS = 3
 DEFAULT_IMAGE_SIZES = {
     "ultrasound": (768, 768),
     "beeswarm": (1200, 800),
-    "waterfall": (540, 960),
+    "compact_shap_bar": (540, 768),
 }
+
+
+def _layout_int(layout_cfg: Dict[str, Any], key: str, default: int) -> int:
+    value = layout_cfg.get(key, default)
+    if value in (None, ""):
+        return default
+    return int(value)
+
+
+def _load_pixel_layout(layout_cfg: Dict[str, Any]) -> Dict[str, int]:
+    return {
+        "dpi": _layout_int(layout_cfg, "dpi", 300),
+        "page_margin_x_px": _layout_int(layout_cfg, "page_margin_x_px", 40),
+        "page_margin_top_px": _layout_int(layout_cfg, "page_margin_top_px", 22),
+        "page_margin_bottom_px": _layout_int(layout_cfg, "page_margin_bottom_px", 22),
+        "figure_title_band_px": _layout_int(layout_cfg, "figure_title_band_px", 72),
+        "figure_title_gap_px": _layout_int(layout_cfg, "figure_title_gap_px", 18),
+        "footer_band_px": _layout_int(layout_cfg, "footer_band_px", 52),
+        "footer_gap_px": _layout_int(layout_cfg, "footer_gap_px", 18),
+        "top_row_title_band_px": _layout_int(layout_cfg, "top_row_title_band_px", 56),
+        "sample_row_title_band_px": _layout_int(layout_cfg, "sample_row_title_band_px", 56),
+        "col_gap_px": _layout_int(layout_cfg, "col_gap_px", 28),
+        "row_gap_px": _layout_int(layout_cfg, "row_gap_px", 36),
+        "section_gap_px": _layout_int(layout_cfg, "section_gap_px", 44),
+        "inner_panel_gap_px": _layout_int(layout_cfg, "inner_panel_gap_px", 18),
+    }
+
+
+def _px_rect_to_fig_rect(canvas_w_px: int, canvas_h_px: int, rect_px: Tuple[float, float, float, float]) -> list[float]:
+    x_px, y_px, w_px, h_px = rect_px
+    return [
+        x_px / canvas_w_px,
+        1.0 - ((y_px + h_px) / canvas_h_px),
+        w_px / canvas_w_px,
+        h_px / canvas_h_px,
+    ]
+
+
+def _add_axes_from_px(fig, canvas_w_px: int, canvas_h_px: int, rect_px: Tuple[float, float, float, float]):
+    return fig.add_axes(_px_rect_to_fig_rect(canvas_w_px, canvas_h_px, rect_px))
+
+
+def _add_fig_text_from_px(
+    fig,
+    canvas_w_px: int,
+    canvas_h_px: int,
+    x_px: float,
+    y_px: float,
+    text: str,
+    **kwargs,
+):
+    return fig.text(x_px / canvas_w_px, y_px / canvas_h_px, text, **kwargs)
 
 
 def _require_numpy():
@@ -232,10 +283,7 @@ def load_manifest(config_path: str | Path) -> Dict[str, Any]:
     normalized = {
         "figure_title": figure_cfg.get("title", DEFAULT_FIGURE_TITLE),
         "footer_text": figure_cfg.get("footer_text", DEFAULT_FOOTER_TEXT),
-        "figsize": tuple(figure_cfg.get("figsize", DEFAULT_FIGSIZE)),
         "output_png": str(_resolve_path(base_dir, figure_cfg.get("output_png", DEFAULT_OUTPUT_PNG))),
-        "top_ratio": float(figure_cfg.get("top_ratio", DEFAULT_TOP_RATIO)),
-        "sample_ratio": float(figure_cfg.get("sample_ratio", DEFAULT_SAMPLE_RATIO)),
         "sample_cols": int(raw.get("sample_cols", figure_cfg.get("sample_cols", DEFAULT_SAMPLE_COLS))),
         "layout": raw.get("layout", {}),
         "image_sizes": image_sizes,
@@ -350,16 +398,12 @@ def _draw_beeswarm_panel(ax, panel: Dict[str, Any], target_size: Tuple[int, int]
 
 
 def _draw_sample_panel(
-    fig,
-    spec,
+    ax_img,
+    ax_shap,
     panel: Dict[str, Any],
     ultrasound_size: Tuple[int, int],
-    waterfall_size: Tuple[int, int],
+    compact_shap_bar_size: Tuple[int, int],
 ) -> None:
-    inner = GridSpecFromSubplotSpec(1, 2, subplot_spec=spec, width_ratios=[1.08, 1.0], wspace=0.05)
-    ax_img = fig.add_subplot(inner[0, 0])
-    ax_shap = fig.add_subplot(inner[0, 1])
-
     ultrasound = _load_ultrasound_image(panel["ultrasound_path"], ultrasound_size)
     ax_img.imshow(ultrasound, cmap="gray", vmin=0, vmax=1)
     ax_img.set_xticks([])
@@ -369,17 +413,7 @@ def _draw_sample_panel(
 
     image_title = panel.get("image_title") or panel.get("title") or ""
     if image_title:
-        ax_img.text(
-            0.02,
-            1.005,
-            image_title,
-            transform=ax_img.transAxes,
-            ha="left",
-            va="bottom",
-            fontsize=9,
-            color="black",
-            fontweight="semibold",
-        )
+        ax_img.set_title(image_title, pad=10, fontweight="semibold", fontsize=9)
 
     label = panel.get("panel_label") or panel.get("label")
     if label:
@@ -399,7 +433,7 @@ def _draw_sample_panel(
             bbox=dict(boxstyle="round,pad=0.18", facecolor="black", edgecolor="none", alpha=0.5),
         )
 
-    shap_image = _load_color_image(panel["compact_shap_path"], waterfall_size)
+    shap_image = _load_color_image(panel["compact_shap_path"], compact_shap_bar_size)
     ax_shap.imshow(shap_image)
     ax_shap.set_xticks([])
     ax_shap.set_yticks([])
@@ -408,17 +442,18 @@ def _draw_sample_panel(
 
     shap_title = panel.get("compact_shap_title")
     if shap_title:
-        ax_shap.set_title(shap_title, pad=10, fontweight="semibold")
+        ax_shap.set_title(shap_title, pad=10, fontweight="semibold", fontsize=9)
 
     _add_framed_axes(ax_img)
     _add_framed_axes(ax_shap)
 
 
-def build_figure(config_path: str | Path) -> Tuple[Path, Path]:
+def build_figure(config_path: str | Path) -> Path:
     plt_mod = _require_matplotlib_pyplot()
     manifest = load_manifest(config_path)
     figure_cfg = manifest.get("figure") if isinstance(manifest.get("figure"), dict) else {}
     layout_cfg = manifest["layout"] if isinstance(manifest["layout"], dict) else {}
+    pixel_layout = _load_pixel_layout(layout_cfg)
 
     beeswarm_panels = manifest["beeswarm_panels"]
     sample_panels = manifest["sample_panels"]
@@ -426,60 +461,124 @@ def build_figure(config_path: str | Path) -> Tuple[Path, Path]:
     image_sizes = manifest["image_sizes"]
     sample_rows = len(sample_panels) // sample_cols
 
-    figsize = tuple(figure_cfg.get("figsize", manifest["figsize"]))
-    height_ratios = [float(figure_cfg.get("top_ratio", manifest["top_ratio"]))] + [float(figure_cfg.get("sample_ratio", manifest["sample_ratio"]))] * sample_rows
+    beeswarm_w, beeswarm_h = image_sizes["beeswarm"]
+    ultrasound_w, ultrasound_h = image_sizes["ultrasound"]
+    shap_w, shap_h = image_sizes["compact_shap_bar"]
 
-    fig = plt_mod.figure(figsize=figsize, constrained_layout=False)
-    fig.subplots_adjust(
-        left=float(layout_cfg.get("left", 0.03)),
-        right=float(layout_cfg.get("right", 0.993)),
-        top=float(layout_cfg.get("top", 0.962)),
-        bottom=float(layout_cfg.get("bottom", 0.055)),
+    dpi = pixel_layout["dpi"]
+    page_margin_x_px = pixel_layout["page_margin_x_px"]
+    page_margin_top_px = pixel_layout["page_margin_top_px"]
+    page_margin_bottom_px = pixel_layout["page_margin_bottom_px"]
+    figure_title_band_px = pixel_layout["figure_title_band_px"]
+    figure_title_gap_px = pixel_layout["figure_title_gap_px"]
+    footer_band_px = pixel_layout["footer_band_px"]
+    footer_gap_px = pixel_layout["footer_gap_px"]
+    top_row_title_band_px = pixel_layout["top_row_title_band_px"]
+    sample_row_title_band_px = pixel_layout["sample_row_title_band_px"]
+    col_gap_px = pixel_layout["col_gap_px"]
+    row_gap_px = pixel_layout["row_gap_px"]
+    section_gap_px = pixel_layout["section_gap_px"]
+    inner_panel_gap_px = pixel_layout["inner_panel_gap_px"]
+
+    panel_content_h_px = max(ultrasound_h, shap_h)
+    sample_block_w_px = ultrasound_w + inner_panel_gap_px + shap_w
+    top_row_w_px = sample_cols * beeswarm_w + (sample_cols - 1) * col_gap_px
+    sample_row_w_px = sample_cols * sample_block_w_px + (sample_cols - 1) * col_gap_px
+    inner_w_px = max(top_row_w_px, sample_row_w_px)
+
+    top_row_cell_h_px = top_row_title_band_px + beeswarm_h
+    sample_row_cell_h_px = sample_row_title_band_px + panel_content_h_px
+
+    canvas_w_px = int(page_margin_x_px * 2 + inner_w_px)
+    canvas_h_px = int(
+        page_margin_top_px
+        + figure_title_band_px
+        + figure_title_gap_px
+        + top_row_cell_h_px
+        + section_gap_px
+        + sample_rows * sample_row_cell_h_px
+        + max(sample_rows - 1, 0) * row_gap_px
+        + footer_gap_px
+        + footer_band_px
+        + page_margin_bottom_px
     )
 
-    gs = GridSpec(
-        1 + sample_rows,
-        sample_cols,
-        figure=fig,
-        height_ratios=height_ratios,
-        wspace=float(layout_cfg.get("wspace", 0.10)),
-        hspace=float(layout_cfg.get("hspace", 0.14)),
+    fig = plt_mod.figure(
+        figsize=(canvas_w_px / dpi, canvas_h_px / dpi),
+        dpi=dpi,
+        constrained_layout=False,
+        facecolor="white",
     )
-
-    for col, panel in enumerate(beeswarm_panels):
-        ax = fig.add_subplot(gs[0, col])
-        _draw_beeswarm_panel(ax, panel, image_sizes["beeswarm"])
-
-    for idx, panel in enumerate(sample_panels):
-        row = 1 + idx // sample_cols
-        col = idx % sample_cols
-        _draw_sample_panel(fig, gs[row, col], panel, image_sizes["ultrasound"], image_sizes["waterfall"])
-
-    footer_text = figure_cfg.get("footer_text", manifest["footer_text"])
-    if footer_text:
-        fig.text(
-            0.5,
-            0.018,
-            footer_text,
-            ha="center",
-            va="bottom",
-            fontsize=9.5,
-            color="#333333",
-        )
 
     figure_title = figure_cfg.get("title", manifest["figure_title"])
     if figure_title:
-        fig.suptitle(
+        _add_fig_text_from_px(
+            fig,
+            canvas_w_px,
+            canvas_h_px,
+            canvas_w_px / 2,
+            canvas_h_px - page_margin_top_px - figure_title_band_px / 2,
             figure_title,
-            y=0.992,
+            ha="center",
+            va="center",
             fontsize=15.5,
             fontweight="semibold",
+            color="black",
+        )
+
+    top_row_x_px = page_margin_x_px + (inner_w_px - top_row_w_px) / 2
+    top_row_y_px = page_margin_top_px + figure_title_band_px + figure_title_gap_px
+    for col, panel in enumerate(beeswarm_panels):
+        cell_x_px = top_row_x_px + col * (beeswarm_w + col_gap_px)
+        ax = _add_axes_from_px(
+            fig,
+            canvas_w_px,
+            canvas_h_px,
+            (cell_x_px, top_row_y_px + top_row_title_band_px, beeswarm_w, beeswarm_h),
+        )
+        _draw_beeswarm_panel(ax, panel, image_sizes["beeswarm"])
+
+    sample_row_x_px = page_margin_x_px + (inner_w_px - sample_row_w_px) / 2
+    sample_row_top_px = top_row_y_px + top_row_cell_h_px + section_gap_px
+    for row_idx in range(sample_rows):
+        row_y_px = sample_row_top_px + row_idx * (sample_row_cell_h_px + row_gap_px)
+        row_panels = sample_panels[row_idx * sample_cols : (row_idx + 1) * sample_cols]
+        for col_idx, panel in enumerate(row_panels):
+            cell_x_px = sample_row_x_px + col_idx * (sample_block_w_px + col_gap_px)
+            content_y_px = row_y_px + sample_row_title_band_px
+            ax_img = _add_axes_from_px(
+                fig,
+                canvas_w_px,
+                canvas_h_px,
+                (cell_x_px, content_y_px, ultrasound_w, panel_content_h_px),
+            )
+            ax_shap = _add_axes_from_px(
+                fig,
+                canvas_w_px,
+                canvas_h_px,
+                (cell_x_px + ultrasound_w + inner_panel_gap_px, content_y_px, shap_w, panel_content_h_px),
+            )
+            _draw_sample_panel(ax_img, ax_shap, panel, image_sizes["ultrasound"], image_sizes["compact_shap_bar"])
+
+    footer_text = figure_cfg.get("footer_text", manifest["footer_text"])
+    if footer_text:
+        _add_fig_text_from_px(
+            fig,
+            canvas_w_px,
+            canvas_h_px,
+            canvas_w_px / 2,
+            page_margin_bottom_px + footer_band_px / 2,
+            footer_text,
+            ha="center",
+            va="center",
+            fontsize=9.5,
+            color="#333333",
         )
 
     output_png = Path(figure_cfg.get("output_png", manifest["output_png"]))
     output_png.parent.mkdir(parents=True, exist_ok=True)
 
-    fig.savefig(output_png, dpi=600, bbox_inches="tight")
+    fig.savefig(output_png, dpi=dpi, bbox_inches=None)
     plt_mod.close(fig)
     return output_png
 

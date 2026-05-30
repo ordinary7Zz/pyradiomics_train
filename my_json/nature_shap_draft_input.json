@@ -2,24 +2,28 @@
   "figure": {
     "title": "Nature-style draft: SHAP interpretation across three thyroid ultrasound binary tasks",
     "footer_text": "Top row: global SHAP beeswarm summaries. Middle and bottom rows: real ultrasound samples paired with compact local SHAP bars.",
-    "figsize": [20, 15.5],
     "output_png": "binary_class/plot_out/nature_shap_draft.png",
-    "top_ratio": 1.28,
-    "sample_ratio": 1.0,
-    "sample_cols": 3,
     "image_sizes": {
       "ultrasound": [768, 768],
       "beeswarm": [1200, 800],
-      "waterfall": [540, 768]
+      "compact_shap_bar": [540, 768]
     }
   },
   "layout": {
-    "left": 0.03,
-    "right": 0.993,
-    "top": 0.962,
-    "bottom": 0.055,
-    "wspace": 0.10,
-    "hspace": 0.01
+    "dpi": 300,
+    "page_margin_x_px": 40,
+    "page_margin_top_px": 22,
+    "page_margin_bottom_px": 22,
+    "figure_title_band_px": 72,
+    "figure_title_gap_px": 18,
+    "footer_band_px": 52,
+    "footer_gap_px": 18,
+    "top_row_title_band_px": 56,
+    "sample_row_title_band_px": 56,
+    "col_gap_px": 28,
+    "row_gap_px": 36,
+    "section_gap_px": 44,
+    "inner_panel_gap_px": 18
   },
   "beeswarm_panels": [
     {
