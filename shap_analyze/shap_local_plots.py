@@ -57,7 +57,7 @@ def save_compact_shap_bar_plot(
 
     x_label_pad = max_abs * 0.02 if max_abs > 0 else 0.02
     for y, value, label in zip(y_pos, display_values, display_labels):
-        if value < 0:
+        if value >= 0:
             x_pos = -x_label_pad
             ha = "right"
         else:
