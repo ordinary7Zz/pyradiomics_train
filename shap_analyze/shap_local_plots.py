@@ -22,8 +22,6 @@ def save_compact_shap_bar_plot(
     figsize: Optional[tuple[float, float]] = None,
 ) -> list[str]:
     import matplotlib.pyplot as plt
-    from matplotlib.transforms import blended_transform_factory
-
     shap_arr = np.asarray(shap_values).reshape(-1)
     feature_names = list(feature_names)
     if len(shap_arr) != len(feature_names):
@@ -57,19 +55,19 @@ def save_compact_shap_bar_plot(
     if max_abs > 0:
         ax.set_xlim(-max_abs * 1.32, max_abs * 1.32)
 
-    label_transform = blended_transform_factory(ax.transAxes, ax.transData)
+    x_label_pad = max_abs * 0.02 if max_abs > 0 else 0.02
     for y, value, label in zip(y_pos, display_values, display_labels):
         if value < 0:
-            x_pos = 0.985
+            x_pos = -x_label_pad
             ha = "right"
         else:
-            x_pos = 0.015
+            x_pos = x_label_pad
             ha = "left"
         ax.text(
             x_pos,
             y,
             label,
-            transform=label_transform,
+            transform=ax.transData,
             ha=ha,
             va="center",
             fontsize=ytick_fontsize,

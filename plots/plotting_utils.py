@@ -108,6 +108,19 @@ def _split_camel(text: str) -> str:
 def _rewrite_tokens(phrase: str) -> str:
     return " ".join(TOKEN_REWRITE.get(token, token) for token in phrase.split())
 
+
+def _abbreviate_tail_words(phrase: str) -> str:
+    words = phrase.split()
+    if len(words) < 3:
+        return phrase
+
+    tail_initials = "".join(word[0].upper() for word in words[2:] if word)
+    if not tail_initials:
+        return " ".join(words[:2])
+
+    return " ".join([words[0], words[1], tail_initials])
+
+
 def paper_friendly_name(col: str) -> str:
     if col in MANUAL_MAP:
         return MANUAL_MAP[col]
@@ -122,6 +135,7 @@ def paper_friendly_name(col: str) -> str:
     prefix = GROUP_PREFIX.get(group, group.upper() if group else "")
     display_name = _rewrite_tokens(_split_camel(name))
     display_name = re.sub(r"\s+", " ", display_name).strip()
+    display_name = _abbreviate_tail_words(display_name)
     result = f"{prefix}: {display_name}" if prefix else display_name
     return result
 
