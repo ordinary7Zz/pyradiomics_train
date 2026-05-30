@@ -3,9 +3,9 @@
     "title": "SHAP interpretation across three thyroid ultrasound binary tasks",
     "output_png": "binary_class/plot_out/nature_shap_draft.png",
     "image_sizes": {
-      "ultrasound": [800, 600],
-      "beeswarm": [1600, 1200],
-      "compact_shap_bar": [800, 600]
+      "ultrasound": [1600, 1800],
+      "beeswarm": [3200, 2400],
+      "compact_shap_bar": [1600, 1200]
     }
   },
   "layout": {
