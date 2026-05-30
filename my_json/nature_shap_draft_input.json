@@ -4,9 +4,9 @@
     "footer_text": "Top row: global SHAP beeswarm summaries. Middle and bottom rows: real ultrasound samples paired with compact local SHAP bars.",
     "output_png": "binary_class/plot_out/nature_shap_draft.png",
     "image_sizes": {
-      "ultrasound": [768, 768],
+      "ultrasound": [800, 600],
       "beeswarm": [1200, 800],
-      "compact_shap_bar": [540, 768]
+      "compact_shap_bar": [540, 600]
     }
   },
   "layout": {
