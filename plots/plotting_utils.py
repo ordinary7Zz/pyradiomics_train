@@ -108,33 +108,6 @@ def _split_camel(text: str) -> str:
 def _rewrite_tokens(phrase: str) -> str:
     return " ".join(TOKEN_REWRITE.get(token, token) for token in phrase.split())
 
-def _truncate_display_name(name: str, max_len: int = 28) -> str:
-    if len(name) <= max_len:
-        return name
-    abbrev = {
-        "Long run high Gray Level emphasis": "LRHGLE",
-        "Long run high intensity emphasis": "LRHGLE",
-        "Short run high Gray Level emphasis": "SRHGLE",
-        "Short run high intensity emphasis": "SRHGLE",
-        "Long run low Gray Level emphasis": "LRLGLE",
-        "Short run low Gray Level emphasis": "SRLGLE",
-        "Small area high Gray Level emphasis": "SAHGLE",
-        "Small area high intensity emphasis": "SAHGLE",
-        "Large area high Gray Level emphasis": "LAHGLE",
-        "Gray Level emphasis": "GLE",
-        "intensity emphasis": "GLE",
-        "Gray Level": "GL",
-        "non-uniformity": "NU",
-        "emphasis": "emp",
-        "Dependence non-uniformity": "DepNU",
-        "Dependence variance": "DepVar",
-    }
-    result = name
-    for long_phrase, short in abbrev.items():
-        result = result.replace(long_phrase, short)
-    return result[:max_len] if len(result) > max_len else result
-
-
 def paper_friendly_name(col: str) -> str:
     if col in MANUAL_MAP:
         return MANUAL_MAP[col]
@@ -150,7 +123,7 @@ def paper_friendly_name(col: str) -> str:
     display_name = _rewrite_tokens(_split_camel(name))
     display_name = re.sub(r"\s+", " ", display_name).strip()
     result = f"{prefix}: {display_name}" if prefix else display_name
-    return _truncate_display_name(result)
+    return result
 
 
 def short_feature_name(col: str) -> str:

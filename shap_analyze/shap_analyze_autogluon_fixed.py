@@ -28,7 +28,6 @@ from plots.plotting_utils import (
     save_beeswarm_plot,
     save_current_figure,
     save_waterfall_plot,
-    short_feature_name,
 )
 
 np = None
@@ -523,18 +522,6 @@ def _is_bag_model(model_name: str) -> bool:
     return "_BAG_" in model_name
 
 
-def _abbreviate_feature_name(feature_name: str, max_len: int = 24) -> str:
-    pretty_name = paper_friendly_name(feature_name)
-    if len(pretty_name) <= max_len:
-        return pretty_name
-
-    short_name = short_feature_name(feature_name)
-    if len(short_name) <= max_len:
-        return short_name
-
-    return pretty_name[: max(1, max_len - 1)].rstrip() + "…"
-
-
 def _save_compact_shap_bar_plot(
     shap_values,
     feature_names,
@@ -562,19 +549,7 @@ def _save_compact_shap_bar_plot(
     display_values = shap_arr[top_indices]
     display_names = [feature_names[i] for i in top_indices]
 
-    def _compact_label(raw_name: str) -> str:
-        candidates = [
-            paper_friendly_name(raw_name),
-            short_feature_name(raw_name),
-            _abbreviate_feature_name(raw_name, max_len=18),
-        ]
-        for candidate in candidates:
-            candidate = candidate.replace("\n", " ").strip()
-            if len(candidate) <= 18:
-                return candidate
-        return _abbreviate_feature_name(raw_name, max_len=18)
-
-    display_labels = [_compact_label(name) for name in display_names]
+    display_labels = [paper_friendly_name(name) for name in display_names]
 
     if figsize is None:
         height = max(2.2, 0.52 * len(display_labels) + 1.15)
@@ -952,7 +927,7 @@ def _plot_waterfall_samples(
                             top_feature_values = [np.nan] * len(top_indices)
 
                     display_shap = top_shap
-                    display_feature_names = [_abbreviate_feature_name(name, max_len=26) for name in top_feature_names]
+                    display_feature_names = [paper_friendly_name(name) for name in top_feature_names]
 
                     compact_feature_names = [paper_friendly_name(name) for name in top_feature_names]
 
@@ -1306,17 +1281,14 @@ def main() -> None:
                 )
             else:
                 print(f"  Generating SHAP beeswarm plot for: {model_name}")
-                shap_df_short = shap_df.copy()
-                shap_df_short.columns = [
-                    short_feature_name(col) for col in shap_df_short.columns
-                ]
                 beeswarm_max_display = max(1, int(args.top_features))
                 beeswarm_path = os.path.join(output_dir, f"{model_name}_beeswarm.png")
                 saved_paths = save_beeswarm_plot(
                     shap_values,
-                    shap_df_short,
+                    shap_df,
                     beeswarm_path,
                     beeswarm_max_display,
+                    feature_name_formatter=paper_friendly_name,
                     export_formats=("png", "svg", "pdf"),
                     dpi=150,
                     figsize=(10, 8),
