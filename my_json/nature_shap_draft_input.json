@@ -1,11 +1,10 @@
 {
   "figure": {
-    "title": "Nature-style draft: SHAP interpretation across three thyroid ultrasound binary tasks",
-    "footer_text": "Top row: global SHAP beeswarm summaries. Middle and bottom rows: real ultrasound samples paired with compact local SHAP bars.",
+    "title": "SHAP interpretation across three thyroid ultrasound binary tasks",
     "output_png": "binary_class/plot_out/nature_shap_draft.png",
     "image_sizes": {
       "ultrasound": [800, 800],
-      "beeswarm": [1200, 800],
+      "beeswarm": [1600, 1200],
       "compact_shap_bar": [800, 800]
     }
   },
@@ -28,12 +27,12 @@
   "beeswarm_panels": [
     {
       "panel_label": "a",
-      "title": "Benign vs malignant",
+      "title": "Benign vs Malignant",
       "image_path": "binary_class/shap_analysis_outputs/BM_dataset3/BM/LightGBM_BAG_L1_beeswarm.png"
     },
     {
       "panel_label": "b",
-      "title": "Lymph node metastasis",
+      "title": "Lymph Node Metastasis",
       "image_path": "binary_class/shap_analysis_outputs/LymphUs_fake/LNM_CN01/LightGBM_BAG_L1_beeswarm.png"
     },
     {
@@ -45,57 +44,57 @@
   "sample_panels": [
     {
       "panel_label": "d",
-      "title": "Benign vs malignant",
-      "image_title": "Representative best sample",
+      "title": "Benign vs Malignant",
+      "image_title": "Benign Sample",
       "image_caption": "Malignancy_Cls / Benign",
       "ultrasound_path": "/mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Superimposed_multitask/dataset_3/train/images/ThyroidXL_train_00003284_1F60E8DF_3.png",
       "compact_shap_path": "binary_class/shap_analysis_outputs/BM_dataset3/BM/LightGBM_BAG_L1_compact_shap_bar_best_1.png",
-      "compact_shap_title": "Compact local SHAP bar"
+      "compact_shap_title": ""
     },
     {
       "panel_label": "e",
-      "title": "Lymph node metastasis",
-      "image_title": "Representative best sample",
+      "title": "Lymph Node Metastasis",
+      "image_title": "Benign Sample",
       "image_caption": "LNM_CN01 / Benign",
       "ultrasound_path": "/mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis_fake/images/62_Benign_center1.png",
       "compact_shap_path": "binary_class/shap_analysis_outputs/LymphUs_fake/LNM_CN01/LightGBM_BAG_L1_compact_shap_bar_best_1.png",
-      "compact_shap_title": "Compact local SHAP bar"
+      "compact_shap_title": ""
     },
     {
       "panel_label": "f",
       "title": "FTC vs PTC",
-      "image_title": "Representative best sample",
+      "image_title": "PTC Sample",
       "image_caption": "FTCPTC / PTC",
       "ultrasound_path": "/mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Malignant_ultrasound_images_cropped/FangDai/PTC/A_b17171011093956.png",
       "compact_shap_path": "binary_class/shap_analysis_outputs/FTCPTC_FangDai/LightGBMXT_BAG_L1_compact_shap_bar_best_5.png",
-      "compact_shap_title": "Compact local SHAP bar"
+      "compact_shap_title": ""
     },
     {
       "panel_label": "g",
-      "title": "Benign vs malignant",
-      "image_title": "Representative worst sample",
+      "title": "Benign vs Malignant",
+      "image_title": "Malignant Sample",
       "image_caption": "Malignancy_Cls / Malignant",
       "ultrasound_path": "/mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Superimposed_multitask/dataset_3/train/images/ThyroidXL_train_00003712_49F762EF_1.png",
       "compact_shap_path": "binary_class/shap_analysis_outputs/BM_dataset3/BM/LightGBM_BAG_L1_compact_shap_bar_best_7.png",
-      "compact_shap_title": "Compact local SHAP bar"
+      "compact_shap_title": ""
     },
     {
       "panel_label": "h",
-      "title": "Lymph node metastasis",
-      "image_title": "Representative worst sample",
+      "title": "Lymph Node Metastasis",
+      "image_title": "Malignant Sample",
       "image_caption": "LNM_CN01 / Malignant",
       "ultrasound_path": "/mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis_fake/images/48_Malignant_center1.png",
       "compact_shap_path": "binary_class/shap_analysis_outputs/LymphUs_fake/LNM_CN01/LightGBM_BAG_L1_compact_shap_bar_best_6.png",
-      "compact_shap_title": "Compact local SHAP bar"
+      "compact_shap_title": ""
     },
     {
       "panel_label": "i",
       "title": "FTC vs PTC",
-      "image_title": "Representative worst sample",
+      "image_title": "PTC Sample",
       "image_caption": "FTCPTC / PTC",
       "ultrasound_path": "/mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Malignant_ultrasound_images_cropped/FangDai/FTC/B_000103587_20130527_US_1_4.png",
       "compact_shap_path": "binary_class/shap_analysis_outputs/FTCPTC_FangDai/LightGBMXT_BAG_L1_compact_shap_bar_best_1.png",
-      "compact_shap_title": "Compact local SHAP bar"
+      "compact_shap_title": ""
     }
   ]
 }
