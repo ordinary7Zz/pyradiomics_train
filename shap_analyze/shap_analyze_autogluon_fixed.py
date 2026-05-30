@@ -929,7 +929,7 @@ def _plot_waterfall_samples(
                     display_shap = top_shap
                     display_feature_names = [paper_friendly_name(name) for name in top_feature_names]
 
-                    compact_feature_names = [paper_friendly_name(name) for name in top_feature_names]
+                    compact_feature_names = list(top_feature_names)
 
                     display_feature_values = np.array(top_feature_values)
                     if display_feature_values.ndim > 1:
