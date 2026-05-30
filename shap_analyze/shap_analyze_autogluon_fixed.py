@@ -311,7 +311,7 @@ def main() -> None:
                     feature_name_formatter=paper_friendly_name,
                     export_formats=("png", "svg", "pdf"),
                     dpi=150,
-                    figsize=(10, 8),
+                    figsize=(12, 9),
                     plot_type="dot",
                 )
                 print(f"  Saved beeswarm plot to: {', '.join(saved_paths)}")

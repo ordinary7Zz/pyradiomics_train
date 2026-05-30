@@ -248,7 +248,7 @@ def save_beeswarm_plot(
     save_feature_name_map: bool = False,
     export_formats: Sequence[str] = ("png", "svg", "pdf"),
     dpi: int = 300,
-    figsize: tuple[int, int] = (12, 8),
+    figsize: tuple[int, int] = (12, 9),
     plot_type: str = "dot",
 ) -> list[str]:
     np_mod = _require_numpy()
@@ -268,17 +268,27 @@ def save_beeswarm_plot(
                 .to_csv(f"{base}_feature_name_map.csv")
             )
 
-    plt_mod.figure(figsize=figsize)
-    shap_mod.summary_plot(
-        np_mod.asarray(shap_values),
-        x_use,
-        plot_type=plot_type,
-        max_display=max_display,
-        show=False,
-    )
-    plt_mod.tight_layout()
-    saved_paths = save_current_figure(out_path, export_formats=export_formats, dpi=dpi)
-    plt_mod.close()
+    with plt_mod.rc_context(
+        {
+            "font.size": 15,
+            "axes.titlesize": 19,
+            "axes.labelsize": 17,
+            "xtick.labelsize": 14,
+            "ytick.labelsize": 14,
+            "legend.fontsize": 14,
+        }
+    ):
+        plt_mod.figure(figsize=figsize)
+        shap_mod.summary_plot(
+            np_mod.asarray(shap_values),
+            x_use,
+            plot_type=plot_type,
+            max_display=max_display,
+            show=False,
+        )
+        plt_mod.tight_layout()
+        saved_paths = save_current_figure(out_path, export_formats=export_formats, dpi=dpi)
+        plt_mod.close()
     return saved_paths
 
 

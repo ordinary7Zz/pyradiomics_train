@@ -117,12 +117,12 @@ def plot_waterfall_samples(
 
     plt.rcParams.update(
         {
-            "font.size": 18,
-            "axes.titlesize": 22,
-            "axes.labelsize": 18,
-            "xtick.labelsize": 16,
-            "ytick.labelsize": 16,
-            "legend.fontsize": 16,
+            "font.size": 20,
+            "axes.titlesize": 24,
+            "axes.labelsize": 20,
+            "xtick.labelsize": 18,
+            "ytick.labelsize": 18,
+            "legend.fontsize": 18,
         }
     )
 
@@ -377,7 +377,7 @@ def plot_waterfall_samples(
                         waterfall_plot_file,
                         max_display,
                         title=f"{model_name} {title_tag} SHAP",
-                        title_fontsize=20,
+                        title_fontsize=24,
                         export_formats=("png", "svg"),
                         dpi=150,
                         figsize=(13.0, 9.0),
@@ -392,8 +392,8 @@ def plot_waterfall_samples(
                         compact_feature_names,
                         compact_bar_file,
                         max_display,
-                        xlabel_fontsize=9.0,
-                        ytick_fontsize=8.8,
+                        xlabel_fontsize=12.0,
+                        ytick_fontsize=11.0,
                         export_formats=("png", "svg"),
                         dpi=300,
                         figsize=(3.15, 3.15 * 4 / 3),
