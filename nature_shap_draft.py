@@ -390,7 +390,7 @@ def _draw_beeswarm_panel(ax, panel: Dict[str, Any], target_size: Tuple[int, int]
         ax.spines[side].set_visible(False)
     title = panel.get("title")
     if title:
-        ax.set_title(title, pad=4, fontweight="semibold")
+        ax.set_title(title, pad=10, fontweight="semibold")
     label = panel.get("panel_label") or panel.get("label")
     if label:
         add_panel_label(ax, label)
@@ -471,8 +471,6 @@ def build_figure(config_path: str | Path) -> Path:
     page_margin_bottom_px = pixel_layout["page_margin_bottom_px"]
     figure_title_band_px = pixel_layout["figure_title_band_px"]
     figure_title_gap_px = pixel_layout["figure_title_gap_px"]
-    footer_band_px = pixel_layout["footer_band_px"]
-    footer_gap_px = pixel_layout["footer_gap_px"]
     top_row_title_band_px = pixel_layout["top_row_title_band_px"]
     sample_row_title_band_px = pixel_layout["sample_row_title_band_px"]
     col_gap_px = pixel_layout["col_gap_px"]
@@ -499,8 +497,6 @@ def build_figure(config_path: str | Path) -> Path:
         + section_gap_px
         + sample_rows * sample_row_cell_h_px
         + max(sample_rows - 1, 0) * row_gap_px
-        + footer_gap_px
-        + footer_band_px
         + page_margin_bottom_px
     )
 
@@ -560,21 +556,6 @@ def build_figure(config_path: str | Path) -> Path:
                 (cell_x_px + ultrasound_w + inner_panel_gap_px, content_y_px, shap_w, panel_content_h_px),
             )
             _draw_sample_panel(ax_img, ax_shap, panel, image_sizes["ultrasound"], image_sizes["compact_shap_bar"])
-
-    footer_text = figure_cfg.get("footer_text", manifest["footer_text"])
-    if footer_text:
-        _add_fig_text_from_px(
-            fig,
-            canvas_w_px,
-            canvas_h_px,
-            canvas_w_px / 2,
-            page_margin_bottom_px + footer_band_px / 2,
-            footer_text,
-            ha="center",
-            va="center",
-            fontsize=9.5,
-            color="#333333",
-        )
 
     output_png = Path(figure_cfg.get("output_png", manifest["output_png"]))
     output_png.parent.mkdir(parents=True, exist_ok=True)
