@@ -994,7 +994,7 @@ def _plot_waterfall_samples(
                         ytick_fontsize=8.8,
                         export_formats=("png", "svg"),
                         dpi=300,
-                        figsize=(3.15, 2.2 + 0.52 * max_display),
+                        figsize=(3.15, 3.15 * 4 / 3),
                     )
                     print(
                         f"    Saved waterfall: {', '.join(waterfall_saved_paths)}; "

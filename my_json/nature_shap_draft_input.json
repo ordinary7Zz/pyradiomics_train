@@ -4,9 +4,9 @@
     "footer_text": "Top row: global SHAP beeswarm summaries. Middle and bottom rows: real ultrasound samples paired with compact local SHAP bars.",
     "output_png": "binary_class/plot_out/nature_shap_draft.png",
     "image_sizes": {
-      "ultrasound": [800, 600],
+      "ultrasound": [800, 800],
       "beeswarm": [1200, 800],
-      "compact_shap_bar": [540, 600]
+      "compact_shap_bar": [600, 800]
     }
   },
   "layout": {
@@ -21,8 +21,8 @@
     "top_row_title_band_px": 56,
     "sample_row_title_band_px": 56,
     "col_gap_px": 28,
-    "row_gap_px": 36,
-    "section_gap_px": 44,
+    "row_gap_px": 60,
+    "section_gap_px": 72,
     "inner_panel_gap_px": 18
   },
   "beeswarm_panels": [

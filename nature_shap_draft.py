@@ -482,9 +482,10 @@ def build_figure(config_path: str | Path) -> Path:
 
     panel_content_h_px = max(ultrasound_h, shap_h)
     sample_block_w_px = ultrasound_w + inner_panel_gap_px + shap_w
-    top_row_w_px = sample_cols * beeswarm_w + (sample_cols - 1) * col_gap_px
+    top_row_min_w_px = sample_cols * beeswarm_w
     sample_row_w_px = sample_cols * sample_block_w_px + (sample_cols - 1) * col_gap_px
-    inner_w_px = max(top_row_w_px, sample_row_w_px)
+    inner_w_px = max(top_row_min_w_px, sample_row_w_px)
+    top_row_gap_px = 0 if sample_cols <= 1 else (inner_w_px - top_row_min_w_px) / (sample_cols - 1)
 
     top_row_cell_h_px = top_row_title_band_px + beeswarm_h
     sample_row_cell_h_px = sample_row_title_band_px + panel_content_h_px
@@ -526,10 +527,10 @@ def build_figure(config_path: str | Path) -> Path:
             color="black",
         )
 
-    top_row_x_px = page_margin_x_px + (inner_w_px - top_row_w_px) / 2
+    top_row_x_px = page_margin_x_px
     top_row_y_px = page_margin_top_px + figure_title_band_px + figure_title_gap_px
     for col, panel in enumerate(beeswarm_panels):
-        cell_x_px = top_row_x_px + col * (beeswarm_w + col_gap_px)
+        cell_x_px = top_row_x_px + col * (beeswarm_w + top_row_gap_px)
         ax = _add_axes_from_px(
             fig,
             canvas_w_px,
