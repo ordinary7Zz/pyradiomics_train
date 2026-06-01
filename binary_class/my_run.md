@@ -87,38 +87,38 @@ python binary_class/run_all_binary_tasks.py \
 - 若标签是病人级、样本却是图像级，建议先构建病人级 CSV，再复用现有训练脚本做病人级训练与评估
 - 建议重点关注 test_results.csv 中的 AUPRC、Recall、F1、Specificity，而不只看 AUROC
 
-LymphUs数据集：
+LymphUs数据集 - predmask：
 python binary_class/extract_base_radiomics.py \
   --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis_fake/images \
-  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis_fake/masks \
+  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/pred_masks/Lymph_Node_Metastasis_fake/Lymph_images \
   --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis_fake/LymphUs_train_labels.json \
-  --output_csv binary_class/outputs/base_features/LymphUs_fake/train_base_features.csv \
+  --output_csv binary_class/outputs/base_features/LymphUs_fake_predmask/train_base_features.csv \
   --skip_fail
 
 python binary_class/extract_base_radiomics.py \
   --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis_fake/images \
-  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis_fake/masks \
+  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/pred_masks/Lymph_Node_Metastasis_fake/Lymph_images \
   --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis_fake/LymphUs_test_labels.json \
-  --output_csv binary_class/outputs/base_features/LymphUs_fake/test_base_features.csv \
+  --output_csv binary_class/outputs/base_features/LymphUs_fake_predmask/test_base_features.csv \
   --skip_fail
 
 python binary_class/build_binary_task_csv.py \
-  --base_features_csv binary_class/outputs/base_features/LymphUs_fake/train_base_features.csv \
+  --base_features_csv binary_class/outputs/base_features/LymphUs_fake_predmask/train_base_features.csv \
   --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis_fake/LymphUs_train_labels.json \
   --task LNM_CN01 \
-  --output_csv binary_class/outputs/task_csvs/LymphUs_fake/train_LNM_CN01.csv
+  --output_csv binary_class/outputs/task_csvs/LymphUs_fake_predmask/train_LNM_CN01.csv
 
 python binary_class/build_binary_task_csv.py \
-  --base_features_csv binary_class/outputs/base_features/LymphUs_fake/test_base_features.csv \
+  --base_features_csv binary_class/outputs/base_features/LymphUs_fake_predmask/test_base_features.csv \
   --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis_fake/LymphUs_test_labels.json \
   --task LNM_CN01 \
-  --output_csv binary_class/outputs/task_csvs/LymphUs_fake/test_LNM_CN01.csv
+  --output_csv binary_class/outputs/task_csvs/LymphUs_fake_predmask/test_LNM_CN01.csv
 
 python -m binary_class.train_binary_task_resampled \
-  --train_csv binary_class/outputs/task_csvs/LymphUs_fake/train_LNM_CN01.csv \
-  --test_csv binary_class/outputs/task_csvs/LymphUs_fake/test_LNM_CN01.csv \
+  --train_csv binary_class/outputs/task_csvs/LymphUs_fake_predmask/train_LNM_CN01.csv \
+  --test_csv binary_class/outputs/task_csvs/LymphUs_fake_predmask/test_LNM_CN01.csv \
   --test_names LymphUs_test \
-  --save_dir binary_class/outputs/models/LymphUs_fake \
+  --save_dir binary_class/outputs/models/LymphUs_fake_predmask \
   --eval_metric roc_auc \
   --model_set tree_full \
   --time_limit 3600 \
@@ -216,38 +216,38 @@ python -m binary_class.train_binary_task_resampled \
   --ci_seed 42 \
   --seed 42
 
-良恶性二分类数据集：
+良恶性数据集 - predmask
 python binary_class/extract_base_radiomics.py \
   --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Superimposed_multitask/dataset_3/train/images \
-  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Superimposed_multitask/dataset_3/train/masks \
+  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/pred_masks/cls_dataset_3/dataset_3_train \
   --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Superimposed_multitask/dataset_3/train/dataset_3_train_label.json \
-  --output_csv binary_class/outputs/base_features/BM_dataset3/train_base_features.csv \
+  --output_csv binary_class/outputs/base_features/BM_dataset3_predmask/train_base_features.csv \
   --skip_fail
 
 python binary_class/extract_base_radiomics.py \
   --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Superimposed_multitask/dataset_3/test/images \
-  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Superimposed_multitask/dataset_3/test/masks \
+  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/pred_masks/cls_dataset_3/dataset_3_test \
   --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Superimposed_multitask/dataset_3/test/dataset_3_test_label.json \
-  --output_csv binary_class/outputs/base_features/BM_dataset3/test_base_features.csv \
+  --output_csv binary_class/outputs/base_features/BM_dataset3_predmask/test_base_features.csv \
   --skip_fail
 
 python binary_class/build_binary_task_csv.py \
-  --base_features_csv binary_class/outputs/base_features/BM_dataset3/train_base_features.csv \
+  --base_features_csv binary_class/outputs/base_features/BM_dataset3_predmask/train_base_features.csv \
   --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Superimposed_multitask/dataset_3/train/dataset_3_train_label.json \
   --task malignancy \
-  --output_csv binary_class/outputs/task_csvs/BM_dataset3/train_BM.csv
+  --output_csv binary_class/outputs/task_csvs/BM_dataset3_predmask/train_BM.csv
 
 python binary_class/build_binary_task_csv.py \
-  --base_features_csv binary_class/outputs/base_features/BM_dataset3/test_base_features.csv \
+  --base_features_csv binary_class/outputs/base_features/BM_dataset3_predmask/test_base_features.csv \
   --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Superimposed_multitask/dataset_3/test/dataset_3_test_label.json \
   --task malignancy \
-  --output_csv binary_class/outputs/task_csvs/BM_dataset3/test_BM.csv
+  --output_csv binary_class/outputs/task_csvs/BM_dataset3_predmask/test_BM.csv
 
 python -m binary_class.train_binary_task_resampled \
-  --train_csv binary_class/outputs/task_csvs/BM_dataset3/train_BM.csv \
-  --test_csv binary_class/outputs/task_csvs/BM_dataset3/test_BM.csv \
+  --train_csv binary_class/outputs/task_csvs/BM_dataset3_predmask/train_BM.csv \
+  --test_csv binary_class/outputs/task_csvs/BM_dataset3_predmask/test_BM.csv \
   --test_names BM_test \
-  --save_dir binary_class/outputs/models/BM_dataset3/BM \
+  --save_dir binary_class/outputs/models/BM_dataset3_predmask/BM \
   --eval_metric roc_auc \
   --model_set tree_full \
   --time_limit 3600 \

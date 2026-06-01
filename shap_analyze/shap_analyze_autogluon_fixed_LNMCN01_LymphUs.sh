@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-MODEL_DIR="./binary_class/outputs/models/LymphUs_fake"
-TRAIN_CSV="./binary_class/outputs/task_csvs/LymphUs_fake/train_LNM_CN01.csv"
-OUTPUT_DIR="./binary_class/shap_analysis_outputs/LymphUs_fake/LNM_CN01"
+MODEL_DIR="./binary_class/outputs/models/LymphUs_fake_predmask"
+TRAIN_CSV="./binary_class/outputs/task_csvs/LymphUs_fake_predmask/train_LNM_CN01.csv"
+OUTPUT_DIR="./binary_class/shap_analysis_outputs/LymphUs_fake_predmask/LNM_CN01"
 
 python shap_analyze/shap_analyze_autogluon_fixed.py \
   --model_dir "$MODEL_DIR" \

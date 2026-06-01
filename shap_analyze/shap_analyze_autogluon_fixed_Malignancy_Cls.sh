@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-MODEL_DIR="./binary_class/outputs/models/BM_dataset3/BM"
-TRAIN_CSV="./binary_class/outputs/task_csvs/BM_dataset3/train_BM.csv"
-OUTPUT_DIR="./binary_class/shap_analysis_outputs/BM_dataset3/BM"
+MODEL_DIR="./binary_class/outputs/models/BM_dataset3_predmask/BM"
+TRAIN_CSV="./binary_class/outputs/task_csvs/BM_dataset3_predmask/train_BM.csv"
+OUTPUT_DIR="./binary_class/shap_analysis_outputs/BM_dataset3_predmask/BM"
 
 python shap_analyze/shap_analyze_autogluon_fixed.py \
   --model_dir "$MODEL_DIR" \
