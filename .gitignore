@@ -8,7 +8,7 @@ shap_analysis_outputs/*
 !shap_analysis_outputs/**/
 !shap_analysis_outputs/**/*.csv
 !shap_analysis_outputs/**/*.txt
-!binary_class/single_image/*
+
 
 # 日志/缓存
 test_logs/
@@ -39,3 +39,4 @@ __pycache__/
 
 !my_json/*
 !binary_class/plot_out/*
+!binary_class/single_image/*

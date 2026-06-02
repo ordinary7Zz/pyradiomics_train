@@ -67,6 +67,7 @@ def _basenameish(value: object) -> str:
 
 def _safe_token(value: object) -> str:
     token = _basenameish(value)
+    token = os.path.splitext(token)[0]
     token = re.sub(r"[^0-9A-Za-z._-]+", "_", token)
     return token.strip("._") or "sample"
 

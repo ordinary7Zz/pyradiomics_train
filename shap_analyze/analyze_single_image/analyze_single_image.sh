@@ -14,5 +14,5 @@ python shap_analyze/analyze_single_image/analyze_single_image.py \
   --output_dir "$OUTPUT_DIR" \
   --main_models LightGBM_BAG_L1 \
   --background_samples 100 \
-  --top_features 10 \
+  --top_features 5 \
   --skip_neural_net
