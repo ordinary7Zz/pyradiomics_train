@@ -1,0 +1,28 @@
+SHAP Analysis Summary
+==================================================
+
+Model directory: ./binary_class/outputs/models/BM_dataset3_predmask/BM
+Training CSV: ./binary_class/outputs/task_csvs/BM_dataset3_predmask/test_BM.csv
+Background samples: 100
+Explained samples: 1999
+Main models analyzed: 1
+
+Ensemble weights:
+  CatBoost_BAG_L1: 0.5290
+  LightGBM_BAG_L1: 0.2940
+  XGBoost_BAG_L1: 0.1760
+
+Model: LightGBM_BAG_L1
+  Mean absolute SHAP sum: 7928.1590
+  Top 10 features:
+    original_shape2D_Sphericity: 0.918659
+    original_shape2D_Elongation: 0.666581
+    original_glrlm_LongRunHighGrayLevelEmphasis: 0.173909
+    original_firstorder_Skewness: 0.161738
+    original_firstorder_Median: 0.111975
+    original_glcm_Correlation: 0.102535
+    original_glrlm_RunLengthNonUniformityNormalized: 0.100713
+    original_glcm_ClusterShade: 0.096343
+    original_glrlm_ShortRunLowGrayLevelEmphasis: 0.085466
+    original_firstorder_10Percentile: 0.076451
+
