@@ -8,7 +8,7 @@ shap_analysis_outputs/*
 !shap_analysis_outputs/**/
 !shap_analysis_outputs/**/*.csv
 !shap_analysis_outputs/**/*.txt
-
+!shap_analysis_outputs/single/*
 
 # 日志/缓存
 test_logs/
