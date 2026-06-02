@@ -1,0 +1,28 @@
+SHAP Analysis Summary
+==================================================
+
+Model directory: ./binary_class/outputs/models/LymphUs_fake_predmask
+Training CSV: ./binary_class/outputs/task_csvs/LymphUs_fake_predmask/train_LNM_CN01.csv
+Background samples: 100
+Explained samples: 220
+Main models analyzed: 1
+
+Ensemble weights:
+  CatBoost_BAG_L1: 0.6670
+  XGBoost_BAG_L1: 0.1900
+  LightGBM_BAG_L1: 0.1430
+
+Model: LightGBM_BAG_L1
+  Mean absolute SHAP sum: 583.2277
+  Top 10 features:
+    original_firstorder_Maximum: 0.766446
+    original_firstorder_Energy: 0.182192
+    original_shape2D_Elongation: 0.139917
+    original_glcm_ClusterShade: 0.127635
+    original_glcm_ClusterTendency: 0.121679
+    original_shape2D_PerimeterSurfaceRatio: 0.120540
+    original_shape2D_Perimeter: 0.118148
+    original_shape2D_MinorAxisLength: 0.096816
+    original_ngtdm_Contrast: 0.090916
+    original_shape2D_PixelSurface: 0.087931
+
