@@ -40,3 +40,4 @@ __pycache__/
 !my_json/*
 !binary_class/plot_out/*
 !binary_class/single_image/*
+!binary_class/single_image/**/*
