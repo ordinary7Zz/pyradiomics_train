@@ -2,8 +2,8 @@
 set -euo pipefail
 
 MODEL_DIR="./binary_class/outputs/models/BM_dataset3/BM"
-TRAIN_CSV="./binary_class/outputs/task_csvs/BM_dataset3/train_BM.csv"
-TARGET_FILENAME="ThyroidXL_train_00003284_1F60E8DF_3.png"
+TRAIN_CSV="./binary_class/outputs/task_csvs/BM_dataset3/test_BM.csv"
+TARGET_FILENAME="TN3K_test_0010.jpg"
 OUTPUT_DIR="./binary_class/single_image"
 
 python shap_analyze/analyze_single_image/analyze_single_image.py \
