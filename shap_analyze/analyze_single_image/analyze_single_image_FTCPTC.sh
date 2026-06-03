@@ -3,7 +3,7 @@ set -euo pipefail
 
 MODEL_DIR="./binary_class/outputs/models/FTCPTC_FangDai/FTCPTC"
 TRAIN_CSV="./binary_class/outputs/task_csvs/FTCPTC_FangDai/train_FTCPTC.csv"
-TARGET_FILENAME="ThyroidXL_train_00002730_C9690598_1.png"
+TARGET_FILENAME="FangDai/FTC/B_000103587_20130527_US_1_4.png"
 OUTPUT_DIR="./binary_class/single_image/FTCPTC"
 
 python shap_analyze/analyze_single_image/analyze_single_image.py \
