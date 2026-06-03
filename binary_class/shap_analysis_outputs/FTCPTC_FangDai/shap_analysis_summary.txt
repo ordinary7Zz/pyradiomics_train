@@ -3,7 +3,7 @@ SHAP Analysis Summary
 
 Model directory: ./binary_class/outputs/models/FTCPTC_FangDai/FTCPTC
 Training CSV: ./binary_class/outputs/task_csvs/FTCPTC_FangDai/train_FTCPTC.csv
-Background samples: 100
+Background samples: 500
 Explained samples: 532
 Main models analyzed: 1
 
