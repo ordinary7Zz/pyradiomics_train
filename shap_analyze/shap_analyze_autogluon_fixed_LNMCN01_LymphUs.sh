@@ -10,7 +10,7 @@ python shap_analyze/shap_analyze_autogluon_fixed.py \
   --output_dir "$OUTPUT_DIR" \
   --main_models LightGBM_BAG_L1 \
   --plot_beeswarm_for LightGBM_BAG_L1 \
-  --background_samples 100 \
+  --background_samples 500 \
   --explain_samples 2000 \
   --skip_neural_net \
   --plot_waterfall \
