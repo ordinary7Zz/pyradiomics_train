@@ -3,7 +3,7 @@ SHAP Analysis Summary
 
 Model directory: ./binary_class/outputs/models/LymphUs_fake_predmask
 Training CSV: ./binary_class/outputs/task_csvs/LymphUs_fake_predmask/train_LNM_CN01.csv
-Background samples: 100
+Background samples: 220
 Explained samples: 220
 Main models analyzed: 1
 
