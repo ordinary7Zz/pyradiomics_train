@@ -184,6 +184,10 @@ def main() -> None:
 
     output_dir = args.output_dir or os.path.join(args.model_dir, "shap_analysis_single_image")
     os.makedirs(output_dir, exist_ok=True)
+    waterfall_dir = os.path.join(output_dir, "waterfall")
+    compact_bar_dir = os.path.join(output_dir, "compact_shap_bar")
+    os.makedirs(waterfall_dir, exist_ok=True)
+    os.makedirs(compact_bar_dir, exist_ok=True)
     print(f"Output directory: {output_dir}")
 
     max_display = max(1, int(args.top_features))
@@ -220,7 +224,8 @@ def main() -> None:
 
         base_value = float(np.mean(_positive_probability(model_proba)))
 
-        waterfall_path = os.path.join(output_dir, f"{model_name}_waterfall_{target_tag}.png")
+        waterfall_path = os.path.join(waterfall_dir, f"{model_name}_waterfall_{target_tag}.png")
+        waterfall_textless_path = os.path.join(waterfall_dir, f"{model_name}_waterfall_{target_tag}_textless.svg")
         waterfall_saved = save_waterfall_plot(
             top_shap,
             top_feature_values,
@@ -228,6 +233,7 @@ def main() -> None:
             base_value,
             waterfall_path,
             max_display,
+            textless_svg_path=waterfall_textless_path,
             title=f"{model_name} SHAP",
             title_fontsize=24,
             export_formats=("png", "svg"),
@@ -236,12 +242,16 @@ def main() -> None:
             bbox_inches="tight",
         )
 
-        compact_bar_path = os.path.join(output_dir, f"{model_name}_compact_shap_bar_{target_tag}.png")
+        compact_bar_path = os.path.join(compact_bar_dir, f"{model_name}_compact_shap_bar_{target_tag}.png")
+        compact_bar_textless_path = os.path.join(
+            compact_bar_dir, f"{model_name}_compact_shap_bar_{target_tag}_textless.svg"
+        )
         compact_bar_saved = save_compact_shap_bar_plot(
             top_shap,
             top_feature_names,
             compact_bar_path,
             max_display,
+            textless_svg_path=compact_bar_textless_path,
             xlabel_fontsize=12.0,
             ytick_fontsize=11.0,
             export_formats=("png", "svg"),

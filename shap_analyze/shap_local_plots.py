@@ -65,6 +65,25 @@ def save_compact_shap_bar_plot(
             ax.barh(y_pos, display_values, color=colors, height=0.88, edgecolor="none", linewidth=0, zorder=2)
             ax.axvline(0, color="#6f6f6f", lw=0.85, zorder=1)
 
+            from matplotlib.patches import Patch
+
+            legend_handles = [
+                Patch(facecolor=pos_color, edgecolor="none", label="Positive SHAP"),
+                Patch(facecolor=neg_color, edgecolor="none", label="Negative SHAP"),
+            ]
+            ax.legend(
+                handles=legend_handles,
+                loc="upper center",
+                bbox_to_anchor=(0.5, 1.03),
+                ncol=2,
+                frameon=False,
+                handlelength=1.0,
+                handletextpad=0.45,
+                columnspacing=1.3,
+                borderaxespad=0.0,
+                fontsize=max(7, xlabel_fontsize - 3),
+            )
+
             max_abs = float(np.max(np.abs(display_values))) if len(display_values) else 0.0
             if max_abs > 0:
                 ax.set_xlim(-max_abs * 1.32, max_abs * 1.32)
