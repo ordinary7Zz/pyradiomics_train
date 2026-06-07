@@ -270,6 +270,8 @@ def save_beeswarm_plot(
 
     with plt_mod.rc_context(
         {
+            "font.family": "Arial",
+            "font.sans-serif": ["Arial"],
             "font.size": 15,
             "axes.titlesize": 19,
             "axes.labelsize": 17,
@@ -320,16 +322,28 @@ def save_waterfall_plot(
         feature_names=list(feature_names),
     )
 
-    plt_mod.figure(figsize=figsize)
-    shap_mod.plots.waterfall(explanation[0], show=False, max_display=max_display)
-    if title:
-        plt_mod.gcf().suptitle(title, fontsize=title_fontsize, y=0.98)
-    plt_mod.tight_layout()
-    saved_paths = save_current_figure(
-        out_path,
-        export_formats=export_formats,
-        dpi=dpi,
-        bbox_inches=bbox_inches,
-    )
-    plt_mod.close()
-    return saved_paths
+    with plt_mod.rc_context(
+        {
+            "font.family": "Arial",
+            "font.sans-serif": ["Arial"],
+            "font.size": 20,
+            "axes.titlesize": 24,
+            "axes.labelsize": 20,
+            "xtick.labelsize": 18,
+            "ytick.labelsize": 18,
+            "legend.fontsize": 18,
+        }
+    ):
+        plt_mod.figure(figsize=figsize)
+        shap_mod.plots.waterfall(explanation[0], show=False, max_display=max_display)
+        if title:
+            plt_mod.gcf().suptitle(title, fontsize=title_fontsize, y=0.98)
+        plt_mod.tight_layout()
+        saved_paths = save_current_figure(
+            out_path,
+            export_formats=export_formats,
+            dpi=dpi,
+            bbox_inches=bbox_inches,
+        )
+        plt_mod.close()
+        return saved_paths
