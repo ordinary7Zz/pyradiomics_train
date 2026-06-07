@@ -6,7 +6,7 @@ from typing import Any, List, Optional
 import numpy as np
 import pandas as pd
 
-from plots.plotting_utils import paper_friendly_name, save_current_figure, save_waterfall_plot
+from plots.plotting_utils import paper_friendly_name, save_current_figure, save_waterfall_plot, hide_text_in_figure
 
 
 def save_compact_shap_bar_plot(
@@ -15,6 +15,7 @@ def save_compact_shap_bar_plot(
     out_path: str,
     max_display: int,
     *,
+    textless_svg_path: Optional[str] = None,
     xlabel_fontsize: float = 11.0,
     ytick_fontsize: float = 10.0,
     export_formats=("png", "svg"),
@@ -38,86 +39,97 @@ def save_compact_shap_bar_plot(
         height = max(2.2, 0.52 * len(display_labels) + 1.15)
         figsize = (3.15, height)
 
-    with plt.rc_context(
-        {
-            "font.family": "sans-serif",
-            "font.sans-serif": ["Arial", "Microsoft YaHei", "SimHei", "DejaVu Sans"],
-            "font.size": 11,
-            "axes.titlesize": 11,
-            "axes.labelsize": 11,
-            "xtick.labelsize": 10,
-            "ytick.labelsize": 10,
-            "legend.fontsize": 10,
-        }
-    ):
-        fig, ax = plt.subplots(figsize=figsize, facecolor="white")
-        fig.patch.set_facecolor("white")
-        ax.set_facecolor("white")
+    def _render(show_text: bool, target_path: str, formats) -> list[str]:
+        with plt.rc_context(
+            {
+                "font.family": "sans-serif",
+                "font.sans-serif": ["Arial", "Microsoft YaHei", "SimHei", "DejaVu Sans"],
+                "font.size": 11,
+                "axes.titlesize": 11,
+                "axes.labelsize": 11,
+                "xtick.labelsize": 10,
+                "ytick.labelsize": 10,
+                "legend.fontsize": 10,
+            }
+        ):
+            fig, ax = plt.subplots(figsize=figsize, facecolor="white")
+            fig.patch.set_facecolor("white")
+            ax.set_facecolor("white")
 
-        y_pos = np.arange(len(display_labels))
-        ax.set_ylim(len(display_labels) - 0.5, -0.5)
+            y_pos = np.arange(len(display_labels))
+            ax.set_ylim(len(display_labels) - 0.5, -0.5)
 
-        pos_color = "#c44e52"
-        neg_color = "#4c72b0"
-        colors = [pos_color if value >= 0 else neg_color for value in display_values]
-        ax.barh(y_pos, display_values, color=colors, height=0.88, edgecolor="none", linewidth=0, zorder=2)
-        ax.axvline(0, color="#6f6f6f", lw=0.85, zorder=1)
+            pos_color = "#c44e52"
+            neg_color = "#4c72b0"
+            colors = [pos_color if value >= 0 else neg_color for value in display_values]
+            ax.barh(y_pos, display_values, color=colors, height=0.88, edgecolor="none", linewidth=0, zorder=2)
+            ax.axvline(0, color="#6f6f6f", lw=0.85, zorder=1)
 
-        max_abs = float(np.max(np.abs(display_values))) if len(display_values) else 0.0
-        if max_abs > 0:
-            ax.set_xlim(-max_abs * 1.32, max_abs * 1.32)
-            x_min, x_max = ax.get_xlim()
-            locator = ax.xaxis.get_major_locator()
-            locator_ticks = np.asarray(locator.tick_values(x_min, x_max), dtype=float)
-            locator_ticks = locator_ticks[np.isfinite(locator_ticks)]
-            if len(locator_ticks) >= 2:
-                step = float(np.median(np.diff(locator_ticks)))
-                if step > 0:
-                    eps = step * 1e-9
-                    tick_min = np.floor((x_min + eps) / step) * step
-                    tick_max = np.ceil((x_max - eps) / step) * step
-                    tick_count = int(round((tick_max - tick_min) / step)) + 1
-                    x_ticks = tick_min + np.arange(tick_count) * step
-                    x_ticks = np.round(x_ticks, 10)
-                    ax.set_xticks(x_ticks)
-                    ax.set_xlim(float(x_ticks[0]), float(x_ticks[-1]))
+            max_abs = float(np.max(np.abs(display_values))) if len(display_values) else 0.0
+            if max_abs > 0:
+                ax.set_xlim(-max_abs * 1.32, max_abs * 1.32)
+                x_min, x_max = ax.get_xlim()
+                locator = ax.xaxis.get_major_locator()
+                locator_ticks = np.asarray(locator.tick_values(x_min, x_max), dtype=float)
+                locator_ticks = locator_ticks[np.isfinite(locator_ticks)]
+                if len(locator_ticks) >= 2:
+                    step = float(np.median(np.diff(locator_ticks)))
+                    if step > 0:
+                        eps = step * 1e-9
+                        tick_min = np.floor((x_min + eps) / step) * step
+                        tick_max = np.ceil((x_max - eps) / step) * step
+                        tick_count = int(round((tick_max - tick_min) / step)) + 1
+                        x_ticks = tick_min + np.arange(tick_count) * step
+                        x_ticks = np.round(x_ticks, 10)
+                        ax.set_xticks(x_ticks)
+                        ax.set_xlim(float(x_ticks[0]), float(x_ticks[-1]))
 
-        x_label_pad = max_abs * 0.02 if max_abs > 0 else 0.02
-        for y, value, label in zip(y_pos, display_values, display_labels):
-            if value >= 0:
-                x_pos = -x_label_pad
-                ha = "right"
+            if show_text:
+                x_label_pad = max_abs * 0.02 if max_abs > 0 else 0.02
+                for y, value, label in zip(y_pos, display_values, display_labels):
+                    if value >= 0:
+                        x_pos = -x_label_pad
+                        ha = "right"
+                    else:
+                        x_pos = x_label_pad
+                        ha = "left"
+                    ax.text(
+                        x_pos,
+                        y,
+                        label,
+                        transform=ax.transData,
+                        ha=ha,
+                        va="center",
+                        fontsize=ytick_fontsize,
+                        color="#222222",
+                        clip_on=False,
+                        zorder=3,
+                    )
+
+                ax.set_xlabel("SHAP value", fontsize=xlabel_fontsize, labelpad=2, color="#222222")
             else:
-                x_pos = x_label_pad
-                ha = "left"
-            ax.text(
-                x_pos,
-                y,
-                label,
-                transform=ax.transData,
-                ha=ha,
-                va="center",
-                fontsize=ytick_fontsize,
-                color="#222222",
-                clip_on=False,
-                zorder=3,
-            )
+                hide_text_in_figure(fig)
 
-        ax.set_xlabel("SHAP value", fontsize=xlabel_fontsize, labelpad=2, color="#222222")
-        ax.set_yticks([])
-        ax.tick_params(axis="y", left=False, labelleft=False)
-        ax.grid(axis="x", linestyle="--", alpha=0.12, linewidth=0.5, color="#9a9a9a")
-        for side in ["top", "right", "left"]:
-            ax.spines[side].set_visible(False)
-        ax.spines["bottom"].set_color("#b0b0b0")
-        ax.spines["bottom"].set_linewidth(0.7)
-        ax.tick_params(axis="x", labelsize=max(7, xlabel_fontsize - 1), colors="#222222", length=2.5, width=0.6)
-        ax.margins(x=0.01, y=0.03)
+            ax.set_yticks([])
+            ax.tick_params(axis="y", left=False, labelleft=False)
+            ax.grid(axis="x", linestyle="--", alpha=0.12, linewidth=0.5, color="#9a9a9a")
+            for side in ["top", "right", "left"]:
+                ax.spines[side].set_visible(False)
+            ax.spines["bottom"].set_color("#b0b0b0")
+            ax.spines["bottom"].set_linewidth(0.7)
+            ax.tick_params(axis="x", labelsize=max(7, xlabel_fontsize - 1), colors="#222222", length=2.5, width=0.6)
+            ax.margins(x=0.01, y=0.03)
 
-        fig.subplots_adjust(left=0.04, right=0.99, top=0.86, bottom=0.22)
-        saved_paths = save_current_figure(out_path, export_formats=export_formats, dpi=dpi, bbox_inches="tight")
-        plt.close(fig)
-        return saved_paths
+            fig.subplots_adjust(left=0.04, right=0.99, top=0.86, bottom=0.22)
+            saved_paths = save_current_figure(target_path, export_formats=formats, dpi=dpi, bbox_inches="tight")
+            plt.close(fig)
+            return saved_paths
+
+    saved_paths: list[str] = []
+    if textless_svg_path is not None:
+        saved_paths.extend(_render(False, textless_svg_path, ("svg",)))
+    saved_paths.extend(_render(True, out_path, export_formats))
+    return saved_paths
 
 
 def plot_waterfall_samples(
@@ -154,6 +166,11 @@ def plot_waterfall_samples(
             "legend.fontsize": 18,
         }
     )
+
+    waterfall_dir = os.path.join(output_dir, "waterfall")
+    compact_bar_dir = os.path.join(output_dir, "compact_shap_bar")
+    os.makedirs(waterfall_dir, exist_ok=True)
+    os.makedirs(compact_bar_dir, exist_ok=True)
 
     print(f"  Getting predictions for {len(X_explain)} samples...")
     y_pred = predictor.predict(X_explain)
@@ -396,7 +413,10 @@ def plot_waterfall_samples(
                     base_value = float(np.mean(proba_positive))
 
                     waterfall_plot_file = os.path.join(
-                        output_dir, f"{model_name}_waterfall_{filename_tag}_{i+1}.png"
+                        waterfall_dir, f"{model_name}_waterfall_{filename_tag}_{i+1}.png"
+                    )
+                    waterfall_textless_path = os.path.join(
+                        waterfall_dir, f"{model_name}_waterfall_{filename_tag}_{i+1}_textless.svg"
                     )
                     waterfall_saved_paths = save_waterfall_plot(
                         display_shap,
@@ -405,6 +425,7 @@ def plot_waterfall_samples(
                         base_value,
                         waterfall_plot_file,
                         max_display,
+                        textless_svg_path=waterfall_textless_path,
                         title=f"{model_name} {title_tag} SHAP",
                         title_fontsize=24,
                         export_formats=("png", "svg"),
@@ -414,13 +435,17 @@ def plot_waterfall_samples(
                     )
 
                     compact_bar_file = os.path.join(
-                        output_dir, f"{model_name}_compact_shap_bar_{filename_tag}_{i+1}.png"
+                        compact_bar_dir, f"{model_name}_compact_shap_bar_{filename_tag}_{i+1}.png"
+                    )
+                    compact_bar_textless_path = os.path.join(
+                        compact_bar_dir, f"{model_name}_compact_shap_bar_{filename_tag}_{i+1}_textless.svg"
                     )
                     compact_bar_saved_paths = save_compact_shap_bar_plot(
                         display_shap,
                         compact_feature_names,
                         compact_bar_file,
                         max_display,
+                        textless_svg_path=compact_bar_textless_path,
                         xlabel_fontsize=12.0,
                         ytick_fontsize=11.0,
                         export_formats=("png", "svg"),

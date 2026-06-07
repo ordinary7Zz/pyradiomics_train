@@ -247,6 +247,13 @@ def main() -> None:
     else:
         output_dir = args.output_dir
     os.makedirs(output_dir, exist_ok=True)
+    plot_dirs = {
+        "beeswarm": os.path.join(output_dir, "beeswarm"),
+        "waterfall": os.path.join(output_dir, "waterfall"),
+        "compact_shap_bar": os.path.join(output_dir, "compact_shap_bar"),
+    }
+    for plot_dir in plot_dirs.values():
+        os.makedirs(plot_dir, exist_ok=True)
     print(f"\nOutput directory: {output_dir}")
 
     results = {}
@@ -302,14 +309,17 @@ def main() -> None:
             else:
                 print(f"  Generating SHAP beeswarm plot for: {model_name}")
                 beeswarm_max_display = max(1, int(args.top_features))
-                beeswarm_path = os.path.join(output_dir, f"{model_name}_beeswarm.png")
+                beeswarm_dir = plot_dirs["beeswarm"]
+                beeswarm_path = os.path.join(beeswarm_dir, f"{model_name}_beeswarm.png")
+                beeswarm_textless_path = os.path.join(beeswarm_dir, f"{model_name}_beeswarm_textless.svg")
                 saved_paths = save_beeswarm_plot(
                     shap_values,
                     shap_df,
                     beeswarm_path,
                     beeswarm_max_display,
+                    textless_svg_path=beeswarm_textless_path,
                     feature_name_formatter=paper_friendly_name,
-                    export_formats=("png", "svg", "pdf"),
+                    export_formats=("png", "svg"),
                     dpi=150,
                     figsize=(12, 9),
                     plot_type="dot",

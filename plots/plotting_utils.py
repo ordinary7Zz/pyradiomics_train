@@ -238,6 +238,13 @@ def save_current_figure(
     return saved_paths
 
 
+def hide_text_in_figure(fig) -> None:
+    from matplotlib.text import Text
+
+    for text in fig.findobj(match=Text):
+        text.set_visible(False)
+
+
 def save_beeswarm_plot(
     shap_values,
     x_features: pd.DataFrame,
@@ -246,6 +253,7 @@ def save_beeswarm_plot(
     *,
     feature_name_formatter: Optional[Callable[[str], str]] = None,
     save_feature_name_map: bool = False,
+    textless_svg_path: Optional[str] = None,
     export_formats: Sequence[str] = ("png", "svg", "pdf"),
     dpi: int = 300,
     figsize: tuple[int, int] = (12, 9),
@@ -268,29 +276,38 @@ def save_beeswarm_plot(
                 .to_csv(f"{base}_feature_name_map.csv")
             )
 
-    with plt_mod.rc_context(
-        {
-            "font.family": "sans-serif",
-            "font.sans-serif": ["Arial", "Microsoft YaHei", "SimHei", "DejaVu Sans"],
-            "font.size": 15,
-            "axes.titlesize": 19,
-            "axes.labelsize": 17,
-            "xtick.labelsize": 14,
-            "ytick.labelsize": 14,
-            "legend.fontsize": 14,
-        }
-    ):
-        plt_mod.figure(figsize=figsize)
-        shap_mod.summary_plot(
-            np_mod.asarray(shap_values),
-            x_use,
-            plot_type=plot_type,
-            max_display=max_display,
-            show=False,
-        )
-        plt_mod.tight_layout()
-        saved_paths = save_current_figure(out_path, export_formats=export_formats, dpi=dpi)
-        plt_mod.close()
+    def _render(show_text: bool, target_path: str, formats: Sequence[str]) -> list[str]:
+        with plt_mod.rc_context(
+            {
+                "font.family": "sans-serif",
+                "font.sans-serif": ["Arial", "Microsoft YaHei", "SimHei", "DejaVu Sans"],
+                "font.size": 15,
+                "axes.titlesize": 19,
+                "axes.labelsize": 17,
+                "xtick.labelsize": 14,
+                "ytick.labelsize": 14,
+                "legend.fontsize": 14,
+            }
+        ):
+            plt_mod.figure(figsize=figsize)
+            shap_mod.summary_plot(
+                np_mod.asarray(shap_values),
+                x_use,
+                plot_type=plot_type,
+                max_display=max_display,
+                show=False,
+            )
+            if not show_text:
+                hide_text_in_figure(plt_mod.gcf())
+            plt_mod.tight_layout()
+            saved_paths = save_current_figure(target_path, export_formats=formats, dpi=dpi)
+            plt_mod.close()
+            return saved_paths
+
+    saved_paths: list[str] = []
+    if textless_svg_path is not None:
+        saved_paths.extend(_render(False, textless_svg_path, ("svg",)))
+    saved_paths.extend(_render(True, out_path, export_formats))
     return saved_paths
 
 
@@ -302,6 +319,7 @@ def save_waterfall_plot(
     out_path: str,
     max_display: int,
     *,
+    textless_svg_path: Optional[str] = None,
     title: Optional[str] = None,
     title_fontsize: float = 18.0,
     export_formats: Sequence[str] = ("png", "svg", "pdf"),
@@ -322,28 +340,37 @@ def save_waterfall_plot(
         feature_names=list(feature_names),
     )
 
-    with plt_mod.rc_context(
-        {
-            "font.family": "sans-serif",
-            "font.sans-serif": ["Arial", "Microsoft YaHei", "SimHei", "DejaVu Sans"],
-            "font.size": 20,
-            "axes.titlesize": 24,
-            "axes.labelsize": 20,
-            "xtick.labelsize": 18,
-            "ytick.labelsize": 18,
-            "legend.fontsize": 18,
-        }
-    ):
-        plt_mod.figure(figsize=figsize)
-        shap_mod.plots.waterfall(explanation[0], show=False, max_display=max_display)
-        if title:
-            plt_mod.gcf().suptitle(title, fontsize=title_fontsize, y=0.98)
-        plt_mod.tight_layout()
-        saved_paths = save_current_figure(
-            out_path,
-            export_formats=export_formats,
-            dpi=dpi,
-            bbox_inches=bbox_inches,
-        )
-        plt_mod.close()
-        return saved_paths
+    def _render(show_text: bool, target_path: str, formats: Sequence[str], plot_title: Optional[str]) -> list[str]:
+        with plt_mod.rc_context(
+            {
+                "font.family": "sans-serif",
+                "font.sans-serif": ["Arial", "Microsoft YaHei", "SimHei", "DejaVu Sans"],
+                "font.size": 20,
+                "axes.titlesize": 24,
+                "axes.labelsize": 20,
+                "xtick.labelsize": 18,
+                "ytick.labelsize": 18,
+                "legend.fontsize": 18,
+            }
+        ):
+            plt_mod.figure(figsize=figsize)
+            shap_mod.plots.waterfall(explanation[0], show=False, max_display=max_display)
+            if plot_title:
+                plt_mod.gcf().suptitle(plot_title, fontsize=title_fontsize, y=0.98)
+            if not show_text:
+                hide_text_in_figure(plt_mod.gcf())
+            plt_mod.tight_layout()
+            saved_paths = save_current_figure(
+                target_path,
+                export_formats=formats,
+                dpi=dpi,
+                bbox_inches=bbox_inches,
+            )
+            plt_mod.close()
+            return saved_paths
+
+    saved_paths: list[str] = []
+    if textless_svg_path is not None:
+        saved_paths.extend(_render(False, textless_svg_path, ("svg",), None))
+    saved_paths.extend(_render(True, out_path, export_formats, title))
+    return saved_paths
