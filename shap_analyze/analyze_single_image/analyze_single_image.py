@@ -53,6 +53,12 @@ def parse_args() -> argparse.Namespace:
         help="Skip neural network models (NeuralNetFastAI) in SHAP analysis",
     )
     parser.add_argument(
+        "--top_features",
+        type=int,
+        default=5,
+        help="Number of top features shown in waterfall and compact SHAP bar plots (default: 5)",
+    )
+    parser.add_argument(
         "--task_name",
         type=str,
         default=None,

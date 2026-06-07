@@ -148,7 +148,7 @@ def parse_args() -> argparse.Namespace:
         "--top_features",
         type=int,
         default=5,
-        help="Number of top features shown in beeswarm and waterfall plots (default: 5)",
+        help="Number of top features shown in beeswarm plots (default: 5)",
     )
     p.add_argument(
         "--task_name",
@@ -431,7 +431,6 @@ def main() -> None:
             args.label,
             sample_ids_explain,
             args.sample_filename,
-            args.top_features,
             task_name=args.task_name,
             positive_class_name=args.positive_class_name,
             negative_class_name=args.negative_class_name,
