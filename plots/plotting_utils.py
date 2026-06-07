@@ -270,8 +270,8 @@ def save_beeswarm_plot(
 
     with plt_mod.rc_context(
         {
-            "font.family": "Arial",
-            "font.sans-serif": ["Arial"],
+            "font.family": "sans-serif",
+            "font.sans-serif": ["Arial", "Microsoft YaHei", "SimHei", "DejaVu Sans"],
             "font.size": 15,
             "axes.titlesize": 19,
             "axes.labelsize": 17,
@@ -324,8 +324,8 @@ def save_waterfall_plot(
 
     with plt_mod.rc_context(
         {
-            "font.family": "Arial",
-            "font.sans-serif": ["Arial"],
+            "font.family": "sans-serif",
+            "font.sans-serif": ["Arial", "Microsoft YaHei", "SimHei", "DejaVu Sans"],
             "font.size": 20,
             "axes.titlesize": 24,
             "axes.labelsize": 20,

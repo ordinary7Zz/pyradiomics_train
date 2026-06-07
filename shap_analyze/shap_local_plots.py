@@ -40,8 +40,8 @@ def save_compact_shap_bar_plot(
 
     with plt.rc_context(
         {
-            "font.family": "Arial",
-            "font.sans-serif": ["Arial"],
+            "font.family": "sans-serif",
+            "font.sans-serif": ["Arial", "Microsoft YaHei", "SimHei", "DejaVu Sans"],
             "font.size": 11,
             "axes.titlesize": 11,
             "axes.labelsize": 11,
@@ -144,8 +144,8 @@ def plot_waterfall_samples(
 
     plt.rcParams.update(
         {
-            "font.family": "Arial",
-            "font.sans-serif": ["Arial"],
+            "font.family": "sans-serif",
+            "font.sans-serif": ["Arial", "Microsoft YaHei", "SimHei", "DejaVu Sans"],
             "font.size": 20,
             "axes.titlesize": 24,
             "axes.labelsize": 20,
