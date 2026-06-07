@@ -66,6 +66,21 @@ def save_compact_shap_bar_plot(
         max_abs = float(np.max(np.abs(display_values))) if len(display_values) else 0.0
         if max_abs > 0:
             ax.set_xlim(-max_abs * 1.32, max_abs * 1.32)
+            x_min, x_max = ax.get_xlim()
+            locator = ax.xaxis.get_major_locator()
+            locator_ticks = np.asarray(locator.tick_values(x_min, x_max), dtype=float)
+            locator_ticks = locator_ticks[np.isfinite(locator_ticks)]
+            if len(locator_ticks) >= 2:
+                step = float(np.median(np.diff(locator_ticks)))
+                if step > 0:
+                    eps = step * 1e-9
+                    tick_min = np.floor((x_min + eps) / step) * step
+                    tick_max = np.ceil((x_max - eps) / step) * step
+                    tick_count = int(round((tick_max - tick_min) / step)) + 1
+                    x_ticks = tick_min + np.arange(tick_count) * step
+                    x_ticks = np.round(x_ticks, 10)
+                    ax.set_xticks(x_ticks)
+                    ax.set_xlim(float(x_ticks[0]), float(x_ticks[-1]))
 
         x_label_pad = max_abs * 0.02 if max_abs > 0 else 0.02
         for y, value, label in zip(y_pos, display_values, display_labels):
