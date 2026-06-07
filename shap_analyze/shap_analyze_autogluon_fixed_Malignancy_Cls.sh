@@ -8,6 +8,10 @@ python shap_analyze/shap_analyze_autogluon_fixed.py \
   --train_csv "$TRAIN_CSV" \
   --label "label" \
   --output_dir "$OUTPUT_DIR" \
+  --task_name "Benign vs Malignant" \
+  --positive_class_name "malignant" \
+  --negative_class_name "benign" \
+  --output_space "raw score" \
   --main_models LightGBM_BAG_L1 \
   --plot_beeswarm_for LightGBM_BAG_L1 \
   --background_samples 100 \

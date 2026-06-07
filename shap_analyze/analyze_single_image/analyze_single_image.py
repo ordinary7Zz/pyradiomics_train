@@ -53,10 +53,28 @@ def parse_args() -> argparse.Namespace:
         help="Skip neural network models (NeuralNetFastAI) in SHAP analysis",
     )
     parser.add_argument(
-        "--top_features",
-        type=int,
-        default=10,
-        help="Number of top features to show in each plot",
+        "--task_name",
+        type=str,
+        default=None,
+        help="Task name shown in the compact SHAP legend title",
+    )
+    parser.add_argument(
+        "--positive_class_name",
+        type=str,
+        default=None,
+        help="Human-readable name for label 1, shown in the compact SHAP x-axis label and legend",
+    )
+    parser.add_argument(
+        "--negative_class_name",
+        type=str,
+        default=None,
+        help="Human-readable name for label 0, shown in the compact SHAP legend",
+    )
+    parser.add_argument(
+        "--output_space",
+        type=str,
+        default=None,
+        help="SHAP output space used for labeling, e.g. probability or raw score",
     )
     return parser.parse_args()
 
@@ -251,6 +269,10 @@ def main() -> None:
             top_feature_names,
             compact_bar_path,
             max_display,
+            task_name=args.task_name,
+            positive_class_name=args.positive_class_name,
+            negative_class_name=args.negative_class_name,
+            output_space=args.output_space,
             textless_svg_path=compact_bar_textless_path,
             xlabel_fontsize=12.0,
             ytick_fontsize=11.0,

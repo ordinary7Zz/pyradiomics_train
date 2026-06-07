@@ -8,6 +8,10 @@ python shap_analyze/shap_analyze_autogluon_fixed.py \
   --train_csv "$TRAIN_CSV" \
   --label "label" \
   --output_dir "$OUTPUT_DIR" \
+  --task_name "FTC vs PTC" \
+  --positive_class_name "FTC" \
+  --negative_class_name "PTC" \
+  --output_space "raw score" \
   --main_models LightGBMXT_BAG_L1 \
   --plot_beeswarm_for LightGBMXT_BAG_L1 \
   --background_samples 500 \

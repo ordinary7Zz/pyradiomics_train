@@ -8,6 +8,10 @@ python shap_analyze/shap_analyze_autogluon_fixed.py \
   --train_csv "$TRAIN_CSV" \
   --label "label" \
   --output_dir "$OUTPUT_DIR" \
+  --task_name "Lymph Node Metastasis" \
+  --positive_class_name "LNM-positive" \
+  --negative_class_name "LNM-negative" \
+  --output_space "raw score" \
   --main_models LightGBM_BAG_L1 \
   --plot_beeswarm_for LightGBM_BAG_L1 \
   --background_samples 500 \

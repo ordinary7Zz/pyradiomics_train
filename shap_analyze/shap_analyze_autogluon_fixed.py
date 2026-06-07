@@ -145,13 +145,28 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     p.add_argument(
-        "--top_features",
-        type=int,
-        default=5,
-        help=(
-            "Number of top features (by absolute SHAP value) to display in each "
-            "waterfall and beeswarm plot (default: 5)."
-        ),
+        "--task_name",
+        type=str,
+        default=None,
+        help="Task name shown in the compact SHAP legend title (e.g. Malignancy, LNM, FTC/PTC)",
+    )
+    p.add_argument(
+        "--positive_class_name",
+        type=str,
+        default=None,
+        help="Human-readable name for label 1, shown in the compact SHAP x-axis label and legend",
+    )
+    p.add_argument(
+        "--negative_class_name",
+        type=str,
+        default=None,
+        help="Human-readable name for label 0, shown in the compact SHAP legend",
+    )
+    p.add_argument(
+        "--output_space",
+        type=str,
+        default=None,
+        help="SHAP output space used for labeling, e.g. probability or raw score",
     )
     return p.parse_args()
 
@@ -410,6 +425,10 @@ def main() -> None:
             args.label,
             sample_ids_explain,
             args.sample_filename,
+            task_name=args.task_name,
+            positive_class_name=args.positive_class_name,
+            negative_class_name=args.negative_class_name,
+            output_space=args.output_space,
         )
 
     print(f"\nSHAP analysis complete! Results saved to: {output_dir}")

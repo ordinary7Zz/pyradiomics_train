@@ -15,6 +15,10 @@ def save_compact_shap_bar_plot(
     out_path: str,
     max_display: int,
     *,
+    task_name: Optional[str] = None,
+    positive_class_name: Optional[str] = None,
+    negative_class_name: Optional[str] = None,
+    output_space: Optional[str] = None,
     textless_svg_path: Optional[str] = None,
     xlabel_fontsize: float = 11.0,
     ytick_fontsize: float = 10.0,
@@ -65,16 +69,40 @@ def save_compact_shap_bar_plot(
             ax.barh(y_pos, display_values, color=colors, height=0.88, edgecolor="none", linewidth=0, zorder=2)
             ax.axvline(0, color="#6f6f6f", lw=0.85, zorder=1)
 
+            def _normalize_label(value: Optional[str], fallback: str) -> str:
+                cleaned = str(value).strip() if value is not None else ""
+                return cleaned if cleaned else fallback
+
+            def _format_output_space_label(value: Optional[str]) -> str:
+                if value is None:
+                    return ""
+                normalized = str(value).strip().lower().replace("_", " ").replace("-", " ")
+                if not normalized:
+                    return ""
+                if "prob" in normalized:
+                    return "probability"
+                if "log odds" in normalized or "logit" in normalized or "margin" in normalized:
+                    return "raw score"
+                if "raw" in normalized or "treeexplainer" in normalized:
+                    return "raw score"
+                return str(value).strip()
+
+            positive_label = _normalize_label(positive_class_name, "positive class")
+            negative_label = _normalize_label(negative_class_name, "negative class")
+            task_label = _normalize_label(task_name, "SHAP contribution")
+            output_space_label = _format_output_space_label(output_space)
+
             from matplotlib.patches import Patch
 
             legend_handles = [
-                Patch(facecolor=pos_color, edgecolor="none", label="Positive SHAP"),
-                Patch(facecolor=neg_color, edgecolor="none", label="Negative SHAP"),
+                Patch(facecolor=pos_color, edgecolor="none", label=f"Toward {positive_label}"),
+                Patch(facecolor=neg_color, edgecolor="none", label=f"Toward {negative_label}"),
             ]
-            ax.legend(
+            legend = ax.legend(
                 handles=legend_handles,
+                title=task_name.strip() if task_name and str(task_name).strip() else None,
                 loc="lower center",
-                bbox_to_anchor=(0.5, 1.08),
+                bbox_to_anchor=(0.5, 1.10),
                 ncol=2,
                 frameon=False,
                 handlelength=1.0,
@@ -82,7 +110,12 @@ def save_compact_shap_bar_plot(
                 columnspacing=1.3,
                 borderaxespad=0.0,
                 fontsize=max(7, xlabel_fontsize - 3),
+                title_fontsize=max(7, xlabel_fontsize - 4),
             )
+
+            x_label = f"Contribution toward {positive_label}" if positive_class_name else task_label
+            if output_space_label:
+                x_label = f"{x_label} ({output_space_label})"
 
             max_abs = float(np.max(np.abs(display_values))) if len(display_values) else 0.0
             if max_abs > 0:
@@ -125,7 +158,7 @@ def save_compact_shap_bar_plot(
                         zorder=3,
                     )
 
-                ax.set_xlabel("SHAP value", fontsize=xlabel_fontsize, labelpad=2, color="#222222")
+                ax.set_xlabel(x_label, fontsize=xlabel_fontsize, labelpad=2, color="#222222")
             else:
                 hide_text_in_figure(fig)
 
@@ -162,6 +195,11 @@ def plot_waterfall_samples(
     sample_ids: Optional[pd.Series] = None,
     sample_filenames: Optional[List[str]] = None,
     n_top_features: int = 5,
+    *,
+    task_name: Optional[str] = None,
+    positive_class_name: Optional[str] = None,
+    negative_class_name: Optional[str] = None,
+    output_space: Optional[str] = None,
 ) -> None:
     import csv
 
@@ -464,6 +502,10 @@ def plot_waterfall_samples(
                         compact_feature_names,
                         compact_bar_file,
                         max_display,
+                        task_name=task_name,
+                        positive_class_name=positive_class_name,
+                        negative_class_name=negative_class_name,
+                        output_space=output_space,
                         textless_svg_path=compact_bar_textless_path,
                         xlabel_fontsize=12.0,
                         ytick_fontsize=11.0,

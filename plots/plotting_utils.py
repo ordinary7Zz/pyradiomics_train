@@ -297,6 +297,19 @@ def save_beeswarm_plot(
                 max_display=max_display,
                 show=False,
             )
+            ax = plt_mod.gca()
+            xlim = ax.get_xlim()
+            xticks = ax.get_xticks()
+            xticks = np_mod.asarray([tick for tick in xticks if np_mod.isfinite(tick)])
+            xticks = np_mod.unique(np_mod.sort(xticks))
+            if xticks.size >= 2:
+                steps = np_mod.diff(xticks)
+                steps = steps[steps > 0]
+                if steps.size > 0:
+                    step = float(np_mod.min(steps))
+                    left = np_mod.floor(xlim[0] / step) * step
+                    right = np_mod.ceil(xlim[1] / step) * step
+                    ax.set_xlim(left, right)
             if not show_text:
                 hide_text_in_figure(plt_mod.gcf())
             plt_mod.tight_layout()
