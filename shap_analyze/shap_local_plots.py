@@ -73,8 +73,8 @@ def save_compact_shap_bar_plot(
             ]
             ax.legend(
                 handles=legend_handles,
-                loc="upper center",
-                bbox_to_anchor=(0.5, 1.03),
+                loc="lower center",
+                bbox_to_anchor=(0.5, 1.08),
                 ncol=2,
                 frameon=False,
                 handlelength=1.0,
@@ -139,7 +139,7 @@ def save_compact_shap_bar_plot(
             ax.tick_params(axis="x", labelsize=max(7, xlabel_fontsize - 1), colors="#222222", length=2.5, width=0.6)
             ax.margins(x=0.01, y=0.03)
 
-            fig.subplots_adjust(left=0.04, right=0.99, top=0.86, bottom=0.22)
+            fig.subplots_adjust(left=0.04, right=0.99, top=0.80, bottom=0.22)
             saved_paths = save_current_figure(target_path, export_formats=formats, dpi=dpi, bbox_inches="tight")
             plt.close(fig)
             return saved_paths
