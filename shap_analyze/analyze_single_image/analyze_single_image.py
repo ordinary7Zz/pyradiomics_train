@@ -264,6 +264,8 @@ def main() -> None:
             dpi=150,
             figsize=(13.0, 9.0),
             bbox_inches="tight",
+            positive_class_name=args.positive_class_name,
+            output_space=args.output_space,
         )
 
         compact_bar_path = os.path.join(compact_bar_dir, f"{model_name}_compact_shap_bar_{target_tag}.png")

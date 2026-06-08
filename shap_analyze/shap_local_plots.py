@@ -6,7 +6,13 @@ from typing import Any, List, Optional
 import numpy as np
 import pandas as pd
 
-from plots.plotting_utils import paper_friendly_name, save_current_figure, save_waterfall_plot, hide_text_in_figure
+from plots.plotting_utils import (
+    build_shap_axis_label,
+    hide_text_in_figure,
+    paper_friendly_name,
+    save_current_figure,
+    save_waterfall_plot,
+)
 
 
 def save_compact_shap_bar_plot(
@@ -73,24 +79,12 @@ def save_compact_shap_bar_plot(
                 cleaned = str(value).strip() if value is not None else ""
                 return cleaned if cleaned else fallback
 
-            def _format_output_space_label(value: Optional[str]) -> str:
-                if value is None:
-                    return ""
-                normalized = str(value).strip().lower().replace("_", " ").replace("-", " ")
-                if not normalized:
-                    return ""
-                if "prob" in normalized:
-                    return "probability"
-                if "log odds" in normalized or "logit" in normalized or "margin" in normalized:
-                    return "raw score"
-                if "raw" in normalized or "treeexplainer" in normalized:
-                    return "raw score"
-                return str(value).strip()
-
             positive_label = _normalize_label(positive_class_name, "positive class")
             negative_label = _normalize_label(negative_class_name, "negative class")
-            task_label = _normalize_label(task_name, "SHAP contribution")
-            output_space_label = _format_output_space_label(output_space)
+            x_label = build_shap_axis_label(
+                positive_class_name=positive_class_name,
+                output_space=output_space,
+            )
 
             from matplotlib.patches import Patch
 
@@ -112,10 +106,6 @@ def save_compact_shap_bar_plot(
                 fontsize=max(7, xlabel_fontsize - 3),
                 title_fontsize=max(7, xlabel_fontsize - 4),
             )
-
-            x_label = f"Contribution toward {positive_label}" if positive_class_name else task_label
-            if output_space_label:
-                x_label = f"{x_label} ({output_space_label})"
 
             max_abs = float(np.max(np.abs(display_values))) if len(display_values) else 0.0
             if max_abs > 0:
@@ -489,6 +479,8 @@ def plot_waterfall_samples(
                         dpi=150,
                         figsize=(13.0, 9.0),
                         bbox_inches="tight",
+                        positive_class_name=positive_class_name,
+                        output_space=output_space,
                     )
 
                     compact_bar_file = os.path.join(

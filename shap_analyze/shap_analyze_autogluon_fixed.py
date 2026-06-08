@@ -344,6 +344,8 @@ def main() -> None:
                     dpi=150,
                     figsize=(12, 9),
                     plot_type="dot",
+                    positive_class_name=args.positive_class_name,
+                    output_space=args.output_space,
                 )
                 print(f"  Saved beeswarm plot to: {', '.join(saved_paths)}")
 

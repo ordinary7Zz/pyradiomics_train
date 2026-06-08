@@ -101,6 +101,44 @@ def _require_shap():
     return shap
 
 
+def _normalize_optional_text(value: Optional[str], fallback: str) -> str:
+    cleaned = str(value).strip() if value is not None else ""
+    return cleaned if cleaned else fallback
+
+
+def format_output_space_label(value: Optional[str]) -> str:
+    if value is None:
+        return ""
+
+    normalized = str(value).strip().lower().replace("_", " ").replace("-", " ")
+    if not normalized:
+        return ""
+    if "prob" in normalized:
+        return "probability"
+    if "log odds" in normalized or "logit" in normalized or "margin" in normalized:
+        return "raw score"
+    if "raw" in normalized or "treeexplainer" in normalized:
+        return "raw score"
+    return str(value).strip()
+
+
+def build_shap_axis_label(
+    *,
+    positive_class_name: Optional[str] = None,
+    output_space: Optional[str] = None,
+    base_label: str = "SHAP contribution",
+) -> str:
+    label = base_label
+    positive_label = str(positive_class_name).strip() if positive_class_name is not None else ""
+    if positive_label:
+        label = f"{label} toward {_normalize_optional_text(positive_class_name, 'positive class')}"
+
+    output_space_label = format_output_space_label(output_space)
+    if output_space_label:
+        label = f"{label} ({output_space_label})"
+    return label
+
+
 def _split_camel(text: str) -> str:
     return re.sub(r"(?<!^)(?=[A-Z])", " ", text).strip()
 
@@ -258,6 +296,9 @@ def save_beeswarm_plot(
     dpi: int = 300,
     figsize: tuple[int, int] = (12, 9),
     plot_type: str = "dot",
+    positive_class_name: Optional[str] = None,
+    output_space: Optional[str] = None,
+    x_label: Optional[str] = None,
 ) -> list[str]:
     np_mod = _require_numpy()
     pd_mod = _require_pandas()
@@ -310,6 +351,12 @@ def save_beeswarm_plot(
                     left = np_mod.floor(xlim[0] / step) * step
                     right = np_mod.ceil(xlim[1] / step) * step
                     ax.set_xlim(left, right)
+            final_x_label = x_label or build_shap_axis_label(
+                positive_class_name=positive_class_name,
+                output_space=output_space,
+            )
+            if final_x_label:
+                ax.set_xlabel(final_x_label)
             if not show_text:
                 hide_text_in_figure(plt_mod.gcf())
             plt_mod.tight_layout()
@@ -339,6 +386,9 @@ def save_waterfall_plot(
     dpi: int = 150,
     figsize: tuple[int, int] = (12, 8),
     bbox_inches: str = "tight",
+    positive_class_name: Optional[str] = None,
+    output_space: Optional[str] = None,
+    x_label: Optional[str] = None,
 ) -> list[str]:
     np_mod = _require_numpy()
     plt_mod = _require_matplotlib_pyplot()
@@ -370,6 +420,13 @@ def save_waterfall_plot(
             shap_mod.plots.waterfall(explanation[0], show=False, max_display=max_display)
             if plot_title:
                 plt_mod.gcf().suptitle(plot_title, fontsize=title_fontsize, y=0.98)
+            final_x_label = x_label or build_shap_axis_label(
+                positive_class_name=positive_class_name,
+                output_space=output_space,
+            )
+            if final_x_label:
+                ax = plt_mod.gca()
+                ax.set_xlabel(final_x_label)
             if not show_text:
                 hide_text_in_figure(plt_mod.gcf())
             plt_mod.tight_layout()

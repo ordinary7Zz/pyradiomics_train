@@ -12,6 +12,10 @@ python shap_analyze/analyze_single_image/analyze_single_image.py \
   --filename "$TARGET_FILENAME" \
   --label "label" \
   --output_dir "$OUTPUT_DIR" \
+  --task_name "Lymph Node Metastasis" \
+  --positive_class_name "LNM-positive" \
+  --negative_class_name "LNM-negative" \
+  --output_space "raw score" \
   --main_models LightGBM_BAG_L1 \
   --background_samples 500 \
   --top_features 5 \
