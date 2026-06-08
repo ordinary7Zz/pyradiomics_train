@@ -3,7 +3,7 @@ set -euo pipefail
 
 MODEL_DIR="./binary_class/outputs/models/BM_dataset3_predmask/BM"
 TRAIN_CSV="./binary_class/outputs/task_csvs/BM_dataset3_predmask/test_BM.csv"
-TARGET_FILENAME="TN3K_test_0040.png"
+TARGET_FILENAME="TN3K_test_0040.jpg"
 OUTPUT_DIR="./binary_class/single_image/BM"
 
 python shap_analyze/analyze_single_image/analyze_single_image.py \
