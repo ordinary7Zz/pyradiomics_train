@@ -92,9 +92,9 @@ def save_compact_shap_bar_plot(
                 Patch(facecolor=pos_color, edgecolor="none", label=f"Toward {positive_label}"),
                 Patch(facecolor=neg_color, edgecolor="none", label=f"Toward {negative_label}"),
             ]
-            legend = ax.legend(
+            ax.legend(
                 handles=legend_handles,
-                title=task_name.strip() if task_name and str(task_name).strip() else None,
+                title=None,
                 loc="lower center",
                 bbox_to_anchor=(0.5, 1.10),
                 ncol=2,
@@ -162,8 +162,14 @@ def save_compact_shap_bar_plot(
             ax.tick_params(axis="x", labelsize=max(7, xlabel_fontsize - 1), colors="#222222", length=2.5, width=0.6)
             ax.margins(x=0.01, y=0.03)
 
-            fig.subplots_adjust(left=0.04, right=0.99, top=0.80, bottom=0.22)
-            saved_paths = save_current_figure(target_path, export_formats=formats, dpi=dpi, bbox_inches="tight")
+            fig.subplots_adjust(left=0.05, right=0.99, top=0.80, bottom=0.22)
+            saved_paths = save_current_figure(
+                target_path,
+                export_formats=formats,
+                dpi=dpi,
+                bbox_inches="tight",
+                pad_inches=0.22,
+            )
             plt.close(fig)
             return saved_paths
 

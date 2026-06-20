@@ -260,6 +260,7 @@ def save_current_figure(
     export_formats: Sequence[str] = ("png",),
     dpi: int = 300,
     bbox_inches: Optional[str] = None,
+    pad_inches: Optional[float] = None,
 ) -> list[str]:
     plt_mod = _require_matplotlib_pyplot()
     base, ext = os.path.splitext(out_path)
@@ -271,7 +272,10 @@ def save_current_figure(
     saved_paths = []
     for fmt in normalized:
         target = f"{base}.{fmt}"
-        plt_mod.savefig(target, dpi=dpi, bbox_inches=bbox_inches)
+        savefig_kwargs = {"dpi": dpi, "bbox_inches": bbox_inches}
+        if pad_inches is not None:
+            savefig_kwargs["pad_inches"] = pad_inches
+        plt_mod.savefig(target, **savefig_kwargs)
         saved_paths.append(target)
     return saved_paths
 
@@ -429,12 +433,13 @@ def save_waterfall_plot(
                 ax.set_xlabel(final_x_label)
             if not show_text:
                 hide_text_in_figure(plt_mod.gcf())
-            plt_mod.tight_layout()
+            plt_mod.tight_layout(rect=(0.0, 0.0, 1.0, 0.94 if plot_title else 0.98), pad=1.15)
             saved_paths = save_current_figure(
                 target_path,
                 export_formats=formats,
                 dpi=dpi,
                 bbox_inches=bbox_inches,
+                pad_inches=pad_inches,
             )
             plt_mod.close()
             return saved_paths

@@ -87,7 +87,7 @@ python binary_class/run_all_binary_tasks.py \
 - 若标签是病人级、样本却是图像级，建议先构建病人级 CSV，再复用现有训练脚本做病人级训练与评估
 - 建议重点关注 test_results.csv 中的 AUPRC、Recall、F1、Specificity，而不只看 AUROC
 
-LymphUs数据集 - predmask：
+## LymphUs数据集 - predmask：
 python binary_class/extract_base_radiomics.py \
   --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis_fake/images \
   --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/pred_masks/Lymph_Node_Metastasis_fake/Lymph_images \
@@ -130,7 +130,7 @@ python -m binary_class.train_binary_task_resampled \
   --ci_seed 42 \
   --seed 42
 
-FangDai数据集：
+## FangDai数据集：
 python binary_class/extract_base_radiomics.py \
   --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/FangDai_Thyroid_Ultrasound_Images_cropped \
   --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/FangDai_Thyroid_Ultrasound_Images_cropped_predictions \
@@ -173,7 +173,7 @@ python -m binary_class.train_binary_task_resampled \
   --ci_seed 42 \
   --seed 42
 
-整理后的FTCPTC数据集：
+## 整理后的FTCPTC数据集：
 python binary_class/extract_base_radiomics.py \
   --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Malignant_ultrasound_images_cropped \
   --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Malignant_ultrasound_images_cropped_predictions \
@@ -216,7 +216,7 @@ python -m binary_class.train_binary_task_resampled \
   --ci_seed 42 \
   --seed 42
 
-良恶性数据集 - predmask
+## 良恶性数据集 - predmask
 python binary_class/extract_base_radiomics.py \
   --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Superimposed_multitask/dataset_3/train/images \
   --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/pred_masks/cls_dataset_3/dataset_3_train \
@@ -258,3 +258,17 @@ python -m binary_class.train_binary_task_resampled \
   --ci_level 0.95 \
   --ci_seed 42 \
   --seed 42
+
+## 500BM数据集获得csv
+python binary_class/extract_base_radiomics.py \
+  --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/500_TestData_Malignancy_Cls/images \
+  --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/500_TestData_Malignancy_Cls/masks \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/500_TestData_Malignancy_Cls/500_TestData_Malignancy_Cls.json \
+  --output_csv binary_class/outputs/base_features/BM_500_predmask/train_base_features.csv \
+  --skip_fail
+
+python binary_class/build_binary_task_csv.py \
+  --base_features_csv binary_class/outputs/base_features/BM_500_predmask/train_base_features.csv \
+  --label_json /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/500_TestData_Malignancy_Cls/500_TestData_Malignancy_Cls.json \
+  --task malignancy \
+  --output_csv binary_class/outputs/task_csvs/BM_500_predmask/train_BM.csv
