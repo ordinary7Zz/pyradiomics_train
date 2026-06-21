@@ -458,7 +458,15 @@ def save_beeswarm_plot(
         with plt_mod.rc_context(
             {
                 "font.family": "sans-serif",
-                "font.sans-serif": ["PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "SimHei", "Arial Unicode MS", "DejaVu Sans", "Arial"],
+                "font.sans-serif": [
+                    "WenQuanYi Micro Hei", "WenQuanYi Zen Hei",
+                    "Noto Sans CJK SC", "Source Han Sans SC",
+                    "PingFang SC", "Hiragino Sans GB",
+                    "Heiti SC", "STHeiti", "Songti SC",
+                    "Microsoft YaHei", "SimHei",
+                    "Arial Unicode MS", "DejaVu Sans", "Arial",
+                ],
+                "axes.unicode_minus": False,
                 "font.size": 15,
                 "axes.titlesize": 19,
                 "axes.labelsize": 17,
@@ -545,7 +553,15 @@ def save_waterfall_plot(
         with plt_mod.rc_context(
             {
                 "font.family": "sans-serif",
-                "font.sans-serif": ["PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "SimHei", "Arial Unicode MS", "DejaVu Sans", "Arial"],
+                "font.sans-serif": [
+                    "WenQuanYi Micro Hei", "WenQuanYi Zen Hei",
+                    "Noto Sans CJK SC", "Source Han Sans SC",
+                    "PingFang SC", "Hiragino Sans GB",
+                    "Heiti SC", "STHeiti", "Songti SC",
+                    "Microsoft YaHei", "SimHei",
+                    "Arial Unicode MS", "DejaVu Sans", "Arial",
+                ],
+                "axes.unicode_minus": False,
                 "font.size": 20,
                 "axes.titlesize": 24,
                 "axes.labelsize": 20,
