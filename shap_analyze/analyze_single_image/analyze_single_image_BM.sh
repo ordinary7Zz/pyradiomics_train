@@ -4,7 +4,7 @@ set -euo pipefail
 MODEL_DIR="./binary_class/outputs/models/BM_dataset3_predmask/BM"
 TRAIN_CSV_TRAIN="./binary_class/outputs/task_csvs/BM_dataset3_predmask/train_BM.csv"
 TRAIN_CSV_TEST="./binary_class/outputs/task_csvs/BM_dataset3_predmask/test_BM.csv"
-OUTPUT_DIR="./binary_class/single_image/BM"
+OUTPUT_DIR="./binary_class/single_image/BM_4cases"
 
 resolve_train_csv_for_filename() {
   local target_filename="$1"
