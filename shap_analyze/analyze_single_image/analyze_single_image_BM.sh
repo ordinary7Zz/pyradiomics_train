@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+MODEL_DIR="./binary_class/outputs/models/BM_dataset3_predmask/BM"
+TRAIN_CSV="./binary_class/outputs/task_csvs/BM_500_predmask/train_BM.csv"
+OUTPUT_DIR="./binary_class/single_image/BM_any_doctor_wrong"
+
 run_single_case() {
   local target_filename="$1"
 
