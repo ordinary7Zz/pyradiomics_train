@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 
 from plots.plotting_utils import (
+    _ensure_cjk_fonts,
     build_shap_axis_label,
     format_feature_name,
     hide_text_in_figure,
@@ -35,6 +36,7 @@ def save_compact_shap_bar_plot(
     figsize: Optional[tuple[float, float]] = None,
 ) -> list[str]:
     import matplotlib.pyplot as plt
+    _ensure_cjk_fonts()
 
     shap_arr = np.asarray(shap_values).reshape(-1)
     feature_names = list(feature_names)
@@ -55,7 +57,14 @@ def save_compact_shap_bar_plot(
         with plt.rc_context(
             {
                 "font.family": "sans-serif",
-                "font.sans-serif": ["Arial", "Microsoft YaHei", "SimHei", "DejaVu Sans"],
+                "font.sans-serif": [
+                    "WenQuanYi Micro Hei", "WenQuanYi Zen Hei",
+                    "Noto Sans CJK SC", "Source Han Sans SC",
+                    "Microsoft YaHei", "SimHei",
+                    "PingFang SC", "Hiragino Sans GB",
+                    "Heiti SC", "STHeiti", "Songti SC",
+                    "Arial Unicode MS", "DejaVu Sans", "Arial",
+                ],
                 "font.size": 11,
                 "axes.titlesize": 11,
                 "axes.labelsize": 11,
@@ -208,11 +217,19 @@ def plot_waterfall_samples(
         return
 
     import matplotlib.pyplot as plt
+    _ensure_cjk_fonts()
 
     plt.rcParams.update(
         {
             "font.family": "sans-serif",
-            "font.sans-serif": ["PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "SimHei", "Arial Unicode MS", "DejaVu Sans", "Arial"],
+            "font.sans-serif": [
+                "WenQuanYi Micro Hei", "WenQuanYi Zen Hei",
+                "Noto Sans CJK SC", "Source Han Sans SC",
+                "PingFang SC", "Hiragino Sans GB",
+                "Heiti SC", "STHeiti", "Songti SC",
+                "Microsoft YaHei", "SimHei",
+                "Arial Unicode MS", "DejaVu Sans", "Arial",
+            ],
             "font.size": 20,
             "axes.titlesize": 24,
             "axes.labelsize": 20,
