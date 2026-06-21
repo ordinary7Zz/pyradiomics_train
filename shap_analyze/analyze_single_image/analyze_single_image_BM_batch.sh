@@ -4,7 +4,7 @@ set -euo pipefail
 MODEL_DIR="./binary_class/outputs/models/BM_dataset3_predmask/BM"
 TRAIN_CSV="./binary_class/outputs/task_csvs/BM_500_predmask/train_BM.csv"
 FILENAME_LIST="./BM_any_doctor_wrong_filename_list.txt"
-OUTPUT_DIR="./binary_class/single_image/BM_any_doctor_wrong"
+OUTPUT_DIR="./binary_class/single_image/BM_171_doctor_wrong"
 
 python shap_analyze/analyze_single_image/analyze_single_image.py \
   --model_dir "$MODEL_DIR" \
