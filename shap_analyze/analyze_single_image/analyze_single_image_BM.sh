@@ -2,15 +2,34 @@
 set -euo pipefail
 
 MODEL_DIR="./binary_class/outputs/models/BM_dataset3_predmask/BM"
-TRAIN_CSV="./binary_class/outputs/task_csvs/BM_dataset3_predmask/train_BM.csv"
+TRAIN_CSV_TRAIN="./binary_class/outputs/task_csvs/BM_dataset3_predmask/train_BM.csv"
+TRAIN_CSV_TEST="./binary_class/outputs/task_csvs/BM_dataset3_predmask/test_BM.csv"
 OUTPUT_DIR="./binary_class/single_image/BM_any_doctor_wrong"
+
+resolve_train_csv_for_filename() {
+  local target_filename="$1"
+
+  if [[ "$target_filename" == *_train_* ]]; then
+    printf '%s\n' "$TRAIN_CSV_TRAIN"
+    return
+  fi
+
+  if [[ "$target_filename" == *_test_* ]]; then
+    printf '%s\n' "$TRAIN_CSV_TEST"
+    return
+  fi
+
+  echo "无法从文件名推断 train/test 对应的 CSV：${target_filename}" >&2
+  exit 1
+}
 
 run_single_case() {
   local target_filename="$1"
+  local train_csv="$2"
 
   python shap_analyze/analyze_single_image/analyze_single_image.py \
     --model_dir "$MODEL_DIR" \
-    --train_csv "$TRAIN_CSV" \
+    --train_csv "$train_csv" \
     --filename "$target_filename" \
     --label "label" \
     --output_dir "$OUTPUT_DIR" \
@@ -30,8 +49,10 @@ run_group() {
 
   echo "Running group: ${group_name}"
   for target_filename in "$@"; do
-    echo "  -> ${target_filename}"
-    run_single_case "$target_filename"
+    local train_csv
+    train_csv="$(resolve_train_csv_for_filename "$target_filename")"
+    echo "  -> ${target_filename} ($(basename "$train_csv"))"
+    run_single_case "$target_filename" "$train_csv"
   done
 }
 
