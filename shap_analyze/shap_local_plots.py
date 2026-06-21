@@ -8,6 +8,7 @@ import pandas as pd
 
 from plots.plotting_utils import (
     build_shap_axis_label,
+    format_feature_name,
     hide_text_in_figure,
     paper_friendly_name,
     save_current_figure,
@@ -25,6 +26,7 @@ def save_compact_shap_bar_plot(
     positive_class_name: Optional[str] = None,
     negative_class_name: Optional[str] = None,
     output_space: Optional[str] = None,
+    feature_label_lang: str = "en",
     textless_svg_path: Optional[str] = None,
     xlabel_fontsize: float = 11.0,
     ytick_fontsize: float = 10.0,
@@ -43,7 +45,7 @@ def save_compact_shap_bar_plot(
     top_indices = np.argsort(np.abs(shap_arr))[-max_display:][::-1]
     display_values = shap_arr[top_indices]
     display_names = [feature_names[i] for i in top_indices]
-    display_labels = [paper_friendly_name(name) for name in display_names]
+    display_labels = [format_feature_name(name, lang=feature_label_lang) for name in display_names]
 
     if figsize is None:
         height = max(2.2, 0.52 * len(display_labels) + 1.15)
@@ -210,7 +212,7 @@ def plot_waterfall_samples(
     plt.rcParams.update(
         {
             "font.family": "sans-serif",
-            "font.sans-serif": ["Arial", "Microsoft YaHei", "SimHei", "DejaVu Sans"],
+            "font.sans-serif": ["PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "SimHei", "Arial Unicode MS", "DejaVu Sans", "Arial"],
             "font.size": 20,
             "axes.titlesize": 24,
             "axes.labelsize": 20,

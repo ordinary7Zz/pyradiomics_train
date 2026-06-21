@@ -55,6 +55,50 @@ MANUAL_MAP = {
     "original_ngtdm_Complexity": "NGTDM: Complex",
 }
 
+MANUAL_MAP_ZH = {
+    "original_shape2D_Sphericity": "形状: 球形度",
+    "original_shape2D_Elongation": "形状: 伸长度",
+    "original_shape2D_Perimeter": "形状: 周长",
+    "original_shape2D_PerimeterSurfaceRatio": "形状: 周面比",
+    "original_shape2D_MajorAxisLength": "形状: 长轴",
+    "original_shape2D_MeshSurface": "形状: 面积",
+    "original_shape2D_MinorAxisLength": "形状: 短轴",
+    "original_firstorder_Skewness": "强度: 偏度",
+    "original_firstorder_Minimum": "强度: 最小值",
+    "original_firstorder_Median": "强度: 中位数",
+    "original_firstorder_Energy": "强度: 能量",
+    "original_firstorder_RobustMeanAbsoluteDeviation": "强度: 稳健MAD",
+    "original_firstorder_Kurtosis": "强度: 峰度",
+    "original_firstorder_10Percentile": "强度: 10分位",
+    "original_glrlm_LongRunHighGrayLevelEmphasis": "纹理RLM: 长程高灰",
+    "original_glrlm_ShortRunHighGrayLevelEmphasis": "纹理RLM: 短程高灰",
+    "original_glrlm_LongRunLowGrayLevelEmphasis": "纹理RLM: 长程低灰",
+    "original_glrlm_ShortRunLowGrayLevelEmphasis": "纹理RLM: 短程低灰",
+    "original_glrlm_ShortRunEmphasis": "纹理RLM: 短程",
+    "original_glrlm_LongRunEmphasis": "纹理RLM: 长程",
+    "original_glrlm_RunVariance": "纹理RLM: 行程方差",
+    "original_glrlm_RunEntropy": "纹理RLM: 行程熵",
+    "original_glrlm_GrayLevelNonUniformity": "纹理RLM: 灰度不均",
+    "original_glrlm_RunLengthNonUniformity": "纹理RLM: 行程不均",
+    "original_glszm_SmallAreaHighGrayLevelEmphasis": "纹理SZM: 小区高灰",
+    "original_glszm_LargeAreaHighGrayLevelEmphasis": "纹理SZM: 大区高灰",
+    "original_glszm_SmallAreaLowGrayLevelEmphasis": "纹理SZM: 小区低灰",
+    "original_glszm_LargeAreaLowGrayLevelEmphasis": "纹理SZM: 大区低灰",
+    "original_glszm_ZoneVariance": "纹理SZM: 区域方差",
+    "original_glszm_ZoneEntropy": "纹理SZM: 区域熵",
+    "original_glcm_Correlation": "纹理GLCM: 相关性",
+    "original_glcm_Contrast": "纹理GLCM: 对比度",
+    "original_glcm_Energy": "纹理GLCM: 能量",
+    "original_glcm_Homogeneity": "纹理GLCM: 同质性",
+    "original_gldm_DependenceNonUniformity": "纹理DM: 依赖不均",
+    "original_gldm_DependenceVariance": "纹理DM: 依赖方差",
+    "original_gldm_LargeDependenceHighGrayLevelEmphasis": "纹理DM: 大依赖高灰",
+    "original_gldm_LargeDependenceEmphasis": "纹理DM: 大依赖",
+    "original_ngtdm_Contrast": "纹理NGTDM: 对比度",
+    "original_ngtdm_Coarseness": "纹理NGTDM: 粗糙度",
+    "original_ngtdm_Complexity": "纹理NGTDM: 复杂度",
+}
+
 GROUP_PREFIX = {
     "shape2D": "SHAPE",
     "shape": "SHAPE",
@@ -176,6 +220,13 @@ def paper_friendly_name(col: str) -> str:
     display_name = _abbreviate_tail_words(display_name)
     result = f"{prefix}: {display_name}" if prefix else display_name
     return result
+
+
+def format_feature_name(col: str, lang: str = "en") -> str:
+    normalized_lang = str(lang).strip().lower()
+    if normalized_lang == "zh":
+        return MANUAL_MAP_ZH.get(col, paper_friendly_name(col))
+    return paper_friendly_name(col)
 
 
 def short_feature_name(col: str) -> str:
@@ -325,7 +376,7 @@ def save_beeswarm_plot(
         with plt_mod.rc_context(
             {
                 "font.family": "sans-serif",
-                "font.sans-serif": ["Arial", "Microsoft YaHei", "SimHei", "DejaVu Sans"],
+                "font.sans-serif": ["PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "SimHei", "Arial Unicode MS", "DejaVu Sans", "Arial"],
                 "font.size": 15,
                 "axes.titlesize": 19,
                 "axes.labelsize": 17,
@@ -412,7 +463,7 @@ def save_waterfall_plot(
         with plt_mod.rc_context(
             {
                 "font.family": "sans-serif",
-                "font.sans-serif": ["Arial", "Microsoft YaHei", "SimHei", "DejaVu Sans"],
+                "font.sans-serif": ["PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "SimHei", "Arial Unicode MS", "DejaVu Sans", "Arial"],
                 "font.size": 20,
                 "axes.titlesize": 24,
                 "axes.labelsize": 20,

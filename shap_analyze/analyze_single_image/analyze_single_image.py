@@ -26,14 +26,11 @@
 
 - 所有 `waterfall` 图保存在 `<output_dir>/waterfall/`。
 - 所有 `compact_shap_bar` 图保存在 `<output_dir>/compact_shap_bar/`。
-- 单图模式下，为了兼容旧脚本的使用习惯，输出文件名仍保留 `模型名 + 图类型 + 样本名`
-  的形式。
-- 批量模式下，为满足批量导出需求，输出文件名会改为与原图 basename 一致；如果一次
-  解释多个模型，则会在 `waterfall/` 和 `compact_shap_bar/` 下按模型名额外创建子目录，
+- 无论单图模式还是批量模式，输出文件名都直接使用原图 basename（不再附加模型名或图类型前缀）。
+- 如果一次解释多个模型，则会在 `waterfall/` 和 `compact_shap_bar/` 下按模型名额外创建子目录，
   避免不同模型的同名结果互相覆盖。
 
-这样设计的目的，是在尽量兼容原有单图流程的前提下，为批量生成局部 SHAP 图增加一个
-稳定且易维护的入口。
+这样设计的目的，是让局部 SHAP 图的文件名与原图样本一一对应，同时保持多模型导出时的路径稳定。
 """
 
 from __future__ import annotations
@@ -53,7 +50,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from plots.plotting_utils import paper_friendly_name, prepare_df, save_waterfall_plot
+from plots.plotting_utils import format_feature_name, prepare_df, save_waterfall_plot
 from shap_analyze.autogluon_introspection import get_main_models, load_autogluon_model
 from shap_analyze.shap_compute import compute_shap_for_model
 from shap_analyze.shap_local_plots import save_compact_shap_bar_plot
@@ -131,6 +128,13 @@ def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
         type=str,
         default=None,
         help="SHAP output space used for labeling, e.g. probability or raw score",
+    )
+    parser.add_argument(
+        "--feature_label_lang",
+        type=str,
+        choices=("en", "zh"),
+        default="en",
+        help="Feature label language used in plots: 'en' or 'zh' (default: en)",
     )
     return parser.parse_args(argv)
 
@@ -380,7 +384,7 @@ def _build_output_paths(
     waterfall_dir = os.path.join(output_dir, "waterfall")
     compact_bar_dir = os.path.join(output_dir, "compact_shap_bar")
 
-    if batch_mode and multi_model:
+    if multi_model:
         waterfall_dir = os.path.join(waterfall_dir, model_name)
         compact_bar_dir = os.path.join(compact_bar_dir, model_name)
 
@@ -388,16 +392,10 @@ def _build_output_paths(
     os.makedirs(compact_bar_dir, exist_ok=True)
 
     target_tag = _safe_token(target_name)
-    if batch_mode:
-        waterfall_path = os.path.join(waterfall_dir, f"{target_tag}.png")
-        waterfall_textless_path = os.path.join(waterfall_dir, f"{target_tag}_textless.svg")
-        compact_bar_path = os.path.join(compact_bar_dir, f"{target_tag}.png")
-        compact_bar_textless_path = os.path.join(compact_bar_dir, f"{target_tag}_textless.svg")
-    else:
-        waterfall_path = os.path.join(waterfall_dir, f"{model_name}_waterfall_{target_tag}.png")
-        waterfall_textless_path = os.path.join(waterfall_dir, f"{model_name}_waterfall_{target_tag}_textless.svg")
-        compact_bar_path = os.path.join(compact_bar_dir, f"{model_name}_compact_shap_bar_{target_tag}.png")
-        compact_bar_textless_path = os.path.join(compact_bar_dir, f"{model_name}_compact_shap_bar_{target_tag}_textless.svg")
+    waterfall_path = os.path.join(waterfall_dir, f"{target_tag}.png")
+    waterfall_textless_path = os.path.join(waterfall_dir, f"{target_tag}_textless.svg")
+    compact_bar_path = os.path.join(compact_bar_dir, f"{target_tag}.png")
+    compact_bar_textless_path = os.path.join(compact_bar_dir, f"{target_tag}_textless.svg")
 
     return waterfall_path, waterfall_textless_path, compact_bar_path, compact_bar_textless_path
 
@@ -450,7 +448,7 @@ def _save_shap_plots_for_target(
         top_indices = np.argsort(np.abs(sample_shap))[-max_display:][::-1]
         top_shap = sample_shap[top_indices]
         top_feature_names = [feature_names[i] for i in top_indices]
-        display_feature_names = [paper_friendly_name(name) for name in top_feature_names]
+        display_feature_names = [format_feature_name(name, args.feature_label_lang) for name in top_feature_names]
 
         sample_features = _get_sample_features(predictor, x_explain, shap_df)
         top_feature_values = _extract_feature_values(sample_features, top_indices, top_feature_names, feature_names)
@@ -497,6 +495,7 @@ def _save_shap_plots_for_target(
             positive_class_name=args.positive_class_name,
             negative_class_name=args.negative_class_name,
             output_space=args.output_space,
+            feature_label_lang=args.feature_label_lang,
             textless_svg_path=compact_bar_textless_path,
             xlabel_fontsize=12.0,
             ytick_fontsize=11.0,
