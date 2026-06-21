@@ -41,3 +41,7 @@ __pycache__/
 !binary_class/plot_out/*
 !binary_class/single_image/*
 !binary_class/single_image/**/*
+
+BM_171_doctor_wrong/
+
+.DS_Store
