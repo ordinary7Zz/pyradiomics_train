@@ -390,6 +390,7 @@ def save_waterfall_plot(
     dpi: int = 150,
     figsize: tuple[int, int] = (12, 8),
     bbox_inches: str = "tight",
+    pad_inches: Optional[float] = None,
     positive_class_name: Optional[str] = None,
     output_space: Optional[str] = None,
     x_label: Optional[str] = None,
