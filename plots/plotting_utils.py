@@ -9,6 +9,87 @@ pd = None
 plt = None
 shap = None
 
+# ---------------------------------------------------------------------------
+# CJK font auto-detection: scan common system paths and register fonts so that
+# matplotlib can find Chinese fonts even without a fully configured fontconfig.
+# ---------------------------------------------------------------------------
+_CJK_FONT_INITIALIZED = False
+
+
+def _ensure_cjk_fonts() -> None:
+    """Register CJK fonts with matplotlib's font manager if not yet done.
+
+    After installing system fonts (e.g. fonts-wqy-microhei), matplotlib may
+    still use a stale font cache. This function:
+    1. Scans common system font directories and registers every .ttf/.ttc/.otf
+       file via ``fontManager.addfont()``.
+    2. If addfont is unavailable (older matplotlib), it rebuilds the entire
+       font manager from scratch.
+    """
+    global _CJK_FONT_INITIALIZED
+    if _CJK_FONT_INITIALIZED:
+        return
+    _CJK_FONT_INITIALIZED = True
+
+    try:
+        import matplotlib
+        from matplotlib import font_manager as fm
+
+        # Common directories where CJK fonts may reside (Linux + macOS)
+        _FONT_DIRS = [
+            "/usr/share/fonts",
+            "/usr/local/share/fonts",
+            os.path.expanduser("~/.local/share/fonts"),
+            os.path.expanduser("~/.fonts"),
+            "/System/Library/Fonts",
+            "/Library/Fonts",
+            os.path.expanduser("~/Library/Fonts"),
+        ]
+
+        has_addfont = hasattr(fm.fontManager, "addfont")
+
+        if has_addfont:
+            # matplotlib >= 3.2: use addfont for incremental registration
+            for font_dir in _FONT_DIRS:
+                if not os.path.isdir(font_dir):
+                    continue
+                for root, _dirs, files in os.walk(font_dir):
+                    for fname in files:
+                        if fname.lower().endswith((".ttf", ".ttc", ".otf")):
+                            fpath = os.path.join(root, fname)
+                            try:
+                                fm.fontManager.addfont(fpath)
+                            except Exception:
+                                pass
+        else:
+            # Older matplotlib: rebuild font manager entirely
+            fm._rebuild()
+
+        # Delete the on-disk font cache so future runs also pick up the fonts
+        cache_dir = matplotlib.get_cachedir()
+        if cache_dir:
+            import glob
+            for cache_file in glob.glob(os.path.join(cache_dir, "fontlist-*.json")):
+                try:
+                    os.remove(cache_file)
+                except OSError:
+                    pass
+
+        # Set global default font fallback list that includes CJK-capable fonts
+        matplotlib.rcParams["font.family"] = "sans-serif"
+        matplotlib.rcParams["font.sans-serif"] = [
+            "WenQuanYi Micro Hei", "WenQuanYi Zen Hei",
+            "Noto Sans CJK SC", "Source Han Sans SC",
+            "PingFang SC", "Hiragino Sans GB",
+            "Heiti SC", "STHeiti", "Songti SC",
+            "Microsoft YaHei", "SimHei",
+            "Arial Unicode MS", "DejaVu Sans", "Arial",
+        ]
+        # Prevent minus sign rendering issues with CJK fonts
+        matplotlib.rcParams["axes.unicode_minus"] = False
+    except Exception:
+        pass
+
 DROP_IF_PRESENT = ["image_path", "mask_path", "filename"]
 
 MANUAL_MAP = {
@@ -134,6 +215,7 @@ def _require_matplotlib_pyplot():
     if plt is None:
         import matplotlib.pyplot as _plt
         plt = _plt
+        _ensure_cjk_fonts()
     return plt
 
 
