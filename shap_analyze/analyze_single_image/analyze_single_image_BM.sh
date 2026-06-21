@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Benign good mask
 MODEL_DIR="./binary_class/outputs/models/BM_dataset3_predmask/BM"
-TRAIN_CSV="./binary_class/outputs/task_csvs/BM_dataset3_predmask/test_BM.csv"
+TRAIN_CSV="./binary_class/outputs/task_csvs/BM_dataset3_predmask/train_BM.csv"
 TARGET_FILENAME="ThyroidXL_train_00002730_C9690598_1.png"
 OUTPUT_DIR="./binary_class/single_image/BM"
 
