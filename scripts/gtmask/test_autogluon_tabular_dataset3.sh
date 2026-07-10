@@ -8,9 +8,9 @@ TEST_NAMES=(
   "TN5K"
 )
 TEST_CSVS=(
-  "./csv_data/test_with_gtmaks/TN3K_radiomics_2d_features.csv"
-  "./csv_data/test_with_gtmaks/ThyroidXL_radiomics_2d_features.csv"
-  "./csv_data/test_with_gtmaks/TN5K_radiomics_2d_features.csv"
+  "./csv_data/test_with_gtmask/TN3K_radiomics_2d_features.csv"
+  "./csv_data/test_with_gtmask/ThyroidXL_radiomics_2d_features.csv"
+  "./csv_data/test_with_gtmask/TN5K_radiomics_2d_features.csv"
 )
 OUT_CSV="./test_logs/${DATASET_NAME}/autogluon_model_$(date +%Y%m%d_%H%M%S)"
 
