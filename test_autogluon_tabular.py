@@ -161,7 +161,7 @@ def _extract_auroc(perf: Dict[str, float], metrics: Dict[str, float]) -> float:
 def main() -> None:
     args = parse_args()
 
-    predictor = TabularPredictor.load(args.model_dir)
+    predictor = TabularPredictor.load(args.model_dir, require_py_version_match=False)
     test_mask_source = args.test_mask_source or args.mask_source
 
     test_csvs: List[str] = args.test_csv
