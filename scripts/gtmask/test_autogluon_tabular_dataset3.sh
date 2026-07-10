@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 DATASET_NAME="dataset_3"
 
-MODEL_DIR="/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/autogluon_model/dataset_3/autogluon_model_20260106_215755"
+MODEL_DIR="/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/autogluon_model/gtmask/dataset_3/autogluon_model_20260106_215755"
 TEST_NAMES=(
   "TN3K"
   "ThyroidXL"
