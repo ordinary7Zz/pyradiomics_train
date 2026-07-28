@@ -1,12 +1,10 @@
-# 2D Radiomics config — optimized with multi-filter image types
-# Original backup: radiomics_2d_original.yaml
+# 2D Radiomics config for PNG/JPG + predicted 2D masks
 
 setting:
   resampledPixelSpacing: null
   interpolator: sitkBSpline
   preCrop: false
-  normalize: true
-  normalizeScale: 100
+  normalize: false
   removeOutliers: null
   binWidth: 25
   correctMask: true
@@ -17,14 +15,6 @@ setting:
 
 imageType:
   Original: {}
-  Wavelet: {}
-  LoG:
-    sigma: [2.0, 4.0]
-  Square: {}
-  SquareRoot: {}
-  Logarithm: {}
-  Exponential: {}
-  Gradient: {}
 
 featureClass:
   firstorder: []
