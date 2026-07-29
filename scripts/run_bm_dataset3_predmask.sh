@@ -44,46 +44,68 @@ SEED=42
 # ============================================================
 # 阶段 1: 提取 Radiomics 基础特征
 # ============================================================
-echo "===== [1/5] 提取训练集基础特征 ====="
-python binary_class/extract_base_radiomics.py \
-  --image_dir "${IMAGE_DIR_TRAIN}" \
-  --mask_dir "${MASK_DIR_TRAIN}" \
-  --label_json "${LABEL_JSON_TRAIN}" \
-  --output_csv "${BASE_FEAT_DIR}/train_base_features.csv" \
-  --skip_fail
+TRAIN_FEAT_CSV="${BASE_FEAT_DIR}/train_base_features.csv"
+TEST_FEAT_CSV="${BASE_FEAT_DIR}/test_base_features.csv"
+TRAIN_TASK_CSV="${TASK_CSV_DIR}/train_BM.csv"
+TEST_TASK_CSV="${TASK_CSV_DIR}/test_BM.csv"
 
-echo "===== [2/5] 提取测试集基础特征 ====="
-python binary_class/extract_base_radiomics.py \
-  --image_dir "${IMAGE_DIR_TEST}" \
-  --mask_dir "${MASK_DIR_TEST}" \
-  --label_json "${LABEL_JSON_TEST}" \
-  --output_csv "${BASE_FEAT_DIR}/test_base_features.csv" \
-  --skip_fail
+if [ -f "${TRAIN_FEAT_CSV}" ]; then
+  echo "===== [1/5] 训练集基础特征已存在，跳过 ====="
+else
+  echo "===== [1/5] 提取训练集基础特征 ====="
+  python binary_class/extract_base_radiomics.py \
+    --image_dir "${IMAGE_DIR_TRAIN}" \
+    --mask_dir "${MASK_DIR_TRAIN}" \
+    --label_json "${LABEL_JSON_TRAIN}" \
+    --output_csv "${TRAIN_FEAT_CSV}" \
+    --skip_fail
+fi
+
+if [ -f "${TEST_FEAT_CSV}" ]; then
+  echo "===== [2/5] 测试集基础特征已存在，跳过 ====="
+else
+  echo "===== [2/5] 提取测试集基础特征 ====="
+  python binary_class/extract_base_radiomics.py \
+    --image_dir "${IMAGE_DIR_TEST}" \
+    --mask_dir "${MASK_DIR_TEST}" \
+    --label_json "${LABEL_JSON_TEST}" \
+    --output_csv "${TEST_FEAT_CSV}" \
+    --skip_fail
+fi
 
 # ============================================================
 # 阶段 2: 构建二分类任务 CSV
 # ============================================================
-echo "===== [3/5] 构建训练集任务 CSV ====="
-python binary_class/build_binary_task_csv.py \
-  --base_features_csv "${BASE_FEAT_DIR}/train_base_features.csv" \
-  --label_json "${LABEL_JSON_TRAIN}" \
-  --task "${TASK}" \
-  --output_csv "${TASK_CSV_DIR}/train_BM.csv"
+if [ -f "${TRAIN_TASK_CSV}" ]; then
+  echo "===== [3/5] 训练集任务 CSV 已存在，跳过 ====="
+else
+  echo "===== [3/5] 构建训练集任务 CSV ====="
+  python binary_class/build_binary_task_csv.py \
+    --base_features_csv "${TRAIN_FEAT_CSV}" \
+    --label_json "${LABEL_JSON_TRAIN}" \
+    --task "${TASK}" \
+    --output_csv "${TRAIN_TASK_CSV}"
+fi
 
-echo "===== [4/5] 构建测试集任务 CSV ====="
-python binary_class/build_binary_task_csv.py \
-  --base_features_csv "${BASE_FEAT_DIR}/test_base_features.csv" \
-  --label_json "${LABEL_JSON_TEST}" \
-  --task "${TASK}" \
-  --output_csv "${TASK_CSV_DIR}/test_BM.csv"
+if [ -f "${TEST_TASK_CSV}" ]; then
+  echo "===== [4/5] 测试集任务 CSV 已存在，跳过 ====="
+else
+  echo "===== [4/5] 构建测试集任务 CSV ====="
+  python binary_class/build_binary_task_csv.py \
+    --base_features_csv "${TEST_FEAT_CSV}" \
+    --label_json "${LABEL_JSON_TEST}" \
+    --task "${TASK}" \
+    --output_csv "${TEST_TASK_CSV}"
+fi
 
 # ============================================================
 # 阶段 3: 训练 + 评估
 # ============================================================
 echo "===== [5/5] 训练二分类模型 ====="
+# 如需强制重新训练，先删除 MODEL_DIR: rm -rf "${MODEL_DIR}"
 python -m binary_class.train_binary_task_resampled \
-  --train_csv "${TASK_CSV_DIR}/train_BM.csv" \
-  --test_csv "${TASK_CSV_DIR}/test_BM.csv" \
+  --train_csv "${TRAIN_TASK_CSV}" \
+  --test_csv "${TEST_TASK_CSV}" \
   --test_names BM_test \
   --save_dir "${MODEL_DIR}" \
   --eval_metric "${EVAL_METRIC}" \
