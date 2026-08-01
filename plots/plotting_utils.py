@@ -449,10 +449,21 @@ def reconstruct_X_explain(
 
 
 def load_shap_values(shap_values_csv: str) -> pd.DataFrame:
+    """Load a sample-level SHAP values CSV, dropping non-feature ID columns.
+
+    Some producers (e.g. shap_analyze_autogluon_fixed.py / _assets.py) prepend a
+    sample identifier column ("filename" or "sample_id") to the SHAP matrix so
+    rows can be traced back to source samples.  Downstream plotting only needs
+    the pure feature columns, so those ID columns are removed here to keep all
+    consumers (beeswarm batch, etc.) working unchanged.
+    """
     pd_mod = _require_pandas()
     shap_df = pd_mod.read_csv(shap_values_csv)
     if len(shap_df.columns) > 0 and shap_df.columns[0].lower().startswith("unnamed"):
         shap_df = shap_df.drop(columns=[shap_df.columns[0]])
+    id_cols = [c for c in ("filename", "sample_id") if c in shap_df.columns]
+    if id_cols:
+        shap_df = shap_df.drop(columns=id_cols)
     return shap_df
 
 

@@ -296,7 +296,13 @@ def main() -> None:
         }
 
         model_output_file = os.path.join(output_dir, f"{model_name}_shap_values.csv")
-        shap_df.to_csv(model_output_file, index=False)
+        shap_df_out = shap_df.copy()
+        if sample_ids_explain is not None:
+            try:
+                shap_df_out.insert(0, "filename", sample_ids_explain.loc[shap_df.index].astype(str).to_numpy())
+            except Exception as e:
+                print(f"  Warning: could not attach sample filenames to SHAP values: {e}")
+        shap_df_out.to_csv(model_output_file, index=False)
         print(f"  Saved SHAP values to: {model_output_file}")
 
         mean_abs_shap = shap_df.abs().mean().sort_values(ascending=False)
@@ -379,7 +385,13 @@ def main() -> None:
                 feature_names = [f"feature_{i}" for i in range(ensemble_shap.shape[1])]
             ensemble_shap_df = pd_mod.DataFrame(ensemble_shap, columns=feature_names, index=X_explain.index)
             ensemble_file = os.path.join(output_dir, "WeightedEnsemble_L3_shap_values.csv")
-            ensemble_shap_df.to_csv(ensemble_file, index=False)
+            ensemble_shap_df_out = ensemble_shap_df.copy()
+            if sample_ids_explain is not None:
+                try:
+                    ensemble_shap_df_out.insert(0, "filename", sample_ids_explain.loc[ensemble_shap_df.index].astype(str).to_numpy())
+                except Exception as e:
+                    print(f"  Warning: could not attach sample filenames to ensemble SHAP values: {e}")
+            ensemble_shap_df_out.to_csv(ensemble_file, index=False)
             print(f"Saved ensemble SHAP values to: {ensemble_file}")
 
             ensemble_importance = ensemble_shap_df.abs().mean().sort_values(ascending=False)
