@@ -26,9 +26,11 @@
 
 - 所有 `waterfall` 图保存在 `<output_dir>/waterfall/`。
 - 所有 `compact_shap_bar` 图保存在 `<output_dir>/compact_shap_bar/`。
+- 每个样本全部特征的 SHAP 贡献值（一行 = 该样本，首列为 filename，与 fixed 版
+  `*_shap_values.csv` 同构）保存为 `<output_dir>/shap_values/<basename>_shap_values.csv`。
 - 无论单图模式还是批量模式，输出文件名都直接使用原图 basename（不再附加模型名或图类型前缀）。
-- 如果一次解释多个模型，则会在 `waterfall/` 和 `compact_shap_bar/` 下按模型名额外创建子目录，
-  避免不同模型的同名结果互相覆盖。
+- 如果一次解释多个模型，则会在 `waterfall/`、`compact_shap_bar/` 和 `shap_values/`
+  下按模型名额外创建子目录，避免不同模型的同名结果互相覆盖。
 
 这样设计的目的，是让局部 SHAP 图的文件名与原图样本一一对应，同时保持多模型导出时的路径稳定。
 """
@@ -380,24 +382,28 @@ def _build_output_paths(
     *,
     batch_mode: bool,
     multi_model: bool,
-) -> tuple[str, str, str, str]:
+) -> tuple[str, str, str, str, str]:
     waterfall_dir = os.path.join(output_dir, "waterfall")
     compact_bar_dir = os.path.join(output_dir, "compact_shap_bar")
+    shap_values_dir = os.path.join(output_dir, "shap_values")
 
     if multi_model:
         waterfall_dir = os.path.join(waterfall_dir, model_name)
         compact_bar_dir = os.path.join(compact_bar_dir, model_name)
+        shap_values_dir = os.path.join(shap_values_dir, model_name)
 
     os.makedirs(waterfall_dir, exist_ok=True)
     os.makedirs(compact_bar_dir, exist_ok=True)
+    os.makedirs(shap_values_dir, exist_ok=True)
 
     target_tag = _safe_token(target_name)
     waterfall_path = os.path.join(waterfall_dir, f"{target_tag}.png")
     waterfall_textless_path = os.path.join(waterfall_dir, f"{target_tag}_textless.svg")
     compact_bar_path = os.path.join(compact_bar_dir, f"{target_tag}.png")
     compact_bar_textless_path = os.path.join(compact_bar_dir, f"{target_tag}_textless.svg")
+    shap_values_path = os.path.join(shap_values_dir, f"{target_tag}_shap_values.csv")
 
-    return waterfall_path, waterfall_textless_path, compact_bar_path, compact_bar_textless_path
+    return waterfall_path, waterfall_textless_path, compact_bar_path, compact_bar_textless_path, shap_values_path
 
 
 def _save_shap_plots_for_target(
@@ -461,7 +467,13 @@ def _save_shap_plots_for_target(
             model_proba = predictor.predict_proba(x_background)
 
         base_value = float(np.mean(_positive_probability(model_proba)))
-        waterfall_path, waterfall_textless_path, compact_bar_path, compact_bar_textless_path = _build_output_paths(
+        (
+            waterfall_path,
+            waterfall_textless_path,
+            compact_bar_path,
+            compact_bar_textless_path,
+            shap_values_path,
+        ) = _build_output_paths(
             output_dir,
             model_name,
             target_name,
@@ -506,6 +518,12 @@ def _save_shap_plots_for_target(
 
         print(f"Saved waterfall: {', '.join(waterfall_saved)}")
         print(f"Saved compact bar: {', '.join(compact_bar_saved)}")
+
+        shap_values_out = shap_df.copy()
+        shap_values_out.insert(0, "filename", str(target_name))
+        shap_values_out.insert(1, "label", int(y_explain.iloc[0]))
+        shap_values_out.to_csv(shap_values_path, index=False)
+        print(f"Saved full-feature SHAP values: {shap_values_path}")
 
 
 def main(argv: Optional[Sequence[str]] = None) -> None:
