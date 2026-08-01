@@ -533,7 +533,9 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
     batch_mode = args.filename_list is not None and str(args.filename_list).strip() != ""
 
     print(f"Loading predictor from: {args.model_dir}")
-    predictor = __import__("autogluon.tabular", fromlist=["TabularPredictor"]).TabularPredictor.load(args.model_dir)
+    predictor = __import__("autogluon.tabular", fromlist=["TabularPredictor"]).TabularPredictor.load(
+        args.model_dir, require_py_version_match=False
+    )
 
     print(f"Loading training data from: {args.train_csv}")
     raw_df = pd.read_csv(args.train_csv)

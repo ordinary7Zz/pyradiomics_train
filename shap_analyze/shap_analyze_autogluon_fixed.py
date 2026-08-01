@@ -185,7 +185,7 @@ def main() -> None:
     predictor_cls = _require_tabular_predictor()
 
     print(f"Loading predictor from: {args.model_dir}")
-    predictor = predictor_cls.load(args.model_dir)
+    predictor = predictor_cls.load(args.model_dir, require_py_version_match=False)
 
     print(f"Loading training data from: {args.train_csv}")
     raw_df = pd_mod.read_csv(args.train_csv)
