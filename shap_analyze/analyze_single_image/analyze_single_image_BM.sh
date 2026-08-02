@@ -68,28 +68,28 @@ benign_bad_masks=(
 
 # Malignant good mask
 malignant_good_masks=(
-  "TN5K_test_003323.jpg"
-  "TN5K_test_002683.jpg"
-  "TN5K_test_003874.jpg"
-  "TN3K_test_0593.jpg"
-  "TN5K_test_002306.jpg"
-  "TN5K_test_000802.jpg"
-  "TN3K_test_0382.jpg"
-  "ThyroidXL_test_00000387_57028F49_0.png"
-  "TN5K_test_003026.jpg"
+#  "TN5K_test_003323.jpg"
+#  "TN5K_test_002683.jpg"
+#  "TN5K_test_003874.jpg"
+#  "TN3K_test_0593.jpg"
+#  "TN5K_test_002306.jpg"
+#  "TN5K_test_000802.jpg"
+#  "TN3K_test_0382.jpg"
+#  "ThyroidXL_test_00000387_57028F49_0.png"
+#  "TN5K_test_003026.jpg"
   "ThyroidXL_test_00000364_B1B830C3_3.png"
 )
 
 # Malignant bad mask
 malignant_bad_masks=(
-  "ThyroidXL_test_00001873_6923593C_2.png"
-  "ThyroidXL_test_00001978_DC398883_0.png"
-  "ThyroidXL_test_00001378_BA5E9CC4_0.png"
-  "ThyroidXL_test_00003932_89B4CFAD_1.png"
-  "TN3K_test_0586.jpg"
-  "ThyroidXL_test_00002838_EDBD208B_2.png"
-  "ThyroidXL_test_00002838_1E638EAB_1.png"
-  "ThyroidXL_test_00002755_F79615B3_0.png"
+#  "ThyroidXL_test_00001873_6923593C_2.png"
+#  "ThyroidXL_test_00001978_DC398883_0.png"
+#  "ThyroidXL_test_00001378_BA5E9CC4_0.png"
+#  "ThyroidXL_test_00003932_89B4CFAD_1.png"
+#  "TN3K_test_0586.jpg"
+#  "ThyroidXL_test_00002838_EDBD208B_2.png"
+#  "ThyroidXL_test_00002838_1E638EAB_1.png"
+#  "ThyroidXL_test_00002755_F79615B3_0.png"
   "ThyroidXL_test_00002838_A9C56A4B_0.png"
 )
 
