@@ -1,0 +1,2 @@
+dataset,csv,n_rows,n_neg,n_pos,auroc,auprc,acc,prec,recall,f1,specificity,ece
+val_fold,binary_class/new_code/runs/lnm_ag_cv/fold_04/val_task.csv,913,625,288,0.5641055555555556,0.3996515788627354,0.6900328587075575,0.5925925925925926,0.05555555555555555,0.10158730158730159,0.9824,0.1978611442616703

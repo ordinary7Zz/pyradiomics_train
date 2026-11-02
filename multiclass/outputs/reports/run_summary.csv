@@ -1,0 +1,2 @@
+task,train_task_csv,test_task_csv,model_dir,training_mode
+tirads,/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/multiclass/outputs/task_csvs/train_tirads.csv,/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/multiclass/outputs/task_csvs/test_tirads.csv,/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/multiclass/outputs/models/tirads,resampled

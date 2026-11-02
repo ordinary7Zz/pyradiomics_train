@@ -1,0 +1,5 @@
+stage,n_rows,n_neg,n_pos,pos_ratio,imbalance_ratio_neg_to_pos
+train_original,128,72,56,0.4375,1.2857142857142858
+fit_input_before_resample,128,72,56,0.4375,1.2857142857142858
+fit_train_after_resample,128,72,56,0.4375,1.2857142857142858
+test::val_fold,71,64,7,0.09859154929577464,9.142857142857142

@@ -1,0 +1,1190 @@
+Verbosity: 2 (Standard Logging)
+=================== System Info ===================
+AutoGluon Version:  1.4.0
+Python Version:     3.11.15
+Operating System:   Linux
+Platform Machine:   x86_64
+Platform Version:   #40-Ubuntu SMP PREEMPT_DYNAMIC Tue Nov 14 14:18:00 UTC 2023
+CPU Count:          20
+Memory Avail:       37.30 GB / 251.58 GB (14.8%)
+Disk Space Avail:   116869.68 GB / 185849.28 GB (62.9%)
+===================================================
+Presets specified: ['best_quality']
+Setting dynamic_stacking from 'auto' to True. Reason: Enable dynamic_stacking when use_bag_holdout is disabled. (use_bag_holdout=False)
+Stack configuration (auto_stack=True): num_stack_levels=1, num_bag_folds=8, num_bag_sets=1
+DyStack is enabled (dynamic_stacking=True). AutoGluon will try to determine whether the input data is affected by stacked overfitting and enable or disable stacking as a consequence.
+	This is used to identify the optimal `num_stack_levels` value. Copies of AutoGluon will be fit on subsets of the data. Then holdout validation data is used to detect stacked overfitting.
+	Running DyStack for up to 900s of the 3600s of remaining time (25%).
+		Context path: "/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/new_code/runs/lnm_ag_cv/fold_00/ag_model/ds_sub_fit/sub_fit_ho"
+Running DyStack sub-fit ...
+Beginning AutoGluon training ... Time limit = 900s
+AutoGluon will save models to "/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/new_code/runs/lnm_ag_cv/fold_00/ag_model/ds_sub_fit/sub_fit_ho"
+Train Data Rows:    3360
+Train Data Columns: 920
+Label Column:       label
+Problem Type:       binary
+Preprocessing data ...
+Selected class <--> label mapping:  class 1 = 1, class 0 = 0
+Using Feature Generators to preprocess the data ...
+Fitting AutoMLPipelineFeatureGenerator...
+	Available Memory:                    36947.31 MB
+	Train Data (Original)  Memory Usage: 23.84 MB (0.1% of available memory)
+	Inferring data type of each feature based on column values. Set feature_metadata_in to manually specify special dtypes of the features.
+	Stage 1 Generators:
+		Fitting AsTypeFeatureGenerator...
+	Stage 2 Generators:
+		Fitting FillNaFeatureGenerator...
+	Stage 3 Generators:
+		Fitting IdentityFeatureGenerator...
+		Fitting CategoryFeatureGenerator...
+			Fitting CategoryMemoryMinimizeFeatureGenerator...
+	Stage 4 Generators:
+		Fitting DropUniqueFeatureGenerator...
+	Stage 5 Generators:
+		Fitting DropDuplicatesFeatureGenerator...
+	Unused Original Features (Count: 143): ['original_firstorder_TotalEnergy', 'original_glszm_GrayLevelNonUniformity', 'original_glszm_GrayLevelNonUniformityNormalized', 'original_glszm_GrayLevelVariance', 'original_glszm_HighGrayLevelZoneEmphasis', 'original_glszm_LargeAreaEmphasis', 'original_glszm_LargeAreaHighGrayLevelEmphasis', 'original_glszm_LowGrayLevelZoneEmphasis', 'original_glszm_SizeZoneNonUniformity', 'original_glszm_SizeZoneNonUniformityNormalized', 'original_glszm_SmallAreaEmphasis', 'original_glszm_SmallAreaLowGrayLevelEmphasis', 'original_glszm_ZonePercentage', 'original_glszm_ZoneVariance', 'wavelet-H_firstorder_TotalEnergy', 'wavelet-H_glszm_GrayLevelNonUniformity', 'wavelet-H_glszm_GrayLevelNonUniformityNormalized', 'wavelet-H_glszm_GrayLevelVariance', 'wavelet-H_glszm_HighGrayLevelZoneEmphasis', 'wavelet-H_glszm_LargeAreaEmphasis', 'wavelet-H_glszm_LargeAreaHighGrayLevelEmphasis', 'wavelet-H_glszm_LowGrayLevelZoneEmphasis', 'wavelet-H_glszm_SizeZoneNonUniformity', 'wavelet-H_glszm_SizeZoneNonUniformityNormalized', 'wavelet-H_glszm_SmallAreaEmphasis', 'wavelet-H_glszm_SmallAreaLowGrayLevelEmphasis', 'wavelet-H_glszm_ZonePercentage', 'wavelet-H_glszm_ZoneVariance', 'wavelet-L_firstorder_TotalEnergy', 'wavelet-L_glszm_GrayLevelNonUniformity', 'wavelet-L_glszm_GrayLevelNonUniformityNormalized', 'wavelet-L_glszm_GrayLevelVariance', 'wavelet-L_glszm_HighGrayLevelZoneEmphasis', 'wavelet-L_glszm_LargeAreaEmphasis', 'wavelet-L_glszm_LargeAreaHighGrayLevelEmphasis', 'wavelet-L_glszm_LowGrayLevelZoneEmphasis', 'wavelet-L_glszm_SizeZoneNonUniformity', 'wavelet-L_glszm_SizeZoneNonUniformityNormalized', 'wavelet-L_glszm_SmallAreaEmphasis', 'wavelet-L_glszm_SmallAreaLowGrayLevelEmphasis', 'wavelet-L_glszm_ZonePercentage', 'wavelet-L_glszm_ZoneVariance', 'log-sigma-2-0-mm-3D_firstorder_TotalEnergy', 'log-sigma-2-0-mm-3D_glszm_GrayLevelNonUniformity', 'log-sigma-2-0-mm-3D_glszm_GrayLevelNonUniformityNormalized', 'log-sigma-2-0-mm-3D_glszm_GrayLevelVariance', 'log-sigma-2-0-mm-3D_glszm_HighGrayLevelZoneEmphasis', 'log-sigma-2-0-mm-3D_glszm_LargeAreaEmphasis', 'log-sigma-2-0-mm-3D_glszm_LargeAreaHighGrayLevelEmphasis', 'log-sigma-2-0-mm-3D_glszm_LowGrayLevelZoneEmphasis', 'log-sigma-2-0-mm-3D_glszm_SizeZoneNonUniformity', 'log-sigma-2-0-mm-3D_glszm_SizeZoneNonUniformityNormalized', 'log-sigma-2-0-mm-3D_glszm_SmallAreaEmphasis', 'log-sigma-2-0-mm-3D_glszm_SmallAreaLowGrayLevelEmphasis', 'log-sigma-2-0-mm-3D_glszm_ZonePercentage', 'log-sigma-2-0-mm-3D_glszm_ZoneVariance', 'log-sigma-4-0-mm-3D_firstorder_TotalEnergy', 'log-sigma-4-0-mm-3D_glszm_GrayLevelNonUniformity', 'log-sigma-4-0-mm-3D_glszm_GrayLevelNonUniformityNormalized', 'log-sigma-4-0-mm-3D_glszm_GrayLevelVariance', 'log-sigma-4-0-mm-3D_glszm_HighGrayLevelZoneEmphasis', 'log-sigma-4-0-mm-3D_glszm_LargeAreaEmphasis', 'log-sigma-4-0-mm-3D_glszm_LargeAreaHighGrayLevelEmphasis', 'log-sigma-4-0-mm-3D_glszm_LowGrayLevelZoneEmphasis', 'log-sigma-4-0-mm-3D_glszm_SizeZoneNonUniformity', 'log-sigma-4-0-mm-3D_glszm_SizeZoneNonUniformityNormalized', 'log-sigma-4-0-mm-3D_glszm_SmallAreaEmphasis', 'log-sigma-4-0-mm-3D_glszm_SmallAreaLowGrayLevelEmphasis', 'log-sigma-4-0-mm-3D_glszm_ZonePercentage', 'log-sigma-4-0-mm-3D_glszm_ZoneVariance', 'square_firstorder_TotalEnergy', 'square_glszm_GrayLevelNonUniformity', 'square_glszm_GrayLevelNonUniformityNormalized', 'square_glszm_GrayLevelVariance', 'square_glszm_HighGrayLevelZoneEmphasis', 'square_glszm_LargeAreaEmphasis', 'square_glszm_LargeAreaHighGrayLevelEmphasis', 'square_glszm_LowGrayLevelZoneEmphasis', 'square_glszm_SizeZoneNonUniformity', 'square_glszm_SizeZoneNonUniformityNormalized', 'square_glszm_SmallAreaEmphasis', 'square_glszm_SmallAreaLowGrayLevelEmphasis', 'square_glszm_ZonePercentage', 'square_glszm_ZoneVariance', 'squareroot_firstorder_TotalEnergy', 'squareroot_glszm_GrayLevelNonUniformity', 'squareroot_glszm_GrayLevelNonUniformityNormalized', 'squareroot_glszm_GrayLevelVariance', 'squareroot_glszm_HighGrayLevelZoneEmphasis', 'squareroot_glszm_LargeAreaEmphasis', 'squareroot_glszm_LargeAreaHighGrayLevelEmphasis', 'squareroot_glszm_LowGrayLevelZoneEmphasis', 'squareroot_glszm_SizeZoneNonUniformity', 'squareroot_glszm_SizeZoneNonUniformityNormalized', 'squareroot_glszm_SmallAreaEmphasis', 'squareroot_glszm_SmallAreaLowGrayLevelEmphasis', 'squareroot_glszm_ZonePercentage', 'squareroot_glszm_ZoneVariance', 'logarithm_firstorder_TotalEnergy', 'logarithm_glszm_GrayLevelNonUniformity', 'logarithm_glszm_GrayLevelNonUniformityNormalized', 'logarithm_glszm_GrayLevelVariance', 'logarithm_glszm_HighGrayLevelZoneEmphasis', 'logarithm_glszm_LargeAreaEmphasis', 'logarithm_glszm_LargeAreaHighGrayLevelEmphasis', 'logarithm_glszm_LowGrayLevelZoneEmphasis', 'logarithm_glszm_SizeZoneNonUniformity', 'logarithm_glszm_SizeZoneNonUniformityNormalized', 'logarithm_glszm_SmallAreaEmphasis', 'logarithm_glszm_SmallAreaLowGrayLevelEmphasis', 'logarithm_glszm_ZonePercentage', 'logarithm_glszm_ZoneVariance', 'exponential_firstorder_TotalEnergy', 'exponential_glszm_GrayLevelNonUniformity', 'exponential_glszm_GrayLevelNonUniformityNormalized', 'exponential_glszm_GrayLevelVariance', 'exponential_glszm_HighGrayLevelZoneEmphasis', 'exponential_glszm_LargeAreaEmphasis', 'exponential_glszm_LargeAreaHighGrayLevelEmphasis', 'exponential_glszm_LargeAreaLowGrayLevelEmphasis', 'exponential_glszm_LowGrayLevelZoneEmphasis', 'exponential_glszm_SizeZoneNonUniformity', 'exponential_glszm_SizeZoneNonUniformityNormalized', 'exponential_glszm_SmallAreaEmphasis', 'exponential_glszm_SmallAreaHighGrayLevelEmphasis', 'exponential_glszm_SmallAreaLowGrayLevelEmphasis', 'exponential_glszm_ZoneEntropy', 'exponential_glszm_ZonePercentage', 'exponential_glszm_ZoneVariance', 'gradient_firstorder_TotalEnergy', 'gradient_glszm_GrayLevelNonUniformity', 'gradient_glszm_GrayLevelNonUniformityNormalized', 'gradient_glszm_GrayLevelVariance', 'gradient_glszm_HighGrayLevelZoneEmphasis', 'gradient_glszm_LargeAreaEmphasis', 'gradient_glszm_LargeAreaHighGrayLevelEmphasis', 'gradient_glszm_LowGrayLevelZoneEmphasis', 'gradient_glszm_SizeZoneNonUniformity', 'gradient_glszm_SizeZoneNonUniformityNormalized', 'gradient_glszm_SmallAreaEmphasis', 'gradient_glszm_SmallAreaLowGrayLevelEmphasis', 'gradient_glszm_ZonePercentage', 'gradient_glszm_ZoneVariance']
+		These features were not used to generate any of the output features. Add a feature generator compatible with these features to utilize them.
+		Features can also be unused if they carry very little information, such as being categorical but having almost entirely unique values or being duplicates of other features.
+		These features do not need to be present at inference time.
+		('float', []) : 143 | ['original_firstorder_TotalEnergy', 'original_glszm_GrayLevelNonUniformity', 'original_glszm_GrayLevelNonUniformityNormalized', 'original_glszm_GrayLevelVariance', 'original_glszm_HighGrayLevelZoneEmphasis', ...]
+	Types of features in original data (raw dtype, special dtypes):
+		('float', [])  : 776 | ['original_shape2D_Elongation', 'original_shape2D_MajorAxisLength', 'original_shape2D_MaximumDiameter', 'original_shape2D_MeshSurface', 'original_shape2D_MinorAxisLength', ...]
+		('object', []) :   1 | ['patient_id']
+	Types of features in processed data (raw dtype, special dtypes):
+		('category', []) :   1 | ['patient_id']
+		('float', [])    : 776 | ['original_shape2D_Elongation', 'original_shape2D_MajorAxisLength', 'original_shape2D_MaximumDiameter', 'original_shape2D_MeshSurface', 'original_shape2D_MinorAxisLength', ...]
+	28.0s = Fit runtime
+	777 features in original data used to generate 777 features in processed data.
+	Train Data (Processed) Memory Usage: 19.90 MB (0.1% of available memory)
+Data preprocessing and feature engineering runtime = 56.65s ...
+AutoGluon will gauge predictive performance using evaluation metric: 'roc_auc'
+	This metric expects predicted probabilities rather than predicted class labels, so you'll need to use predict_proba() instead of predict()
+	To change this, specify the eval_metric parameter of Predictor()
+User-specified model hyperparameters to be fit:
+{
+	'GBM': [{}],
+	'CAT': [{}],
+	'XGB': [{}],
+}
+AutoGluon will fit 2 stack levels (L1 to L2) ...
+Fitting 3 L1 models, fit_strategy="sequential" ...
+Fitting model: LightGBM_BAG_L1 ... Training model for up to 562.08s of the 843.34s of remaining time.
+Will use sequential fold fitting strategy because import of ray failed. Reason: ray is required to train folds in parallel for TabularPredictor or HPO for MultiModalPredictor. A quick tip is to install via `pip install "ray>=2.10.0,<2.45.0"`
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9751	 = Validation score   (roc_auc)
+	42.54s	 = Training   runtime
+	0.26s	 = Validation runtime
+Fitting model: CatBoost_BAG_L1 ... Training model for up to 518.05s of the 799.30s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	Ran out of time, early stopping on iteration 1795.
+	0.9995	 = Validation score   (roc_auc)
+	200.82s	 = Training   runtime
+	0.28s	 = Validation runtime
+Fitting model: XGBoost_BAG_L1 ... Training model for up to 316.02s of the 597.27s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	Warning: Exception caused XGBoost_BAG_L1 to fail during training... Skipping this model.
+		module 'numpy' has no attribute 'in1d'
+Detailed Traceback:
+Traceback (most recent call last):
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/trainer/abstract_trainer.py", line 2171, in _train_and_save
+    model = self._train_single(**model_fit_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/trainer/abstract_trainer.py", line 2055, in _train_single
+    model = model.fit(X=X, y=y, X_val=X_val, y_val=y_val, X_test=X_test, y_test=y_test, total_resources=total_resources, **model_fit_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 1068, in fit
+    out = self._fit(**kwargs)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/stacker_ensemble_model.py", line 270, in _fit
+    return super()._fit(X=X, y=y, time_limit=time_limit, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/bagged_ensemble_model.py", line 389, in _fit
+    self._fit_folds(
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/bagged_ensemble_model.py", line 868, in _fit_folds
+    fold_fitting_strategy.after_all_folds_scheduled()
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 350, in after_all_folds_scheduled
+    self._fit_fold_model(job)
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 355, in _fit_fold_model
+    fold_model = self._fit(self.model_base, time_start_fold, time_limit_fold, fold_ctx, self.model_base_kwargs)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 391, in _fit
+    fold_model.fit(X=X_fold, y=y_fold, X_val=X_val_fold, y_val=y_val_fold, time_limit=time_limit_fold, num_cpus=num_cpus, num_gpus=num_gpus, **kwargs_fold)
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 1068, in fit
+    out = self._fit(**kwargs)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_model.py", line 129, in _fit
+    X_val = self.preprocess(X_val, is_train=False)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 550, in preprocess
+    X = self._preprocess(X, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_model.py", line 74, in _preprocess
+    X = self._ohe_generator.transform(X)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/sklearn/utils/_set_output.py", line 316, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_utils.py", line 155, in transform
+    X_list.append(self.ohe_encs.transform(X[self.cat_cols]))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/sklearn/utils/_set_output.py", line 316, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 526, in transform
+    X_int, X_mask = self._transform(X, handle_unknown=self.handle_unknown)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 263, in _transform
+    diff, valid_mask = _encode_check_unknown(Xi, self.categories_[i], return_mask=True)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 139, in _encode_check_unknown
+    valid_mask = np.in1d(values, uniques)
+                 ^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/numpy/__init__.py", line 792, in __getattr__
+    raise AttributeError(f"module {__name__!r} has no attribute {attr!r}")
+AttributeError: module 'numpy' has no attribute 'in1d'
+Fitting model: WeightedEnsemble_L2 ... Training model for up to 360.00s of the 578.06s of remaining time.
+	Ensemble Weights: {'CatBoost_BAG_L1': 1.0}
+	0.9995	 = Validation score   (roc_auc)
+	0.03s	 = Training   runtime
+	0.0s	 = Validation runtime
+Fitting 3 L2 models, fit_strategy="sequential" ...
+Fitting model: LightGBM_BAG_L2 ... Training model for up to 577.87s of the 577.87s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9994	 = Validation score   (roc_auc)
+	24.3s	 = Training   runtime
+	0.14s	 = Validation runtime
+Fitting model: CatBoost_BAG_L2 ... Training model for up to 552.81s of the 552.80s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9995	 = Validation score   (roc_auc)
+	147.02s	 = Training   runtime
+	0.27s	 = Validation runtime
+Fitting model: XGBoost_BAG_L2 ... Training model for up to 404.99s of the 404.98s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	Warning: Exception caused XGBoost_BAG_L2 to fail during training... Skipping this model.
+		module 'numpy' has no attribute 'in1d'
+Detailed Traceback:
+Traceback (most recent call last):
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/trainer/abstract_trainer.py", line 2171, in _train_and_save
+    model = self._train_single(**model_fit_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/trainer/abstract_trainer.py", line 2055, in _train_single
+    model = model.fit(X=X, y=y, X_val=X_val, y_val=y_val, X_test=X_test, y_test=y_test, total_resources=total_resources, **model_fit_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 1068, in fit
+    out = self._fit(**kwargs)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/stacker_ensemble_model.py", line 270, in _fit
+    return super()._fit(X=X, y=y, time_limit=time_limit, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/bagged_ensemble_model.py", line 389, in _fit
+    self._fit_folds(
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/bagged_ensemble_model.py", line 868, in _fit_folds
+    fold_fitting_strategy.after_all_folds_scheduled()
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 350, in after_all_folds_scheduled
+    self._fit_fold_model(job)
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 355, in _fit_fold_model
+    fold_model = self._fit(self.model_base, time_start_fold, time_limit_fold, fold_ctx, self.model_base_kwargs)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 391, in _fit
+    fold_model.fit(X=X_fold, y=y_fold, X_val=X_val_fold, y_val=y_val_fold, time_limit=time_limit_fold, num_cpus=num_cpus, num_gpus=num_gpus, **kwargs_fold)
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 1068, in fit
+    out = self._fit(**kwargs)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_model.py", line 129, in _fit
+    X_val = self.preprocess(X_val, is_train=False)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 550, in preprocess
+    X = self._preprocess(X, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_model.py", line 74, in _preprocess
+    X = self._ohe_generator.transform(X)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/sklearn/utils/_set_output.py", line 316, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_utils.py", line 155, in transform
+    X_list.append(self.ohe_encs.transform(X[self.cat_cols]))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/sklearn/utils/_set_output.py", line 316, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 526, in transform
+    X_int, X_mask = self._transform(X, handle_unknown=self.handle_unknown)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 263, in _transform
+    diff, valid_mask = _encode_check_unknown(Xi, self.categories_[i], return_mask=True)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 139, in _encode_check_unknown
+    valid_mask = np.in1d(values, uniques)
+                 ^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/numpy/__init__.py", line 792, in __getattr__
+    raise AttributeError(f"module {__name__!r} has no attribute {attr!r}")
+AttributeError: module 'numpy' has no attribute 'in1d'
+Fitting model: WeightedEnsemble_L3 ... Training model for up to 360.00s of the 386.50s of remaining time.
+	Ensemble Weights: {'CatBoost_BAG_L1': 0.875, 'CatBoost_BAG_L2': 0.125}
+	0.9995	 = Validation score   (roc_auc)
+	0.05s	 = Training   runtime
+	0.0s	 = Validation runtime
+AutoGluon training complete, total runtime = 514.89s ... Best model: WeightedEnsemble_L3 | Estimated inference throughput: 522.2 rows/s (420 batch size)
+TabularPredictor saved. To load, use: predictor = TabularPredictor.load("/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/new_code/runs/lnm_ag_cv/fold_00/ag_model/ds_sub_fit/sub_fit_ho")
+Deleting DyStack predictor artifacts (clean_up_fits=True) ...
+Leaderboard on holdout data (DyStack):
+                 model  score_holdout  score_val eval_metric  pred_time_test  pred_time_val    fit_time  pred_time_test_marginal  pred_time_val_marginal  fit_time_marginal  stack_level  can_infer  fit_order
+0      CatBoost_BAG_L1       0.998866   0.999518     roc_auc        0.294088       0.276828  200.820386                 0.294088                0.276828         200.820386            1       True          2
+1  WeightedEnsemble_L2       0.998866   0.999518     roc_auc        0.296687       0.277558  200.850403                 0.002599                0.000730           0.030017            2       True          3
+2  WeightedEnsemble_L3       0.998866   0.999519     roc_auc        1.069728       0.804921  390.427099                 0.002616                0.000670           0.046849            3       True          6
+3      LightGBM_BAG_L2       0.998785   0.999417     roc_auc        1.592424       0.675294  267.654757                 0.675780                0.141206          24.299051            2       True          4
+4      CatBoost_BAG_L2       0.998380   0.999476     roc_auc        1.067112       0.804251  390.380250                 0.150468                0.270162         147.024543            2       True          5
+5      LightGBM_BAG_L1       0.981562   0.975106     roc_auc        0.622556       0.257261   42.535321                 0.622556                0.257261          42.535321            1       True          1
+	0	 = Optimal   num_stack_levels (Stacked Overfitting Occurred: True)
+	520s	 = DyStack   runtime |	3080s	 = Remaining runtime
+Starting main fit with num_stack_levels=0.
+	For future fit calls on this dataset, you can skip DyStack to save time: `predictor.fit(..., dynamic_stacking=False, num_stack_levels=0)`
+Beginning AutoGluon training ... Time limit = 3080s
+AutoGluon will save models to "/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/new_code/runs/lnm_ag_cv/fold_00/ag_model"
+Train Data Rows:    3780
+Train Data Columns: 920
+Label Column:       label
+Problem Type:       binary
+Preprocessing data ...
+Selected class <--> label mapping:  class 1 = 1, class 0 = 0
+Using Feature Generators to preprocess the data ...
+Fitting AutoMLPipelineFeatureGenerator...
+	Available Memory:                    33135.74 MB
+	Train Data (Original)  Memory Usage: 26.85 MB (0.1% of available memory)
+	Inferring data type of each feature based on column values. Set feature_metadata_in to manually specify special dtypes of the features.
+	Stage 1 Generators:
+		Fitting AsTypeFeatureGenerator...
+	Stage 2 Generators:
+		Fitting FillNaFeatureGenerator...
+	Stage 3 Generators:
+		Fitting IdentityFeatureGenerator...
+		Fitting CategoryFeatureGenerator...
+			Fitting CategoryMemoryMinimizeFeatureGenerator...
+	Stage 4 Generators:
+		Fitting DropUniqueFeatureGenerator...
+	Stage 5 Generators:
+		Fitting DropDuplicatesFeatureGenerator...
+	Unused Original Features (Count: 143): ['original_firstorder_TotalEnergy', 'original_glszm_GrayLevelNonUniformity', 'original_glszm_GrayLevelNonUniformityNormalized', 'original_glszm_GrayLevelVariance', 'original_glszm_HighGrayLevelZoneEmphasis', 'original_glszm_LargeAreaEmphasis', 'original_glszm_LargeAreaHighGrayLevelEmphasis', 'original_glszm_LowGrayLevelZoneEmphasis', 'original_glszm_SizeZoneNonUniformity', 'original_glszm_SizeZoneNonUniformityNormalized', 'original_glszm_SmallAreaEmphasis', 'original_glszm_SmallAreaLowGrayLevelEmphasis', 'original_glszm_ZonePercentage', 'original_glszm_ZoneVariance', 'wavelet-H_firstorder_TotalEnergy', 'wavelet-H_glszm_GrayLevelNonUniformity', 'wavelet-H_glszm_GrayLevelNonUniformityNormalized', 'wavelet-H_glszm_GrayLevelVariance', 'wavelet-H_glszm_HighGrayLevelZoneEmphasis', 'wavelet-H_glszm_LargeAreaEmphasis', 'wavelet-H_glszm_LargeAreaHighGrayLevelEmphasis', 'wavelet-H_glszm_LowGrayLevelZoneEmphasis', 'wavelet-H_glszm_SizeZoneNonUniformity', 'wavelet-H_glszm_SizeZoneNonUniformityNormalized', 'wavelet-H_glszm_SmallAreaEmphasis', 'wavelet-H_glszm_SmallAreaLowGrayLevelEmphasis', 'wavelet-H_glszm_ZonePercentage', 'wavelet-H_glszm_ZoneVariance', 'wavelet-L_firstorder_TotalEnergy', 'wavelet-L_glszm_GrayLevelNonUniformity', 'wavelet-L_glszm_GrayLevelNonUniformityNormalized', 'wavelet-L_glszm_GrayLevelVariance', 'wavelet-L_glszm_HighGrayLevelZoneEmphasis', 'wavelet-L_glszm_LargeAreaEmphasis', 'wavelet-L_glszm_LargeAreaHighGrayLevelEmphasis', 'wavelet-L_glszm_LowGrayLevelZoneEmphasis', 'wavelet-L_glszm_SizeZoneNonUniformity', 'wavelet-L_glszm_SizeZoneNonUniformityNormalized', 'wavelet-L_glszm_SmallAreaEmphasis', 'wavelet-L_glszm_SmallAreaLowGrayLevelEmphasis', 'wavelet-L_glszm_ZonePercentage', 'wavelet-L_glszm_ZoneVariance', 'log-sigma-2-0-mm-3D_firstorder_TotalEnergy', 'log-sigma-2-0-mm-3D_glszm_GrayLevelNonUniformity', 'log-sigma-2-0-mm-3D_glszm_GrayLevelNonUniformityNormalized', 'log-sigma-2-0-mm-3D_glszm_GrayLevelVariance', 'log-sigma-2-0-mm-3D_glszm_HighGrayLevelZoneEmphasis', 'log-sigma-2-0-mm-3D_glszm_LargeAreaEmphasis', 'log-sigma-2-0-mm-3D_glszm_LargeAreaHighGrayLevelEmphasis', 'log-sigma-2-0-mm-3D_glszm_LowGrayLevelZoneEmphasis', 'log-sigma-2-0-mm-3D_glszm_SizeZoneNonUniformity', 'log-sigma-2-0-mm-3D_glszm_SizeZoneNonUniformityNormalized', 'log-sigma-2-0-mm-3D_glszm_SmallAreaEmphasis', 'log-sigma-2-0-mm-3D_glszm_SmallAreaLowGrayLevelEmphasis', 'log-sigma-2-0-mm-3D_glszm_ZonePercentage', 'log-sigma-2-0-mm-3D_glszm_ZoneVariance', 'log-sigma-4-0-mm-3D_firstorder_TotalEnergy', 'log-sigma-4-0-mm-3D_glszm_GrayLevelNonUniformity', 'log-sigma-4-0-mm-3D_glszm_GrayLevelNonUniformityNormalized', 'log-sigma-4-0-mm-3D_glszm_GrayLevelVariance', 'log-sigma-4-0-mm-3D_glszm_HighGrayLevelZoneEmphasis', 'log-sigma-4-0-mm-3D_glszm_LargeAreaEmphasis', 'log-sigma-4-0-mm-3D_glszm_LargeAreaHighGrayLevelEmphasis', 'log-sigma-4-0-mm-3D_glszm_LowGrayLevelZoneEmphasis', 'log-sigma-4-0-mm-3D_glszm_SizeZoneNonUniformity', 'log-sigma-4-0-mm-3D_glszm_SizeZoneNonUniformityNormalized', 'log-sigma-4-0-mm-3D_glszm_SmallAreaEmphasis', 'log-sigma-4-0-mm-3D_glszm_SmallAreaLowGrayLevelEmphasis', 'log-sigma-4-0-mm-3D_glszm_ZonePercentage', 'log-sigma-4-0-mm-3D_glszm_ZoneVariance', 'square_firstorder_TotalEnergy', 'square_glszm_GrayLevelNonUniformity', 'square_glszm_GrayLevelNonUniformityNormalized', 'square_glszm_GrayLevelVariance', 'square_glszm_HighGrayLevelZoneEmphasis', 'square_glszm_LargeAreaEmphasis', 'square_glszm_LargeAreaHighGrayLevelEmphasis', 'square_glszm_LowGrayLevelZoneEmphasis', 'square_glszm_SizeZoneNonUniformity', 'square_glszm_SizeZoneNonUniformityNormalized', 'square_glszm_SmallAreaEmphasis', 'square_glszm_SmallAreaLowGrayLevelEmphasis', 'square_glszm_ZonePercentage', 'square_glszm_ZoneVariance', 'squareroot_firstorder_TotalEnergy', 'squareroot_glszm_GrayLevelNonUniformity', 'squareroot_glszm_GrayLevelNonUniformityNormalized', 'squareroot_glszm_GrayLevelVariance', 'squareroot_glszm_HighGrayLevelZoneEmphasis', 'squareroot_glszm_LargeAreaEmphasis', 'squareroot_glszm_LargeAreaHighGrayLevelEmphasis', 'squareroot_glszm_LowGrayLevelZoneEmphasis', 'squareroot_glszm_SizeZoneNonUniformity', 'squareroot_glszm_SizeZoneNonUniformityNormalized', 'squareroot_glszm_SmallAreaEmphasis', 'squareroot_glszm_SmallAreaLowGrayLevelEmphasis', 'squareroot_glszm_ZonePercentage', 'squareroot_glszm_ZoneVariance', 'logarithm_firstorder_TotalEnergy', 'logarithm_glszm_GrayLevelNonUniformity', 'logarithm_glszm_GrayLevelNonUniformityNormalized', 'logarithm_glszm_GrayLevelVariance', 'logarithm_glszm_HighGrayLevelZoneEmphasis', 'logarithm_glszm_LargeAreaEmphasis', 'logarithm_glszm_LargeAreaHighGrayLevelEmphasis', 'logarithm_glszm_LowGrayLevelZoneEmphasis', 'logarithm_glszm_SizeZoneNonUniformity', 'logarithm_glszm_SizeZoneNonUniformityNormalized', 'logarithm_glszm_SmallAreaEmphasis', 'logarithm_glszm_SmallAreaLowGrayLevelEmphasis', 'logarithm_glszm_ZonePercentage', 'logarithm_glszm_ZoneVariance', 'exponential_firstorder_TotalEnergy', 'exponential_glszm_GrayLevelNonUniformity', 'exponential_glszm_GrayLevelNonUniformityNormalized', 'exponential_glszm_GrayLevelVariance', 'exponential_glszm_HighGrayLevelZoneEmphasis', 'exponential_glszm_LargeAreaEmphasis', 'exponential_glszm_LargeAreaHighGrayLevelEmphasis', 'exponential_glszm_LargeAreaLowGrayLevelEmphasis', 'exponential_glszm_LowGrayLevelZoneEmphasis', 'exponential_glszm_SizeZoneNonUniformity', 'exponential_glszm_SizeZoneNonUniformityNormalized', 'exponential_glszm_SmallAreaEmphasis', 'exponential_glszm_SmallAreaHighGrayLevelEmphasis', 'exponential_glszm_SmallAreaLowGrayLevelEmphasis', 'exponential_glszm_ZoneEntropy', 'exponential_glszm_ZonePercentage', 'exponential_glszm_ZoneVariance', 'gradient_firstorder_TotalEnergy', 'gradient_glszm_GrayLevelNonUniformity', 'gradient_glszm_GrayLevelNonUniformityNormalized', 'gradient_glszm_GrayLevelVariance', 'gradient_glszm_HighGrayLevelZoneEmphasis', 'gradient_glszm_LargeAreaEmphasis', 'gradient_glszm_LargeAreaHighGrayLevelEmphasis', 'gradient_glszm_LowGrayLevelZoneEmphasis', 'gradient_glszm_SizeZoneNonUniformity', 'gradient_glszm_SizeZoneNonUniformityNormalized', 'gradient_glszm_SmallAreaEmphasis', 'gradient_glszm_SmallAreaLowGrayLevelEmphasis', 'gradient_glszm_ZonePercentage', 'gradient_glszm_ZoneVariance']
+		These features were not used to generate any of the output features. Add a feature generator compatible with these features to utilize them.
+		Features can also be unused if they carry very little information, such as being categorical but having almost entirely unique values or being duplicates of other features.
+		These features do not need to be present at inference time.
+		('float', []) : 143 | ['original_firstorder_TotalEnergy', 'original_glszm_GrayLevelNonUniformity', 'original_glszm_GrayLevelNonUniformityNormalized', 'original_glszm_GrayLevelVariance', 'original_glszm_HighGrayLevelZoneEmphasis', ...]
+	Types of features in original data (raw dtype, special dtypes):
+		('float', [])  : 776 | ['original_shape2D_Elongation', 'original_shape2D_MajorAxisLength', 'original_shape2D_MaximumDiameter', 'original_shape2D_MeshSurface', 'original_shape2D_MinorAxisLength', ...]
+		('object', []) :   1 | ['patient_id']
+	Types of features in processed data (raw dtype, special dtypes):
+		('category', []) :   1 | ['patient_id']
+		('float', [])    : 776 | ['original_shape2D_Elongation', 'original_shape2D_MajorAxisLength', 'original_shape2D_MaximumDiameter', 'original_shape2D_MeshSurface', 'original_shape2D_MinorAxisLength', ...]
+	36.4s = Fit runtime
+	777 features in original data used to generate 777 features in processed data.
+	Train Data (Processed) Memory Usage: 22.39 MB (0.1% of available memory)
+Data preprocessing and feature engineering runtime = 36.79s ...
+AutoGluon will gauge predictive performance using evaluation metric: 'roc_auc'
+	This metric expects predicted probabilities rather than predicted class labels, so you'll need to use predict_proba() instead of predict()
+	To change this, specify the eval_metric parameter of Predictor()
+User-specified model hyperparameters to be fit:
+{
+	'GBM': [{}],
+	'CAT': [{}],
+	'XGB': [{}],
+}
+Fitting 3 L1 models, fit_strategy="sequential" ...
+Fitting model: LightGBM_BAG_L1 ... Training model for up to 3043.60s of the 3043.59s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9819	 = Validation score   (roc_auc)
+	116.32s	 = Training   runtime
+	0.37s	 = Validation runtime
+Fitting model: CatBoost_BAG_L1 ... Training model for up to 2925.46s of the 2925.46s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9997	 = Validation score   (roc_auc)
+	593.86s	 = Training   runtime
+	0.5s	 = Validation runtime
+Fitting model: XGBoost_BAG_L1 ... Training model for up to 2330.23s of the 2330.23s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	Warning: Exception caused XGBoost_BAG_L1 to fail during training... Skipping this model.
+		module 'numpy' has no attribute 'in1d'
+Detailed Traceback:
+Traceback (most recent call last):
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/trainer/abstract_trainer.py", line 2171, in _train_and_save
+    model = self._train_single(**model_fit_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/trainer/abstract_trainer.py", line 2055, in _train_single
+    model = model.fit(X=X, y=y, X_val=X_val, y_val=y_val, X_test=X_test, y_test=y_test, total_resources=total_resources, **model_fit_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 1068, in fit
+    out = self._fit(**kwargs)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/stacker_ensemble_model.py", line 270, in _fit
+    return super()._fit(X=X, y=y, time_limit=time_limit, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/bagged_ensemble_model.py", line 389, in _fit
+    self._fit_folds(
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/bagged_ensemble_model.py", line 868, in _fit_folds
+    fold_fitting_strategy.after_all_folds_scheduled()
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 350, in after_all_folds_scheduled
+    self._fit_fold_model(job)
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 355, in _fit_fold_model
+    fold_model = self._fit(self.model_base, time_start_fold, time_limit_fold, fold_ctx, self.model_base_kwargs)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 391, in _fit
+    fold_model.fit(X=X_fold, y=y_fold, X_val=X_val_fold, y_val=y_val_fold, time_limit=time_limit_fold, num_cpus=num_cpus, num_gpus=num_gpus, **kwargs_fold)
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 1068, in fit
+    out = self._fit(**kwargs)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_model.py", line 129, in _fit
+    X_val = self.preprocess(X_val, is_train=False)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 550, in preprocess
+    X = self._preprocess(X, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_model.py", line 74, in _preprocess
+    X = self._ohe_generator.transform(X)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/sklearn/utils/_set_output.py", line 316, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_utils.py", line 155, in transform
+    X_list.append(self.ohe_encs.transform(X[self.cat_cols]))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/sklearn/utils/_set_output.py", line 316, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 526, in transform
+    X_int, X_mask = self._transform(X, handle_unknown=self.handle_unknown)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 263, in _transform
+    diff, valid_mask = _encode_check_unknown(Xi, self.categories_[i], return_mask=True)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 139, in _encode_check_unknown
+    valid_mask = np.in1d(values, uniques)
+                 ^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/numpy/__init__.py", line 792, in __getattr__
+    raise AttributeError(f"module {__name__!r} has no attribute {attr!r}")
+AttributeError: module 'numpy' has no attribute 'in1d'
+Fitting model: WeightedEnsemble_L2 ... Training model for up to 360.00s of the 2294.43s of remaining time.
+	Ensemble Weights: {'CatBoost_BAG_L1': 1.0}
+	0.9997	 = Validation score   (roc_auc)
+	0.03s	 = Training   runtime
+	0.0s	 = Validation runtime
+AutoGluon training complete, total runtime = 786.27s ... Best model: WeightedEnsemble_L2 | Estimated inference throughput: 939.3 rows/s (473 batch size)
+TabularPredictor saved. To load, use: predictor = TabularPredictor.load("/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/new_code/runs/lnm_ag_cv/fold_00/ag_model")
+Verbosity: 2 (Standard Logging)
+=================== System Info ===================
+AutoGluon Version:  1.4.0
+Python Version:     3.11.15
+Operating System:   Linux
+Platform Machine:   x86_64
+Platform Version:   #40-Ubuntu SMP PREEMPT_DYNAMIC Tue Nov 14 14:18:00 UTC 2023
+CPU Count:          20
+Memory Avail:       166.72 GB / 251.58 GB (66.3%)
+Disk Space Avail:   116782.14 GB / 185849.28 GB (62.8%)
+===================================================
+Presets specified: ['best_quality']
+Setting dynamic_stacking from 'auto' to True. Reason: Enable dynamic_stacking when use_bag_holdout is disabled. (use_bag_holdout=False)
+Stack configuration (auto_stack=True): num_stack_levels=1, num_bag_folds=8, num_bag_sets=1
+DyStack is enabled (dynamic_stacking=True). AutoGluon will try to determine whether the input data is affected by stacked overfitting and enable or disable stacking as a consequence.
+	This is used to identify the optimal `num_stack_levels` value. Copies of AutoGluon will be fit on subsets of the data. Then holdout validation data is used to detect stacked overfitting.
+	Running DyStack for up to 900s of the 3600s of remaining time (25%).
+		Context path: "/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/new_code/runs/lnm_ag_cv/fold_00/ag_model/ds_sub_fit/sub_fit_ho"
+Running DyStack sub-fit ...
+Beginning AutoGluon training ... Time limit = 900s
+AutoGluon will save models to "/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/new_code/runs/lnm_ag_cv/fold_00/ag_model/ds_sub_fit/sub_fit_ho"
+Train Data Rows:    3360
+Train Data Columns: 920
+Label Column:       label
+Problem Type:       binary
+Preprocessing data ...
+Selected class <--> label mapping:  class 1 = 1, class 0 = 0
+Using Feature Generators to preprocess the data ...
+Fitting AutoMLPipelineFeatureGenerator...
+	Available Memory:                    170692.31 MB
+	Train Data (Original)  Memory Usage: 23.84 MB (0.0% of available memory)
+	Inferring data type of each feature based on column values. Set feature_metadata_in to manually specify special dtypes of the features.
+	Stage 1 Generators:
+		Fitting AsTypeFeatureGenerator...
+	Stage 2 Generators:
+		Fitting FillNaFeatureGenerator...
+	Stage 3 Generators:
+		Fitting IdentityFeatureGenerator...
+		Fitting CategoryFeatureGenerator...
+			Fitting CategoryMemoryMinimizeFeatureGenerator...
+	Stage 4 Generators:
+		Fitting DropUniqueFeatureGenerator...
+	Stage 5 Generators:
+		Fitting DropDuplicatesFeatureGenerator...
+	Unused Original Features (Count: 143): ['original_firstorder_TotalEnergy', 'original_glszm_GrayLevelNonUniformity', 'original_glszm_GrayLevelNonUniformityNormalized', 'original_glszm_GrayLevelVariance', 'original_glszm_HighGrayLevelZoneEmphasis', 'original_glszm_LargeAreaEmphasis', 'original_glszm_LargeAreaHighGrayLevelEmphasis', 'original_glszm_LowGrayLevelZoneEmphasis', 'original_glszm_SizeZoneNonUniformity', 'original_glszm_SizeZoneNonUniformityNormalized', 'original_glszm_SmallAreaEmphasis', 'original_glszm_SmallAreaLowGrayLevelEmphasis', 'original_glszm_ZonePercentage', 'original_glszm_ZoneVariance', 'wavelet-H_firstorder_TotalEnergy', 'wavelet-H_glszm_GrayLevelNonUniformity', 'wavelet-H_glszm_GrayLevelNonUniformityNormalized', 'wavelet-H_glszm_GrayLevelVariance', 'wavelet-H_glszm_HighGrayLevelZoneEmphasis', 'wavelet-H_glszm_LargeAreaEmphasis', 'wavelet-H_glszm_LargeAreaHighGrayLevelEmphasis', 'wavelet-H_glszm_LowGrayLevelZoneEmphasis', 'wavelet-H_glszm_SizeZoneNonUniformity', 'wavelet-H_glszm_SizeZoneNonUniformityNormalized', 'wavelet-H_glszm_SmallAreaEmphasis', 'wavelet-H_glszm_SmallAreaLowGrayLevelEmphasis', 'wavelet-H_glszm_ZonePercentage', 'wavelet-H_glszm_ZoneVariance', 'wavelet-L_firstorder_TotalEnergy', 'wavelet-L_glszm_GrayLevelNonUniformity', 'wavelet-L_glszm_GrayLevelNonUniformityNormalized', 'wavelet-L_glszm_GrayLevelVariance', 'wavelet-L_glszm_HighGrayLevelZoneEmphasis', 'wavelet-L_glszm_LargeAreaEmphasis', 'wavelet-L_glszm_LargeAreaHighGrayLevelEmphasis', 'wavelet-L_glszm_LowGrayLevelZoneEmphasis', 'wavelet-L_glszm_SizeZoneNonUniformity', 'wavelet-L_glszm_SizeZoneNonUniformityNormalized', 'wavelet-L_glszm_SmallAreaEmphasis', 'wavelet-L_glszm_SmallAreaLowGrayLevelEmphasis', 'wavelet-L_glszm_ZonePercentage', 'wavelet-L_glszm_ZoneVariance', 'log-sigma-2-0-mm-3D_firstorder_TotalEnergy', 'log-sigma-2-0-mm-3D_glszm_GrayLevelNonUniformity', 'log-sigma-2-0-mm-3D_glszm_GrayLevelNonUniformityNormalized', 'log-sigma-2-0-mm-3D_glszm_GrayLevelVariance', 'log-sigma-2-0-mm-3D_glszm_HighGrayLevelZoneEmphasis', 'log-sigma-2-0-mm-3D_glszm_LargeAreaEmphasis', 'log-sigma-2-0-mm-3D_glszm_LargeAreaHighGrayLevelEmphasis', 'log-sigma-2-0-mm-3D_glszm_LowGrayLevelZoneEmphasis', 'log-sigma-2-0-mm-3D_glszm_SizeZoneNonUniformity', 'log-sigma-2-0-mm-3D_glszm_SizeZoneNonUniformityNormalized', 'log-sigma-2-0-mm-3D_glszm_SmallAreaEmphasis', 'log-sigma-2-0-mm-3D_glszm_SmallAreaLowGrayLevelEmphasis', 'log-sigma-2-0-mm-3D_glszm_ZonePercentage', 'log-sigma-2-0-mm-3D_glszm_ZoneVariance', 'log-sigma-4-0-mm-3D_firstorder_TotalEnergy', 'log-sigma-4-0-mm-3D_glszm_GrayLevelNonUniformity', 'log-sigma-4-0-mm-3D_glszm_GrayLevelNonUniformityNormalized', 'log-sigma-4-0-mm-3D_glszm_GrayLevelVariance', 'log-sigma-4-0-mm-3D_glszm_HighGrayLevelZoneEmphasis', 'log-sigma-4-0-mm-3D_glszm_LargeAreaEmphasis', 'log-sigma-4-0-mm-3D_glszm_LargeAreaHighGrayLevelEmphasis', 'log-sigma-4-0-mm-3D_glszm_LowGrayLevelZoneEmphasis', 'log-sigma-4-0-mm-3D_glszm_SizeZoneNonUniformity', 'log-sigma-4-0-mm-3D_glszm_SizeZoneNonUniformityNormalized', 'log-sigma-4-0-mm-3D_glszm_SmallAreaEmphasis', 'log-sigma-4-0-mm-3D_glszm_SmallAreaLowGrayLevelEmphasis', 'log-sigma-4-0-mm-3D_glszm_ZonePercentage', 'log-sigma-4-0-mm-3D_glszm_ZoneVariance', 'square_firstorder_TotalEnergy', 'square_glszm_GrayLevelNonUniformity', 'square_glszm_GrayLevelNonUniformityNormalized', 'square_glszm_GrayLevelVariance', 'square_glszm_HighGrayLevelZoneEmphasis', 'square_glszm_LargeAreaEmphasis', 'square_glszm_LargeAreaHighGrayLevelEmphasis', 'square_glszm_LowGrayLevelZoneEmphasis', 'square_glszm_SizeZoneNonUniformity', 'square_glszm_SizeZoneNonUniformityNormalized', 'square_glszm_SmallAreaEmphasis', 'square_glszm_SmallAreaLowGrayLevelEmphasis', 'square_glszm_ZonePercentage', 'square_glszm_ZoneVariance', 'squareroot_firstorder_TotalEnergy', 'squareroot_glszm_GrayLevelNonUniformity', 'squareroot_glszm_GrayLevelNonUniformityNormalized', 'squareroot_glszm_GrayLevelVariance', 'squareroot_glszm_HighGrayLevelZoneEmphasis', 'squareroot_glszm_LargeAreaEmphasis', 'squareroot_glszm_LargeAreaHighGrayLevelEmphasis', 'squareroot_glszm_LowGrayLevelZoneEmphasis', 'squareroot_glszm_SizeZoneNonUniformity', 'squareroot_glszm_SizeZoneNonUniformityNormalized', 'squareroot_glszm_SmallAreaEmphasis', 'squareroot_glszm_SmallAreaLowGrayLevelEmphasis', 'squareroot_glszm_ZonePercentage', 'squareroot_glszm_ZoneVariance', 'logarithm_firstorder_TotalEnergy', 'logarithm_glszm_GrayLevelNonUniformity', 'logarithm_glszm_GrayLevelNonUniformityNormalized', 'logarithm_glszm_GrayLevelVariance', 'logarithm_glszm_HighGrayLevelZoneEmphasis', 'logarithm_glszm_LargeAreaEmphasis', 'logarithm_glszm_LargeAreaHighGrayLevelEmphasis', 'logarithm_glszm_LowGrayLevelZoneEmphasis', 'logarithm_glszm_SizeZoneNonUniformity', 'logarithm_glszm_SizeZoneNonUniformityNormalized', 'logarithm_glszm_SmallAreaEmphasis', 'logarithm_glszm_SmallAreaLowGrayLevelEmphasis', 'logarithm_glszm_ZonePercentage', 'logarithm_glszm_ZoneVariance', 'exponential_firstorder_TotalEnergy', 'exponential_glszm_GrayLevelNonUniformity', 'exponential_glszm_GrayLevelNonUniformityNormalized', 'exponential_glszm_GrayLevelVariance', 'exponential_glszm_HighGrayLevelZoneEmphasis', 'exponential_glszm_LargeAreaEmphasis', 'exponential_glszm_LargeAreaHighGrayLevelEmphasis', 'exponential_glszm_LargeAreaLowGrayLevelEmphasis', 'exponential_glszm_LowGrayLevelZoneEmphasis', 'exponential_glszm_SizeZoneNonUniformity', 'exponential_glszm_SizeZoneNonUniformityNormalized', 'exponential_glszm_SmallAreaEmphasis', 'exponential_glszm_SmallAreaHighGrayLevelEmphasis', 'exponential_glszm_SmallAreaLowGrayLevelEmphasis', 'exponential_glszm_ZoneEntropy', 'exponential_glszm_ZonePercentage', 'exponential_glszm_ZoneVariance', 'gradient_firstorder_TotalEnergy', 'gradient_glszm_GrayLevelNonUniformity', 'gradient_glszm_GrayLevelNonUniformityNormalized', 'gradient_glszm_GrayLevelVariance', 'gradient_glszm_HighGrayLevelZoneEmphasis', 'gradient_glszm_LargeAreaEmphasis', 'gradient_glszm_LargeAreaHighGrayLevelEmphasis', 'gradient_glszm_LowGrayLevelZoneEmphasis', 'gradient_glszm_SizeZoneNonUniformity', 'gradient_glszm_SizeZoneNonUniformityNormalized', 'gradient_glszm_SmallAreaEmphasis', 'gradient_glszm_SmallAreaLowGrayLevelEmphasis', 'gradient_glszm_ZonePercentage', 'gradient_glszm_ZoneVariance']
+		These features were not used to generate any of the output features. Add a feature generator compatible with these features to utilize them.
+		Features can also be unused if they carry very little information, such as being categorical but having almost entirely unique values or being duplicates of other features.
+		These features do not need to be present at inference time.
+		('float', []) : 143 | ['original_firstorder_TotalEnergy', 'original_glszm_GrayLevelNonUniformity', 'original_glszm_GrayLevelNonUniformityNormalized', 'original_glszm_GrayLevelVariance', 'original_glszm_HighGrayLevelZoneEmphasis', ...]
+	Types of features in original data (raw dtype, special dtypes):
+		('float', [])  : 776 | ['original_shape2D_Elongation', 'original_shape2D_MajorAxisLength', 'original_shape2D_MaximumDiameter', 'original_shape2D_MeshSurface', 'original_shape2D_MinorAxisLength', ...]
+		('object', []) :   1 | ['patient_id']
+	Types of features in processed data (raw dtype, special dtypes):
+		('category', []) :   1 | ['patient_id']
+		('float', [])    : 776 | ['original_shape2D_Elongation', 'original_shape2D_MajorAxisLength', 'original_shape2D_MaximumDiameter', 'original_shape2D_MeshSurface', 'original_shape2D_MinorAxisLength', ...]
+	19.2s = Fit runtime
+	777 features in original data used to generate 777 features in processed data.
+	Train Data (Processed) Memory Usage: 19.90 MB (0.0% of available memory)
+Data preprocessing and feature engineering runtime = 19.21s ...
+AutoGluon will gauge predictive performance using evaluation metric: 'roc_auc'
+	This metric expects predicted probabilities rather than predicted class labels, so you'll need to use predict_proba() instead of predict()
+	To change this, specify the eval_metric parameter of Predictor()
+User-specified model hyperparameters to be fit:
+{
+	'GBM': [{}],
+	'CAT': [{}],
+	'XGB': [{}],
+}
+AutoGluon will fit 2 stack levels (L1 to L2) ...
+Fitting 3 L1 models, fit_strategy="sequential" ...
+Fitting model: LightGBM_BAG_L1 ... Training model for up to 587.05s of the 880.79s of remaining time.
+Will use sequential fold fitting strategy because import of ray failed. Reason: ray is required to train folds in parallel for TabularPredictor or HPO for MultiModalPredictor. A quick tip is to install via `pip install "ray>=2.10.0,<2.45.0"`
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9751	 = Validation score   (roc_auc)
+	21.01s	 = Training   runtime
+	0.12s	 = Validation runtime
+Fitting model: CatBoost_BAG_L1 ... Training model for up to 565.54s of the 859.29s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9995	 = Validation score   (roc_auc)
+	142.62s	 = Training   runtime
+	0.2s	 = Validation runtime
+Fitting model: XGBoost_BAG_L1 ... Training model for up to 422.40s of the 716.14s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	Warning: Exception caused XGBoost_BAG_L1 to fail during training... Skipping this model.
+		module 'numpy' has no attribute 'in1d'
+Detailed Traceback:
+Traceback (most recent call last):
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/trainer/abstract_trainer.py", line 2171, in _train_and_save
+    model = self._train_single(**model_fit_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/trainer/abstract_trainer.py", line 2055, in _train_single
+    model = model.fit(X=X, y=y, X_val=X_val, y_val=y_val, X_test=X_test, y_test=y_test, total_resources=total_resources, **model_fit_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 1068, in fit
+    out = self._fit(**kwargs)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/stacker_ensemble_model.py", line 270, in _fit
+    return super()._fit(X=X, y=y, time_limit=time_limit, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/bagged_ensemble_model.py", line 389, in _fit
+    self._fit_folds(
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/bagged_ensemble_model.py", line 868, in _fit_folds
+    fold_fitting_strategy.after_all_folds_scheduled()
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 350, in after_all_folds_scheduled
+    self._fit_fold_model(job)
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 355, in _fit_fold_model
+    fold_model = self._fit(self.model_base, time_start_fold, time_limit_fold, fold_ctx, self.model_base_kwargs)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 391, in _fit
+    fold_model.fit(X=X_fold, y=y_fold, X_val=X_val_fold, y_val=y_val_fold, time_limit=time_limit_fold, num_cpus=num_cpus, num_gpus=num_gpus, **kwargs_fold)
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 1068, in fit
+    out = self._fit(**kwargs)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_model.py", line 129, in _fit
+    X_val = self.preprocess(X_val, is_train=False)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 550, in preprocess
+    X = self._preprocess(X, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_model.py", line 74, in _preprocess
+    X = self._ohe_generator.transform(X)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/sklearn/utils/_set_output.py", line 316, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_utils.py", line 155, in transform
+    X_list.append(self.ohe_encs.transform(X[self.cat_cols]))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/sklearn/utils/_set_output.py", line 316, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 526, in transform
+    X_int, X_mask = self._transform(X, handle_unknown=self.handle_unknown)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 263, in _transform
+    diff, valid_mask = _encode_check_unknown(Xi, self.categories_[i], return_mask=True)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 139, in _encode_check_unknown
+    valid_mask = np.in1d(values, uniques)
+                 ^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/numpy/__init__.py", line 792, in __getattr__
+    raise AttributeError(f"module {__name__!r} has no attribute {attr!r}")
+AttributeError: module 'numpy' has no attribute 'in1d'
+Fitting model: WeightedEnsemble_L2 ... Training model for up to 360.00s of the 715.63s of remaining time.
+	Ensemble Weights: {'CatBoost_BAG_L1': 1.0}
+	0.9995	 = Validation score   (roc_auc)
+	0.02s	 = Training   runtime
+	0.0s	 = Validation runtime
+Fitting 3 L2 models, fit_strategy="sequential" ...
+Fitting model: LightGBM_BAG_L2 ... Training model for up to 715.59s of the 715.58s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9994	 = Validation score   (roc_auc)
+	13.49s	 = Training   runtime
+	0.11s	 = Validation runtime
+Fitting model: CatBoost_BAG_L2 ... Training model for up to 701.66s of the 701.66s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9995	 = Validation score   (roc_auc)
+	82.7s	 = Training   runtime
+	0.22s	 = Validation runtime
+Fitting model: XGBoost_BAG_L2 ... Training model for up to 618.42s of the 618.41s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	Warning: Exception caused XGBoost_BAG_L2 to fail during training... Skipping this model.
+		module 'numpy' has no attribute 'in1d'
+Detailed Traceback:
+Traceback (most recent call last):
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/trainer/abstract_trainer.py", line 2171, in _train_and_save
+    model = self._train_single(**model_fit_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/trainer/abstract_trainer.py", line 2055, in _train_single
+    model = model.fit(X=X, y=y, X_val=X_val, y_val=y_val, X_test=X_test, y_test=y_test, total_resources=total_resources, **model_fit_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 1068, in fit
+    out = self._fit(**kwargs)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/stacker_ensemble_model.py", line 270, in _fit
+    return super()._fit(X=X, y=y, time_limit=time_limit, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/bagged_ensemble_model.py", line 389, in _fit
+    self._fit_folds(
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/bagged_ensemble_model.py", line 868, in _fit_folds
+    fold_fitting_strategy.after_all_folds_scheduled()
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 350, in after_all_folds_scheduled
+    self._fit_fold_model(job)
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 355, in _fit_fold_model
+    fold_model = self._fit(self.model_base, time_start_fold, time_limit_fold, fold_ctx, self.model_base_kwargs)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 391, in _fit
+    fold_model.fit(X=X_fold, y=y_fold, X_val=X_val_fold, y_val=y_val_fold, time_limit=time_limit_fold, num_cpus=num_cpus, num_gpus=num_gpus, **kwargs_fold)
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 1068, in fit
+    out = self._fit(**kwargs)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_model.py", line 129, in _fit
+    X_val = self.preprocess(X_val, is_train=False)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 550, in preprocess
+    X = self._preprocess(X, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_model.py", line 74, in _preprocess
+    X = self._ohe_generator.transform(X)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/sklearn/utils/_set_output.py", line 316, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_utils.py", line 155, in transform
+    X_list.append(self.ohe_encs.transform(X[self.cat_cols]))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/sklearn/utils/_set_output.py", line 316, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 526, in transform
+    X_int, X_mask = self._transform(X, handle_unknown=self.handle_unknown)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 263, in _transform
+    diff, valid_mask = _encode_check_unknown(Xi, self.categories_[i], return_mask=True)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 139, in _encode_check_unknown
+    valid_mask = np.in1d(values, uniques)
+                 ^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/numpy/__init__.py", line 792, in __getattr__
+    raise AttributeError(f"module {__name__!r} has no attribute {attr!r}")
+AttributeError: module 'numpy' has no attribute 'in1d'
+Fitting model: WeightedEnsemble_L3 ... Training model for up to 360.00s of the 617.96s of remaining time.
+	Ensemble Weights: {'CatBoost_BAG_L1': 0.875, 'CatBoost_BAG_L2': 0.125}
+	0.9995	 = Validation score   (roc_auc)
+	0.04s	 = Training   runtime
+	0.0s	 = Validation runtime
+AutoGluon training complete, total runtime = 282.32s ... Best model: WeightedEnsemble_L3 | Estimated inference throughput: 783.5 rows/s (420 batch size)
+TabularPredictor saved. To load, use: predictor = TabularPredictor.load("/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/new_code/runs/lnm_ag_cv/fold_00/ag_model/ds_sub_fit/sub_fit_ho")
+Deleting DyStack predictor artifacts (clean_up_fits=True) ...
+Leaderboard on holdout data (DyStack):
+                 model  score_holdout  score_val eval_metric  pred_time_test  pred_time_val    fit_time  pred_time_test_marginal  pred_time_val_marginal  fit_time_marginal  stack_level  can_infer  fit_order
+0      CatBoost_BAG_L1       0.998866   0.999518     roc_auc        0.112011       0.198050  142.618469                 0.112011                0.198050         142.618469            1       True          2
+1  WeightedEnsemble_L2       0.998866   0.999518     roc_auc        0.113487       0.198574  142.641443                 0.001476                0.000524           0.022974            2       True          3
+2  WeightedEnsemble_L3       0.998866   0.999519     roc_auc        0.459681       0.536645  246.378074                 0.001530                0.000649           0.043586            3       True          6
+3      LightGBM_BAG_L2       0.998785   0.999417     roc_auc        0.397877       0.425440  177.118488                 0.042031                0.111727          13.488872            2       True          4
+4      CatBoost_BAG_L2       0.998380   0.999476     roc_auc        0.458151       0.535995  246.334488                 0.102305                0.222282          82.704872            2       True          5
+5      LightGBM_BAG_L1       0.981562   0.975106     roc_auc        0.243835       0.115663   21.011147                 0.243835                0.115663          21.011147            1       True          1
+	0	 = Optimal   num_stack_levels (Stacked Overfitting Occurred: True)
+	283s	 = DyStack   runtime |	3317s	 = Remaining runtime
+Starting main fit with num_stack_levels=0.
+	For future fit calls on this dataset, you can skip DyStack to save time: `predictor.fit(..., dynamic_stacking=False, num_stack_levels=0)`
+Beginning AutoGluon training ... Time limit = 3317s
+AutoGluon will save models to "/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/new_code/runs/lnm_ag_cv/fold_00/ag_model"
+Train Data Rows:    3780
+Train Data Columns: 920
+Label Column:       label
+Problem Type:       binary
+Preprocessing data ...
+Selected class <--> label mapping:  class 1 = 1, class 0 = 0
+Using Feature Generators to preprocess the data ...
+Fitting AutoMLPipelineFeatureGenerator...
+	Available Memory:                    169739.27 MB
+	Train Data (Original)  Memory Usage: 26.85 MB (0.0% of available memory)
+	Inferring data type of each feature based on column values. Set feature_metadata_in to manually specify special dtypes of the features.
+	Stage 1 Generators:
+		Fitting AsTypeFeatureGenerator...
+	Stage 2 Generators:
+		Fitting FillNaFeatureGenerator...
+	Stage 3 Generators:
+		Fitting IdentityFeatureGenerator...
+		Fitting CategoryFeatureGenerator...
+			Fitting CategoryMemoryMinimizeFeatureGenerator...
+	Stage 4 Generators:
+		Fitting DropUniqueFeatureGenerator...
+	Stage 5 Generators:
+		Fitting DropDuplicatesFeatureGenerator...
+	Unused Original Features (Count: 143): ['original_firstorder_TotalEnergy', 'original_glszm_GrayLevelNonUniformity', 'original_glszm_GrayLevelNonUniformityNormalized', 'original_glszm_GrayLevelVariance', 'original_glszm_HighGrayLevelZoneEmphasis', 'original_glszm_LargeAreaEmphasis', 'original_glszm_LargeAreaHighGrayLevelEmphasis', 'original_glszm_LowGrayLevelZoneEmphasis', 'original_glszm_SizeZoneNonUniformity', 'original_glszm_SizeZoneNonUniformityNormalized', 'original_glszm_SmallAreaEmphasis', 'original_glszm_SmallAreaLowGrayLevelEmphasis', 'original_glszm_ZonePercentage', 'original_glszm_ZoneVariance', 'wavelet-H_firstorder_TotalEnergy', 'wavelet-H_glszm_GrayLevelNonUniformity', 'wavelet-H_glszm_GrayLevelNonUniformityNormalized', 'wavelet-H_glszm_GrayLevelVariance', 'wavelet-H_glszm_HighGrayLevelZoneEmphasis', 'wavelet-H_glszm_LargeAreaEmphasis', 'wavelet-H_glszm_LargeAreaHighGrayLevelEmphasis', 'wavelet-H_glszm_LowGrayLevelZoneEmphasis', 'wavelet-H_glszm_SizeZoneNonUniformity', 'wavelet-H_glszm_SizeZoneNonUniformityNormalized', 'wavelet-H_glszm_SmallAreaEmphasis', 'wavelet-H_glszm_SmallAreaLowGrayLevelEmphasis', 'wavelet-H_glszm_ZonePercentage', 'wavelet-H_glszm_ZoneVariance', 'wavelet-L_firstorder_TotalEnergy', 'wavelet-L_glszm_GrayLevelNonUniformity', 'wavelet-L_glszm_GrayLevelNonUniformityNormalized', 'wavelet-L_glszm_GrayLevelVariance', 'wavelet-L_glszm_HighGrayLevelZoneEmphasis', 'wavelet-L_glszm_LargeAreaEmphasis', 'wavelet-L_glszm_LargeAreaHighGrayLevelEmphasis', 'wavelet-L_glszm_LowGrayLevelZoneEmphasis', 'wavelet-L_glszm_SizeZoneNonUniformity', 'wavelet-L_glszm_SizeZoneNonUniformityNormalized', 'wavelet-L_glszm_SmallAreaEmphasis', 'wavelet-L_glszm_SmallAreaLowGrayLevelEmphasis', 'wavelet-L_glszm_ZonePercentage', 'wavelet-L_glszm_ZoneVariance', 'log-sigma-2-0-mm-3D_firstorder_TotalEnergy', 'log-sigma-2-0-mm-3D_glszm_GrayLevelNonUniformity', 'log-sigma-2-0-mm-3D_glszm_GrayLevelNonUniformityNormalized', 'log-sigma-2-0-mm-3D_glszm_GrayLevelVariance', 'log-sigma-2-0-mm-3D_glszm_HighGrayLevelZoneEmphasis', 'log-sigma-2-0-mm-3D_glszm_LargeAreaEmphasis', 'log-sigma-2-0-mm-3D_glszm_LargeAreaHighGrayLevelEmphasis', 'log-sigma-2-0-mm-3D_glszm_LowGrayLevelZoneEmphasis', 'log-sigma-2-0-mm-3D_glszm_SizeZoneNonUniformity', 'log-sigma-2-0-mm-3D_glszm_SizeZoneNonUniformityNormalized', 'log-sigma-2-0-mm-3D_glszm_SmallAreaEmphasis', 'log-sigma-2-0-mm-3D_glszm_SmallAreaLowGrayLevelEmphasis', 'log-sigma-2-0-mm-3D_glszm_ZonePercentage', 'log-sigma-2-0-mm-3D_glszm_ZoneVariance', 'log-sigma-4-0-mm-3D_firstorder_TotalEnergy', 'log-sigma-4-0-mm-3D_glszm_GrayLevelNonUniformity', 'log-sigma-4-0-mm-3D_glszm_GrayLevelNonUniformityNormalized', 'log-sigma-4-0-mm-3D_glszm_GrayLevelVariance', 'log-sigma-4-0-mm-3D_glszm_HighGrayLevelZoneEmphasis', 'log-sigma-4-0-mm-3D_glszm_LargeAreaEmphasis', 'log-sigma-4-0-mm-3D_glszm_LargeAreaHighGrayLevelEmphasis', 'log-sigma-4-0-mm-3D_glszm_LowGrayLevelZoneEmphasis', 'log-sigma-4-0-mm-3D_glszm_SizeZoneNonUniformity', 'log-sigma-4-0-mm-3D_glszm_SizeZoneNonUniformityNormalized', 'log-sigma-4-0-mm-3D_glszm_SmallAreaEmphasis', 'log-sigma-4-0-mm-3D_glszm_SmallAreaLowGrayLevelEmphasis', 'log-sigma-4-0-mm-3D_glszm_ZonePercentage', 'log-sigma-4-0-mm-3D_glszm_ZoneVariance', 'square_firstorder_TotalEnergy', 'square_glszm_GrayLevelNonUniformity', 'square_glszm_GrayLevelNonUniformityNormalized', 'square_glszm_GrayLevelVariance', 'square_glszm_HighGrayLevelZoneEmphasis', 'square_glszm_LargeAreaEmphasis', 'square_glszm_LargeAreaHighGrayLevelEmphasis', 'square_glszm_LowGrayLevelZoneEmphasis', 'square_glszm_SizeZoneNonUniformity', 'square_glszm_SizeZoneNonUniformityNormalized', 'square_glszm_SmallAreaEmphasis', 'square_glszm_SmallAreaLowGrayLevelEmphasis', 'square_glszm_ZonePercentage', 'square_glszm_ZoneVariance', 'squareroot_firstorder_TotalEnergy', 'squareroot_glszm_GrayLevelNonUniformity', 'squareroot_glszm_GrayLevelNonUniformityNormalized', 'squareroot_glszm_GrayLevelVariance', 'squareroot_glszm_HighGrayLevelZoneEmphasis', 'squareroot_glszm_LargeAreaEmphasis', 'squareroot_glszm_LargeAreaHighGrayLevelEmphasis', 'squareroot_glszm_LowGrayLevelZoneEmphasis', 'squareroot_glszm_SizeZoneNonUniformity', 'squareroot_glszm_SizeZoneNonUniformityNormalized', 'squareroot_glszm_SmallAreaEmphasis', 'squareroot_glszm_SmallAreaLowGrayLevelEmphasis', 'squareroot_glszm_ZonePercentage', 'squareroot_glszm_ZoneVariance', 'logarithm_firstorder_TotalEnergy', 'logarithm_glszm_GrayLevelNonUniformity', 'logarithm_glszm_GrayLevelNonUniformityNormalized', 'logarithm_glszm_GrayLevelVariance', 'logarithm_glszm_HighGrayLevelZoneEmphasis', 'logarithm_glszm_LargeAreaEmphasis', 'logarithm_glszm_LargeAreaHighGrayLevelEmphasis', 'logarithm_glszm_LowGrayLevelZoneEmphasis', 'logarithm_glszm_SizeZoneNonUniformity', 'logarithm_glszm_SizeZoneNonUniformityNormalized', 'logarithm_glszm_SmallAreaEmphasis', 'logarithm_glszm_SmallAreaLowGrayLevelEmphasis', 'logarithm_glszm_ZonePercentage', 'logarithm_glszm_ZoneVariance', 'exponential_firstorder_TotalEnergy', 'exponential_glszm_GrayLevelNonUniformity', 'exponential_glszm_GrayLevelNonUniformityNormalized', 'exponential_glszm_GrayLevelVariance', 'exponential_glszm_HighGrayLevelZoneEmphasis', 'exponential_glszm_LargeAreaEmphasis', 'exponential_glszm_LargeAreaHighGrayLevelEmphasis', 'exponential_glszm_LargeAreaLowGrayLevelEmphasis', 'exponential_glszm_LowGrayLevelZoneEmphasis', 'exponential_glszm_SizeZoneNonUniformity', 'exponential_glszm_SizeZoneNonUniformityNormalized', 'exponential_glszm_SmallAreaEmphasis', 'exponential_glszm_SmallAreaHighGrayLevelEmphasis', 'exponential_glszm_SmallAreaLowGrayLevelEmphasis', 'exponential_glszm_ZoneEntropy', 'exponential_glszm_ZonePercentage', 'exponential_glszm_ZoneVariance', 'gradient_firstorder_TotalEnergy', 'gradient_glszm_GrayLevelNonUniformity', 'gradient_glszm_GrayLevelNonUniformityNormalized', 'gradient_glszm_GrayLevelVariance', 'gradient_glszm_HighGrayLevelZoneEmphasis', 'gradient_glszm_LargeAreaEmphasis', 'gradient_glszm_LargeAreaHighGrayLevelEmphasis', 'gradient_glszm_LowGrayLevelZoneEmphasis', 'gradient_glszm_SizeZoneNonUniformity', 'gradient_glszm_SizeZoneNonUniformityNormalized', 'gradient_glszm_SmallAreaEmphasis', 'gradient_glszm_SmallAreaLowGrayLevelEmphasis', 'gradient_glszm_ZonePercentage', 'gradient_glszm_ZoneVariance']
+		These features were not used to generate any of the output features. Add a feature generator compatible with these features to utilize them.
+		Features can also be unused if they carry very little information, such as being categorical but having almost entirely unique values or being duplicates of other features.
+		These features do not need to be present at inference time.
+		('float', []) : 143 | ['original_firstorder_TotalEnergy', 'original_glszm_GrayLevelNonUniformity', 'original_glszm_GrayLevelNonUniformityNormalized', 'original_glszm_GrayLevelVariance', 'original_glszm_HighGrayLevelZoneEmphasis', ...]
+	Types of features in original data (raw dtype, special dtypes):
+		('float', [])  : 776 | ['original_shape2D_Elongation', 'original_shape2D_MajorAxisLength', 'original_shape2D_MaximumDiameter', 'original_shape2D_MeshSurface', 'original_shape2D_MinorAxisLength', ...]
+		('object', []) :   1 | ['patient_id']
+	Types of features in processed data (raw dtype, special dtypes):
+		('category', []) :   1 | ['patient_id']
+		('float', [])    : 776 | ['original_shape2D_Elongation', 'original_shape2D_MajorAxisLength', 'original_shape2D_MaximumDiameter', 'original_shape2D_MeshSurface', 'original_shape2D_MinorAxisLength', ...]
+	16.8s = Fit runtime
+	777 features in original data used to generate 777 features in processed data.
+	Train Data (Processed) Memory Usage: 22.39 MB (0.0% of available memory)
+Data preprocessing and feature engineering runtime = 16.86s ...
+AutoGluon will gauge predictive performance using evaluation metric: 'roc_auc'
+	This metric expects predicted probabilities rather than predicted class labels, so you'll need to use predict_proba() instead of predict()
+	To change this, specify the eval_metric parameter of Predictor()
+User-specified model hyperparameters to be fit:
+{
+	'GBM': [{}],
+	'CAT': [{}],
+	'XGB': [{}],
+}
+Fitting 3 L1 models, fit_strategy="sequential" ...
+Fitting model: LightGBM_BAG_L1 ... Training model for up to 3299.84s of the 3299.84s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9819	 = Validation score   (roc_auc)
+	21.56s	 = Training   runtime
+	0.12s	 = Validation runtime
+Fitting model: CatBoost_BAG_L1 ... Training model for up to 3277.64s of the 3277.64s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9997	 = Validation score   (roc_auc)
+	173.73s	 = Training   runtime
+	0.28s	 = Validation runtime
+Fitting model: XGBoost_BAG_L1 ... Training model for up to 3103.25s of the 3103.25s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	Warning: Exception caused XGBoost_BAG_L1 to fail during training... Skipping this model.
+		module 'numpy' has no attribute 'in1d'
+Detailed Traceback:
+Traceback (most recent call last):
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/trainer/abstract_trainer.py", line 2171, in _train_and_save
+    model = self._train_single(**model_fit_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/trainer/abstract_trainer.py", line 2055, in _train_single
+    model = model.fit(X=X, y=y, X_val=X_val, y_val=y_val, X_test=X_test, y_test=y_test, total_resources=total_resources, **model_fit_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 1068, in fit
+    out = self._fit(**kwargs)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/stacker_ensemble_model.py", line 270, in _fit
+    return super()._fit(X=X, y=y, time_limit=time_limit, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/bagged_ensemble_model.py", line 389, in _fit
+    self._fit_folds(
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/bagged_ensemble_model.py", line 868, in _fit_folds
+    fold_fitting_strategy.after_all_folds_scheduled()
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 350, in after_all_folds_scheduled
+    self._fit_fold_model(job)
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 355, in _fit_fold_model
+    fold_model = self._fit(self.model_base, time_start_fold, time_limit_fold, fold_ctx, self.model_base_kwargs)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 391, in _fit
+    fold_model.fit(X=X_fold, y=y_fold, X_val=X_val_fold, y_val=y_val_fold, time_limit=time_limit_fold, num_cpus=num_cpus, num_gpus=num_gpus, **kwargs_fold)
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 1068, in fit
+    out = self._fit(**kwargs)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_model.py", line 129, in _fit
+    X_val = self.preprocess(X_val, is_train=False)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 550, in preprocess
+    X = self._preprocess(X, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_model.py", line 74, in _preprocess
+    X = self._ohe_generator.transform(X)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/sklearn/utils/_set_output.py", line 316, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_utils.py", line 155, in transform
+    X_list.append(self.ohe_encs.transform(X[self.cat_cols]))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/sklearn/utils/_set_output.py", line 316, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 526, in transform
+    X_int, X_mask = self._transform(X, handle_unknown=self.handle_unknown)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 263, in _transform
+    diff, valid_mask = _encode_check_unknown(Xi, self.categories_[i], return_mask=True)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 139, in _encode_check_unknown
+    valid_mask = np.in1d(values, uniques)
+                 ^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/numpy/__init__.py", line 792, in __getattr__
+    raise AttributeError(f"module {__name__!r} has no attribute {attr!r}")
+AttributeError: module 'numpy' has no attribute 'in1d'
+Fitting model: WeightedEnsemble_L2 ... Training model for up to 360.00s of the 3102.76s of remaining time.
+	Ensemble Weights: {'CatBoost_BAG_L1': 1.0}
+	0.9997	 = Validation score   (roc_auc)
+	0.02s	 = Training   runtime
+	0.0s	 = Validation runtime
+AutoGluon training complete, total runtime = 214.25s ... Best model: WeightedEnsemble_L2 | Estimated inference throughput: 1665.3 rows/s (473 batch size)
+TabularPredictor saved. To load, use: predictor = TabularPredictor.load("/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/new_code/runs/lnm_ag_cv/fold_00/ag_model")
+Verbosity: 2 (Standard Logging)
+=================== System Info ===================
+AutoGluon Version:  1.4.0
+Python Version:     3.11.15
+Operating System:   Linux
+Platform Machine:   x86_64
+Platform Version:   #40-Ubuntu SMP PREEMPT_DYNAMIC Tue Nov 14 14:18:00 UTC 2023
+CPU Count:          20
+Memory Avail:       163.73 GB / 251.58 GB (65.1%)
+Disk Space Avail:   116738.71 GB / 185849.28 GB (62.8%)
+===================================================
+Presets specified: ['best_quality']
+Setting dynamic_stacking from 'auto' to True. Reason: Enable dynamic_stacking when use_bag_holdout is disabled. (use_bag_holdout=False)
+Stack configuration (auto_stack=True): num_stack_levels=1, num_bag_folds=8, num_bag_sets=1
+DyStack is enabled (dynamic_stacking=True). AutoGluon will try to determine whether the input data is affected by stacked overfitting and enable or disable stacking as a consequence.
+	This is used to identify the optimal `num_stack_levels` value. Copies of AutoGluon will be fit on subsets of the data. Then holdout validation data is used to detect stacked overfitting.
+	Running DyStack for up to 900s of the 3600s of remaining time (25%).
+		Context path: "/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/new_code/runs/lnm_ag_cv/fold_00/ag_model/ds_sub_fit/sub_fit_ho"
+Running DyStack sub-fit ...
+Beginning AutoGluon training ... Time limit = 900s
+AutoGluon will save models to "/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/new_code/runs/lnm_ag_cv/fold_00/ag_model/ds_sub_fit/sub_fit_ho"
+Train Data Rows:    3373
+Train Data Columns: 920
+Label Column:       label
+Problem Type:       binary
+Preprocessing data ...
+Selected class <--> label mapping:  class 1 = 1, class 0 = 0
+Using Feature Generators to preprocess the data ...
+Fitting AutoMLPipelineFeatureGenerator...
+	Available Memory:                    167622.05 MB
+	Train Data (Original)  Memory Usage: 23.93 MB (0.0% of available memory)
+	Inferring data type of each feature based on column values. Set feature_metadata_in to manually specify special dtypes of the features.
+	Stage 1 Generators:
+		Fitting AsTypeFeatureGenerator...
+	Stage 2 Generators:
+		Fitting FillNaFeatureGenerator...
+	Stage 3 Generators:
+		Fitting IdentityFeatureGenerator...
+		Fitting CategoryFeatureGenerator...
+			Fitting CategoryMemoryMinimizeFeatureGenerator...
+	Stage 4 Generators:
+		Fitting DropUniqueFeatureGenerator...
+	Stage 5 Generators:
+		Fitting DropDuplicatesFeatureGenerator...
+	Unused Original Features (Count: 143): ['original_firstorder_TotalEnergy', 'original_glszm_GrayLevelNonUniformity', 'original_glszm_GrayLevelNonUniformityNormalized', 'original_glszm_GrayLevelVariance', 'original_glszm_HighGrayLevelZoneEmphasis', 'original_glszm_LargeAreaEmphasis', 'original_glszm_LargeAreaHighGrayLevelEmphasis', 'original_glszm_LowGrayLevelZoneEmphasis', 'original_glszm_SizeZoneNonUniformity', 'original_glszm_SizeZoneNonUniformityNormalized', 'original_glszm_SmallAreaEmphasis', 'original_glszm_SmallAreaLowGrayLevelEmphasis', 'original_glszm_ZonePercentage', 'original_glszm_ZoneVariance', 'wavelet-H_firstorder_TotalEnergy', 'wavelet-H_glszm_GrayLevelNonUniformity', 'wavelet-H_glszm_GrayLevelNonUniformityNormalized', 'wavelet-H_glszm_GrayLevelVariance', 'wavelet-H_glszm_HighGrayLevelZoneEmphasis', 'wavelet-H_glszm_LargeAreaEmphasis', 'wavelet-H_glszm_LargeAreaHighGrayLevelEmphasis', 'wavelet-H_glszm_LowGrayLevelZoneEmphasis', 'wavelet-H_glszm_SizeZoneNonUniformity', 'wavelet-H_glszm_SizeZoneNonUniformityNormalized', 'wavelet-H_glszm_SmallAreaEmphasis', 'wavelet-H_glszm_SmallAreaLowGrayLevelEmphasis', 'wavelet-H_glszm_ZonePercentage', 'wavelet-H_glszm_ZoneVariance', 'wavelet-L_firstorder_TotalEnergy', 'wavelet-L_glszm_GrayLevelNonUniformity', 'wavelet-L_glszm_GrayLevelNonUniformityNormalized', 'wavelet-L_glszm_GrayLevelVariance', 'wavelet-L_glszm_HighGrayLevelZoneEmphasis', 'wavelet-L_glszm_LargeAreaEmphasis', 'wavelet-L_glszm_LargeAreaHighGrayLevelEmphasis', 'wavelet-L_glszm_LowGrayLevelZoneEmphasis', 'wavelet-L_glszm_SizeZoneNonUniformity', 'wavelet-L_glszm_SizeZoneNonUniformityNormalized', 'wavelet-L_glszm_SmallAreaEmphasis', 'wavelet-L_glszm_SmallAreaLowGrayLevelEmphasis', 'wavelet-L_glszm_ZonePercentage', 'wavelet-L_glszm_ZoneVariance', 'log-sigma-2-0-mm-3D_firstorder_TotalEnergy', 'log-sigma-2-0-mm-3D_glszm_GrayLevelNonUniformity', 'log-sigma-2-0-mm-3D_glszm_GrayLevelNonUniformityNormalized', 'log-sigma-2-0-mm-3D_glszm_GrayLevelVariance', 'log-sigma-2-0-mm-3D_glszm_HighGrayLevelZoneEmphasis', 'log-sigma-2-0-mm-3D_glszm_LargeAreaEmphasis', 'log-sigma-2-0-mm-3D_glszm_LargeAreaHighGrayLevelEmphasis', 'log-sigma-2-0-mm-3D_glszm_LowGrayLevelZoneEmphasis', 'log-sigma-2-0-mm-3D_glszm_SizeZoneNonUniformity', 'log-sigma-2-0-mm-3D_glszm_SizeZoneNonUniformityNormalized', 'log-sigma-2-0-mm-3D_glszm_SmallAreaEmphasis', 'log-sigma-2-0-mm-3D_glszm_SmallAreaLowGrayLevelEmphasis', 'log-sigma-2-0-mm-3D_glszm_ZonePercentage', 'log-sigma-2-0-mm-3D_glszm_ZoneVariance', 'log-sigma-4-0-mm-3D_firstorder_TotalEnergy', 'log-sigma-4-0-mm-3D_glszm_GrayLevelNonUniformity', 'log-sigma-4-0-mm-3D_glszm_GrayLevelNonUniformityNormalized', 'log-sigma-4-0-mm-3D_glszm_GrayLevelVariance', 'log-sigma-4-0-mm-3D_glszm_HighGrayLevelZoneEmphasis', 'log-sigma-4-0-mm-3D_glszm_LargeAreaEmphasis', 'log-sigma-4-0-mm-3D_glszm_LargeAreaHighGrayLevelEmphasis', 'log-sigma-4-0-mm-3D_glszm_LowGrayLevelZoneEmphasis', 'log-sigma-4-0-mm-3D_glszm_SizeZoneNonUniformity', 'log-sigma-4-0-mm-3D_glszm_SizeZoneNonUniformityNormalized', 'log-sigma-4-0-mm-3D_glszm_SmallAreaEmphasis', 'log-sigma-4-0-mm-3D_glszm_SmallAreaLowGrayLevelEmphasis', 'log-sigma-4-0-mm-3D_glszm_ZonePercentage', 'log-sigma-4-0-mm-3D_glszm_ZoneVariance', 'square_firstorder_TotalEnergy', 'square_glszm_GrayLevelNonUniformity', 'square_glszm_GrayLevelNonUniformityNormalized', 'square_glszm_GrayLevelVariance', 'square_glszm_HighGrayLevelZoneEmphasis', 'square_glszm_LargeAreaEmphasis', 'square_glszm_LargeAreaHighGrayLevelEmphasis', 'square_glszm_LowGrayLevelZoneEmphasis', 'square_glszm_SizeZoneNonUniformity', 'square_glszm_SizeZoneNonUniformityNormalized', 'square_glszm_SmallAreaEmphasis', 'square_glszm_SmallAreaLowGrayLevelEmphasis', 'square_glszm_ZonePercentage', 'square_glszm_ZoneVariance', 'squareroot_firstorder_TotalEnergy', 'squareroot_glszm_GrayLevelNonUniformity', 'squareroot_glszm_GrayLevelNonUniformityNormalized', 'squareroot_glszm_GrayLevelVariance', 'squareroot_glszm_HighGrayLevelZoneEmphasis', 'squareroot_glszm_LargeAreaEmphasis', 'squareroot_glszm_LargeAreaHighGrayLevelEmphasis', 'squareroot_glszm_LowGrayLevelZoneEmphasis', 'squareroot_glszm_SizeZoneNonUniformity', 'squareroot_glszm_SizeZoneNonUniformityNormalized', 'squareroot_glszm_SmallAreaEmphasis', 'squareroot_glszm_SmallAreaLowGrayLevelEmphasis', 'squareroot_glszm_ZonePercentage', 'squareroot_glszm_ZoneVariance', 'logarithm_firstorder_TotalEnergy', 'logarithm_glszm_GrayLevelNonUniformity', 'logarithm_glszm_GrayLevelNonUniformityNormalized', 'logarithm_glszm_GrayLevelVariance', 'logarithm_glszm_HighGrayLevelZoneEmphasis', 'logarithm_glszm_LargeAreaEmphasis', 'logarithm_glszm_LargeAreaHighGrayLevelEmphasis', 'logarithm_glszm_LowGrayLevelZoneEmphasis', 'logarithm_glszm_SizeZoneNonUniformity', 'logarithm_glszm_SizeZoneNonUniformityNormalized', 'logarithm_glszm_SmallAreaEmphasis', 'logarithm_glszm_SmallAreaLowGrayLevelEmphasis', 'logarithm_glszm_ZonePercentage', 'logarithm_glszm_ZoneVariance', 'exponential_firstorder_TotalEnergy', 'exponential_glszm_GrayLevelNonUniformity', 'exponential_glszm_GrayLevelNonUniformityNormalized', 'exponential_glszm_GrayLevelVariance', 'exponential_glszm_HighGrayLevelZoneEmphasis', 'exponential_glszm_LargeAreaEmphasis', 'exponential_glszm_LargeAreaHighGrayLevelEmphasis', 'exponential_glszm_LargeAreaLowGrayLevelEmphasis', 'exponential_glszm_LowGrayLevelZoneEmphasis', 'exponential_glszm_SizeZoneNonUniformity', 'exponential_glszm_SizeZoneNonUniformityNormalized', 'exponential_glszm_SmallAreaEmphasis', 'exponential_glszm_SmallAreaHighGrayLevelEmphasis', 'exponential_glszm_SmallAreaLowGrayLevelEmphasis', 'exponential_glszm_ZoneEntropy', 'exponential_glszm_ZonePercentage', 'exponential_glszm_ZoneVariance', 'gradient_firstorder_TotalEnergy', 'gradient_glszm_GrayLevelNonUniformity', 'gradient_glszm_GrayLevelNonUniformityNormalized', 'gradient_glszm_GrayLevelVariance', 'gradient_glszm_HighGrayLevelZoneEmphasis', 'gradient_glszm_LargeAreaEmphasis', 'gradient_glszm_LargeAreaHighGrayLevelEmphasis', 'gradient_glszm_LowGrayLevelZoneEmphasis', 'gradient_glszm_SizeZoneNonUniformity', 'gradient_glszm_SizeZoneNonUniformityNormalized', 'gradient_glszm_SmallAreaEmphasis', 'gradient_glszm_SmallAreaLowGrayLevelEmphasis', 'gradient_glszm_ZonePercentage', 'gradient_glszm_ZoneVariance']
+		These features were not used to generate any of the output features. Add a feature generator compatible with these features to utilize them.
+		Features can also be unused if they carry very little information, such as being categorical but having almost entirely unique values or being duplicates of other features.
+		These features do not need to be present at inference time.
+		('float', []) : 143 | ['original_firstorder_TotalEnergy', 'original_glszm_GrayLevelNonUniformity', 'original_glszm_GrayLevelNonUniformityNormalized', 'original_glszm_GrayLevelVariance', 'original_glszm_HighGrayLevelZoneEmphasis', ...]
+	Types of features in original data (raw dtype, special dtypes):
+		('float', [])  : 776 | ['original_shape2D_Elongation', 'original_shape2D_MajorAxisLength', 'original_shape2D_MaximumDiameter', 'original_shape2D_MeshSurface', 'original_shape2D_MinorAxisLength', ...]
+		('object', []) :   1 | ['patient_id']
+	Types of features in processed data (raw dtype, special dtypes):
+		('category', []) :   1 | ['patient_id']
+		('float', [])    : 776 | ['original_shape2D_Elongation', 'original_shape2D_MajorAxisLength', 'original_shape2D_MaximumDiameter', 'original_shape2D_MeshSurface', 'original_shape2D_MinorAxisLength', ...]
+	22.9s = Fit runtime
+	777 features in original data used to generate 777 features in processed data.
+	Train Data (Processed) Memory Usage: 19.98 MB (0.0% of available memory)
+Data preprocessing and feature engineering runtime = 23.05s ...
+AutoGluon will gauge predictive performance using evaluation metric: 'roc_auc'
+	This metric expects predicted probabilities rather than predicted class labels, so you'll need to use predict_proba() instead of predict()
+	To change this, specify the eval_metric parameter of Predictor()
+User-specified model hyperparameters to be fit:
+{
+	'GBM': [{}],
+	'CAT': [{}],
+	'XGB': [{}],
+}
+AutoGluon will fit 2 stack levels (L1 to L2) ...
+Fitting 3 L1 models, fit_strategy="sequential" ...
+Fitting model: LightGBM_BAG_L1 ... Training model for up to 584.48s of the 876.94s of remaining time.
+Will use sequential fold fitting strategy because import of ray failed. Reason: ray is required to train folds in parallel for TabularPredictor or HPO for MultiModalPredictor. A quick tip is to install via `pip install "ray>=2.10.0,<2.45.0"`
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9802	 = Validation score   (roc_auc)
+	35.36s	 = Training   runtime
+	0.16s	 = Validation runtime
+Fitting model: CatBoost_BAG_L1 ... Training model for up to 548.40s of the 840.86s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9994	 = Validation score   (roc_auc)
+	163.93s	 = Training   runtime
+	0.21s	 = Validation runtime
+Fitting model: XGBoost_BAG_L1 ... Training model for up to 383.87s of the 676.33s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	Warning: Exception caused XGBoost_BAG_L1 to fail during training... Skipping this model.
+		module 'numpy' has no attribute 'in1d'
+Detailed Traceback:
+Traceback (most recent call last):
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/trainer/abstract_trainer.py", line 2171, in _train_and_save
+    model = self._train_single(**model_fit_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/trainer/abstract_trainer.py", line 2055, in _train_single
+    model = model.fit(X=X, y=y, X_val=X_val, y_val=y_val, X_test=X_test, y_test=y_test, total_resources=total_resources, **model_fit_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 1068, in fit
+    out = self._fit(**kwargs)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/stacker_ensemble_model.py", line 270, in _fit
+    return super()._fit(X=X, y=y, time_limit=time_limit, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/bagged_ensemble_model.py", line 389, in _fit
+    self._fit_folds(
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/bagged_ensemble_model.py", line 868, in _fit_folds
+    fold_fitting_strategy.after_all_folds_scheduled()
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 350, in after_all_folds_scheduled
+    self._fit_fold_model(job)
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 355, in _fit_fold_model
+    fold_model = self._fit(self.model_base, time_start_fold, time_limit_fold, fold_ctx, self.model_base_kwargs)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 391, in _fit
+    fold_model.fit(X=X_fold, y=y_fold, X_val=X_val_fold, y_val=y_val_fold, time_limit=time_limit_fold, num_cpus=num_cpus, num_gpus=num_gpus, **kwargs_fold)
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 1068, in fit
+    out = self._fit(**kwargs)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_model.py", line 129, in _fit
+    X_val = self.preprocess(X_val, is_train=False)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 550, in preprocess
+    X = self._preprocess(X, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_model.py", line 74, in _preprocess
+    X = self._ohe_generator.transform(X)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/sklearn/utils/_set_output.py", line 316, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_utils.py", line 155, in transform
+    X_list.append(self.ohe_encs.transform(X[self.cat_cols]))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/sklearn/utils/_set_output.py", line 316, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 526, in transform
+    X_int, X_mask = self._transform(X, handle_unknown=self.handle_unknown)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 263, in _transform
+    diff, valid_mask = _encode_check_unknown(Xi, self.categories_[i], return_mask=True)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 139, in _encode_check_unknown
+    valid_mask = np.in1d(values, uniques)
+                 ^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/numpy/__init__.py", line 792, in __getattr__
+    raise AttributeError(f"module {__name__!r} has no attribute {attr!r}")
+AttributeError: module 'numpy' has no attribute 'in1d'
+Fitting model: WeightedEnsemble_L2 ... Training model for up to 360.00s of the 675.83s of remaining time.
+	Ensemble Weights: {'CatBoost_BAG_L1': 1.0}
+	0.9994	 = Validation score   (roc_auc)
+	0.02s	 = Training   runtime
+	0.0s	 = Validation runtime
+Fitting 3 L2 models, fit_strategy="sequential" ...
+Fitting model: LightGBM_BAG_L2 ... Training model for up to 675.75s of the 675.75s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.999	 = Validation score   (roc_auc)
+	14.78s	 = Training   runtime
+	0.12s	 = Validation runtime
+Fitting model: CatBoost_BAG_L2 ... Training model for up to 660.48s of the 660.48s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9994	 = Validation score   (roc_auc)
+	73.52s	 = Training   runtime
+	0.28s	 = Validation runtime
+Fitting model: XGBoost_BAG_L2 ... Training model for up to 586.15s of the 586.14s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	Warning: Exception caused XGBoost_BAG_L2 to fail during training... Skipping this model.
+		module 'numpy' has no attribute 'in1d'
+Detailed Traceback:
+Traceback (most recent call last):
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/trainer/abstract_trainer.py", line 2171, in _train_and_save
+    model = self._train_single(**model_fit_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/trainer/abstract_trainer.py", line 2055, in _train_single
+    model = model.fit(X=X, y=y, X_val=X_val, y_val=y_val, X_test=X_test, y_test=y_test, total_resources=total_resources, **model_fit_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 1068, in fit
+    out = self._fit(**kwargs)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/stacker_ensemble_model.py", line 270, in _fit
+    return super()._fit(X=X, y=y, time_limit=time_limit, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/bagged_ensemble_model.py", line 389, in _fit
+    self._fit_folds(
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/bagged_ensemble_model.py", line 868, in _fit_folds
+    fold_fitting_strategy.after_all_folds_scheduled()
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 350, in after_all_folds_scheduled
+    self._fit_fold_model(job)
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 355, in _fit_fold_model
+    fold_model = self._fit(self.model_base, time_start_fold, time_limit_fold, fold_ctx, self.model_base_kwargs)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 391, in _fit
+    fold_model.fit(X=X_fold, y=y_fold, X_val=X_val_fold, y_val=y_val_fold, time_limit=time_limit_fold, num_cpus=num_cpus, num_gpus=num_gpus, **kwargs_fold)
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 1068, in fit
+    out = self._fit(**kwargs)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_model.py", line 129, in _fit
+    X_val = self.preprocess(X_val, is_train=False)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 550, in preprocess
+    X = self._preprocess(X, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_model.py", line 74, in _preprocess
+    X = self._ohe_generator.transform(X)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/sklearn/utils/_set_output.py", line 316, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_utils.py", line 155, in transform
+    X_list.append(self.ohe_encs.transform(X[self.cat_cols]))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/sklearn/utils/_set_output.py", line 316, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 526, in transform
+    X_int, X_mask = self._transform(X, handle_unknown=self.handle_unknown)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 263, in _transform
+    diff, valid_mask = _encode_check_unknown(Xi, self.categories_[i], return_mask=True)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 139, in _encode_check_unknown
+    valid_mask = np.in1d(values, uniques)
+                 ^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/numpy/__init__.py", line 792, in __getattr__
+    raise AttributeError(f"module {__name__!r} has no attribute {attr!r}")
+AttributeError: module 'numpy' has no attribute 'in1d'
+Fitting model: WeightedEnsemble_L3 ... Training model for up to 360.00s of the 585.66s of remaining time.
+	Ensemble Weights: {'CatBoost_BAG_L2': 0.714, 'CatBoost_BAG_L1': 0.214, 'LightGBM_BAG_L2': 0.071}
+	0.9994	 = Validation score   (roc_auc)
+	0.05s	 = Training   runtime
+	0.0s	 = Validation runtime
+AutoGluon training complete, total runtime = 314.73s ... Best model: WeightedEnsemble_L3 | Estimated inference throughput: 553.1 rows/s (422 batch size)
+TabularPredictor saved. To load, use: predictor = TabularPredictor.load("/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/new_code/runs/lnm_ag_cv/fold_00/ag_model/ds_sub_fit/sub_fit_ho")
+Deleting DyStack predictor artifacts (clean_up_fits=True) ...
+Leaderboard on holdout data (DyStack):
+                 model  score_holdout  score_val eval_metric  pred_time_test  pred_time_val    fit_time  pred_time_test_marginal  pred_time_val_marginal  fit_time_marginal  stack_level  can_infer  fit_order
+0  WeightedEnsemble_L3       0.999481   0.999422     roc_auc        0.693686       0.763445  287.651776                 0.002401                0.000597           0.053943            3       True          6
+1      CatBoost_BAG_L1       0.999481   0.999376     roc_auc        0.169499       0.207612  163.933818                 0.169499                0.207612         163.933818            1       True          2
+2  WeightedEnsemble_L2       0.999481   0.999376     roc_auc        0.171331       0.208263  163.958670                 0.001832                0.000651           0.024852            2       True          3
+3      CatBoost_BAG_L2       0.999481   0.999415     roc_auc        0.487996       0.646427  272.815351                 0.088913                0.276699          73.519020            2       True          5
+4      LightGBM_BAG_L2       0.999372   0.999044     roc_auc        0.602371       0.486150  214.078812                 0.203288                0.116422          14.782481            2       True          4
+5      LightGBM_BAG_L1       0.979727   0.980239     roc_auc        0.229584       0.162116   35.362513                 0.229584                0.162116          35.362513            1       True          1
+	1	 = Optimal   num_stack_levels (Stacked Overfitting Occurred: False)
+	316s	 = DyStack   runtime |	3284s	 = Remaining runtime
+Starting main fit with num_stack_levels=1.
+	For future fit calls on this dataset, you can skip DyStack to save time: `predictor.fit(..., dynamic_stacking=False, num_stack_levels=1)`
+Beginning AutoGluon training ... Time limit = 3284s
+AutoGluon will save models to "/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/new_code/runs/lnm_ag_cv/fold_00/ag_model"
+Train Data Rows:    3795
+Train Data Columns: 920
+Label Column:       label
+Problem Type:       binary
+Preprocessing data ...
+Selected class <--> label mapping:  class 1 = 1, class 0 = 0
+Using Feature Generators to preprocess the data ...
+Fitting AutoMLPipelineFeatureGenerator...
+	Available Memory:                    169271.90 MB
+	Train Data (Original)  Memory Usage: 26.96 MB (0.0% of available memory)
+	Inferring data type of each feature based on column values. Set feature_metadata_in to manually specify special dtypes of the features.
+	Stage 1 Generators:
+		Fitting AsTypeFeatureGenerator...
+	Stage 2 Generators:
+		Fitting FillNaFeatureGenerator...
+	Stage 3 Generators:
+		Fitting IdentityFeatureGenerator...
+		Fitting CategoryFeatureGenerator...
+			Fitting CategoryMemoryMinimizeFeatureGenerator...
+	Stage 4 Generators:
+		Fitting DropUniqueFeatureGenerator...
+	Stage 5 Generators:
+		Fitting DropDuplicatesFeatureGenerator...
+	Unused Original Features (Count: 143): ['original_firstorder_TotalEnergy', 'original_glszm_GrayLevelNonUniformity', 'original_glszm_GrayLevelNonUniformityNormalized', 'original_glszm_GrayLevelVariance', 'original_glszm_HighGrayLevelZoneEmphasis', 'original_glszm_LargeAreaEmphasis', 'original_glszm_LargeAreaHighGrayLevelEmphasis', 'original_glszm_LowGrayLevelZoneEmphasis', 'original_glszm_SizeZoneNonUniformity', 'original_glszm_SizeZoneNonUniformityNormalized', 'original_glszm_SmallAreaEmphasis', 'original_glszm_SmallAreaLowGrayLevelEmphasis', 'original_glszm_ZonePercentage', 'original_glszm_ZoneVariance', 'wavelet-H_firstorder_TotalEnergy', 'wavelet-H_glszm_GrayLevelNonUniformity', 'wavelet-H_glszm_GrayLevelNonUniformityNormalized', 'wavelet-H_glszm_GrayLevelVariance', 'wavelet-H_glszm_HighGrayLevelZoneEmphasis', 'wavelet-H_glszm_LargeAreaEmphasis', 'wavelet-H_glszm_LargeAreaHighGrayLevelEmphasis', 'wavelet-H_glszm_LowGrayLevelZoneEmphasis', 'wavelet-H_glszm_SizeZoneNonUniformity', 'wavelet-H_glszm_SizeZoneNonUniformityNormalized', 'wavelet-H_glszm_SmallAreaEmphasis', 'wavelet-H_glszm_SmallAreaLowGrayLevelEmphasis', 'wavelet-H_glszm_ZonePercentage', 'wavelet-H_glszm_ZoneVariance', 'wavelet-L_firstorder_TotalEnergy', 'wavelet-L_glszm_GrayLevelNonUniformity', 'wavelet-L_glszm_GrayLevelNonUniformityNormalized', 'wavelet-L_glszm_GrayLevelVariance', 'wavelet-L_glszm_HighGrayLevelZoneEmphasis', 'wavelet-L_glszm_LargeAreaEmphasis', 'wavelet-L_glszm_LargeAreaHighGrayLevelEmphasis', 'wavelet-L_glszm_LowGrayLevelZoneEmphasis', 'wavelet-L_glszm_SizeZoneNonUniformity', 'wavelet-L_glszm_SizeZoneNonUniformityNormalized', 'wavelet-L_glszm_SmallAreaEmphasis', 'wavelet-L_glszm_SmallAreaLowGrayLevelEmphasis', 'wavelet-L_glszm_ZonePercentage', 'wavelet-L_glszm_ZoneVariance', 'log-sigma-2-0-mm-3D_firstorder_TotalEnergy', 'log-sigma-2-0-mm-3D_glszm_GrayLevelNonUniformity', 'log-sigma-2-0-mm-3D_glszm_GrayLevelNonUniformityNormalized', 'log-sigma-2-0-mm-3D_glszm_GrayLevelVariance', 'log-sigma-2-0-mm-3D_glszm_HighGrayLevelZoneEmphasis', 'log-sigma-2-0-mm-3D_glszm_LargeAreaEmphasis', 'log-sigma-2-0-mm-3D_glszm_LargeAreaHighGrayLevelEmphasis', 'log-sigma-2-0-mm-3D_glszm_LowGrayLevelZoneEmphasis', 'log-sigma-2-0-mm-3D_glszm_SizeZoneNonUniformity', 'log-sigma-2-0-mm-3D_glszm_SizeZoneNonUniformityNormalized', 'log-sigma-2-0-mm-3D_glszm_SmallAreaEmphasis', 'log-sigma-2-0-mm-3D_glszm_SmallAreaLowGrayLevelEmphasis', 'log-sigma-2-0-mm-3D_glszm_ZonePercentage', 'log-sigma-2-0-mm-3D_glszm_ZoneVariance', 'log-sigma-4-0-mm-3D_firstorder_TotalEnergy', 'log-sigma-4-0-mm-3D_glszm_GrayLevelNonUniformity', 'log-sigma-4-0-mm-3D_glszm_GrayLevelNonUniformityNormalized', 'log-sigma-4-0-mm-3D_glszm_GrayLevelVariance', 'log-sigma-4-0-mm-3D_glszm_HighGrayLevelZoneEmphasis', 'log-sigma-4-0-mm-3D_glszm_LargeAreaEmphasis', 'log-sigma-4-0-mm-3D_glszm_LargeAreaHighGrayLevelEmphasis', 'log-sigma-4-0-mm-3D_glszm_LowGrayLevelZoneEmphasis', 'log-sigma-4-0-mm-3D_glszm_SizeZoneNonUniformity', 'log-sigma-4-0-mm-3D_glszm_SizeZoneNonUniformityNormalized', 'log-sigma-4-0-mm-3D_glszm_SmallAreaEmphasis', 'log-sigma-4-0-mm-3D_glszm_SmallAreaLowGrayLevelEmphasis', 'log-sigma-4-0-mm-3D_glszm_ZonePercentage', 'log-sigma-4-0-mm-3D_glszm_ZoneVariance', 'square_firstorder_TotalEnergy', 'square_glszm_GrayLevelNonUniformity', 'square_glszm_GrayLevelNonUniformityNormalized', 'square_glszm_GrayLevelVariance', 'square_glszm_HighGrayLevelZoneEmphasis', 'square_glszm_LargeAreaEmphasis', 'square_glszm_LargeAreaHighGrayLevelEmphasis', 'square_glszm_LowGrayLevelZoneEmphasis', 'square_glszm_SizeZoneNonUniformity', 'square_glszm_SizeZoneNonUniformityNormalized', 'square_glszm_SmallAreaEmphasis', 'square_glszm_SmallAreaLowGrayLevelEmphasis', 'square_glszm_ZonePercentage', 'square_glszm_ZoneVariance', 'squareroot_firstorder_TotalEnergy', 'squareroot_glszm_GrayLevelNonUniformity', 'squareroot_glszm_GrayLevelNonUniformityNormalized', 'squareroot_glszm_GrayLevelVariance', 'squareroot_glszm_HighGrayLevelZoneEmphasis', 'squareroot_glszm_LargeAreaEmphasis', 'squareroot_glszm_LargeAreaHighGrayLevelEmphasis', 'squareroot_glszm_LowGrayLevelZoneEmphasis', 'squareroot_glszm_SizeZoneNonUniformity', 'squareroot_glszm_SizeZoneNonUniformityNormalized', 'squareroot_glszm_SmallAreaEmphasis', 'squareroot_glszm_SmallAreaLowGrayLevelEmphasis', 'squareroot_glszm_ZonePercentage', 'squareroot_glszm_ZoneVariance', 'logarithm_firstorder_TotalEnergy', 'logarithm_glszm_GrayLevelNonUniformity', 'logarithm_glszm_GrayLevelNonUniformityNormalized', 'logarithm_glszm_GrayLevelVariance', 'logarithm_glszm_HighGrayLevelZoneEmphasis', 'logarithm_glszm_LargeAreaEmphasis', 'logarithm_glszm_LargeAreaHighGrayLevelEmphasis', 'logarithm_glszm_LowGrayLevelZoneEmphasis', 'logarithm_glszm_SizeZoneNonUniformity', 'logarithm_glszm_SizeZoneNonUniformityNormalized', 'logarithm_glszm_SmallAreaEmphasis', 'logarithm_glszm_SmallAreaLowGrayLevelEmphasis', 'logarithm_glszm_ZonePercentage', 'logarithm_glszm_ZoneVariance', 'exponential_firstorder_TotalEnergy', 'exponential_glszm_GrayLevelNonUniformity', 'exponential_glszm_GrayLevelNonUniformityNormalized', 'exponential_glszm_GrayLevelVariance', 'exponential_glszm_HighGrayLevelZoneEmphasis', 'exponential_glszm_LargeAreaEmphasis', 'exponential_glszm_LargeAreaHighGrayLevelEmphasis', 'exponential_glszm_LargeAreaLowGrayLevelEmphasis', 'exponential_glszm_LowGrayLevelZoneEmphasis', 'exponential_glszm_SizeZoneNonUniformity', 'exponential_glszm_SizeZoneNonUniformityNormalized', 'exponential_glszm_SmallAreaEmphasis', 'exponential_glszm_SmallAreaHighGrayLevelEmphasis', 'exponential_glszm_SmallAreaLowGrayLevelEmphasis', 'exponential_glszm_ZoneEntropy', 'exponential_glszm_ZonePercentage', 'exponential_glszm_ZoneVariance', 'gradient_firstorder_TotalEnergy', 'gradient_glszm_GrayLevelNonUniformity', 'gradient_glszm_GrayLevelNonUniformityNormalized', 'gradient_glszm_GrayLevelVariance', 'gradient_glszm_HighGrayLevelZoneEmphasis', 'gradient_glszm_LargeAreaEmphasis', 'gradient_glszm_LargeAreaHighGrayLevelEmphasis', 'gradient_glszm_LowGrayLevelZoneEmphasis', 'gradient_glszm_SizeZoneNonUniformity', 'gradient_glszm_SizeZoneNonUniformityNormalized', 'gradient_glszm_SmallAreaEmphasis', 'gradient_glszm_SmallAreaLowGrayLevelEmphasis', 'gradient_glszm_ZonePercentage', 'gradient_glszm_ZoneVariance']
+		These features were not used to generate any of the output features. Add a feature generator compatible with these features to utilize them.
+		Features can also be unused if they carry very little information, such as being categorical but having almost entirely unique values or being duplicates of other features.
+		These features do not need to be present at inference time.
+		('float', []) : 143 | ['original_firstorder_TotalEnergy', 'original_glszm_GrayLevelNonUniformity', 'original_glszm_GrayLevelNonUniformityNormalized', 'original_glszm_GrayLevelVariance', 'original_glszm_HighGrayLevelZoneEmphasis', ...]
+	Types of features in original data (raw dtype, special dtypes):
+		('float', [])  : 776 | ['original_shape2D_Elongation', 'original_shape2D_MajorAxisLength', 'original_shape2D_MaximumDiameter', 'original_shape2D_MeshSurface', 'original_shape2D_MinorAxisLength', ...]
+		('object', []) :   1 | ['patient_id']
+	Types of features in processed data (raw dtype, special dtypes):
+		('category', []) :   1 | ['patient_id']
+		('float', [])    : 776 | ['original_shape2D_Elongation', 'original_shape2D_MajorAxisLength', 'original_shape2D_MaximumDiameter', 'original_shape2D_MeshSurface', 'original_shape2D_MinorAxisLength', ...]
+	18.5s = Fit runtime
+	777 features in original data used to generate 777 features in processed data.
+	Train Data (Processed) Memory Usage: 22.48 MB (0.0% of available memory)
+Data preprocessing and feature engineering runtime = 18.5s ...
+AutoGluon will gauge predictive performance using evaluation metric: 'roc_auc'
+	This metric expects predicted probabilities rather than predicted class labels, so you'll need to use predict_proba() instead of predict()
+	To change this, specify the eval_metric parameter of Predictor()
+User-specified model hyperparameters to be fit:
+{
+	'GBM': [{}],
+	'CAT': [{}],
+	'XGB': [{}],
+}
+AutoGluon will fit 2 stack levels (L1 to L2) ...
+Fitting 3 L1 models, fit_strategy="sequential" ...
+Fitting model: LightGBM_BAG_L1 ... Training model for up to 2176.17s of the 3265.06s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9819	 = Validation score   (roc_auc)
+	24.93s	 = Training   runtime
+	0.1s	 = Validation runtime
+Fitting model: CatBoost_BAG_L1 ... Training model for up to 2150.69s of the 3239.59s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9995	 = Validation score   (roc_auc)
+	148.75s	 = Training   runtime
+	0.3s	 = Validation runtime
+Fitting model: XGBoost_BAG_L1 ... Training model for up to 2001.26s of the 3090.16s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	Warning: Exception caused XGBoost_BAG_L1 to fail during training... Skipping this model.
+		module 'numpy' has no attribute 'in1d'
+Detailed Traceback:
+Traceback (most recent call last):
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/trainer/abstract_trainer.py", line 2171, in _train_and_save
+    model = self._train_single(**model_fit_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/trainer/abstract_trainer.py", line 2055, in _train_single
+    model = model.fit(X=X, y=y, X_val=X_val, y_val=y_val, X_test=X_test, y_test=y_test, total_resources=total_resources, **model_fit_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 1068, in fit
+    out = self._fit(**kwargs)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/stacker_ensemble_model.py", line 270, in _fit
+    return super()._fit(X=X, y=y, time_limit=time_limit, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/bagged_ensemble_model.py", line 389, in _fit
+    self._fit_folds(
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/bagged_ensemble_model.py", line 868, in _fit_folds
+    fold_fitting_strategy.after_all_folds_scheduled()
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 350, in after_all_folds_scheduled
+    self._fit_fold_model(job)
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 355, in _fit_fold_model
+    fold_model = self._fit(self.model_base, time_start_fold, time_limit_fold, fold_ctx, self.model_base_kwargs)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 391, in _fit
+    fold_model.fit(X=X_fold, y=y_fold, X_val=X_val_fold, y_val=y_val_fold, time_limit=time_limit_fold, num_cpus=num_cpus, num_gpus=num_gpus, **kwargs_fold)
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 1068, in fit
+    out = self._fit(**kwargs)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_model.py", line 129, in _fit
+    X_val = self.preprocess(X_val, is_train=False)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 550, in preprocess
+    X = self._preprocess(X, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_model.py", line 74, in _preprocess
+    X = self._ohe_generator.transform(X)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/sklearn/utils/_set_output.py", line 316, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_utils.py", line 155, in transform
+    X_list.append(self.ohe_encs.transform(X[self.cat_cols]))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/sklearn/utils/_set_output.py", line 316, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 526, in transform
+    X_int, X_mask = self._transform(X, handle_unknown=self.handle_unknown)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 263, in _transform
+    diff, valid_mask = _encode_check_unknown(Xi, self.categories_[i], return_mask=True)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 139, in _encode_check_unknown
+    valid_mask = np.in1d(values, uniques)
+                 ^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/numpy/__init__.py", line 792, in __getattr__
+    raise AttributeError(f"module {__name__!r} has no attribute {attr!r}")
+AttributeError: module 'numpy' has no attribute 'in1d'
+Fitting model: WeightedEnsemble_L2 ... Training model for up to 360.00s of the 3089.53s of remaining time.
+	Ensemble Weights: {'CatBoost_BAG_L1': 1.0}
+	0.9995	 = Validation score   (roc_auc)
+	0.03s	 = Training   runtime
+	0.0s	 = Validation runtime
+Fitting 3 L2 models, fit_strategy="sequential" ...
+Fitting model: LightGBM_BAG_L2 ... Training model for up to 3089.49s of the 3089.48s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9994	 = Validation score   (roc_auc)
+	15.63s	 = Training   runtime
+	0.13s	 = Validation runtime
+Fitting model: CatBoost_BAG_L2 ... Training model for up to 3073.25s of the 3073.25s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9994	 = Validation score   (roc_auc)
+	59.13s	 = Training   runtime
+	0.2s	 = Validation runtime
+Fitting model: XGBoost_BAG_L2 ... Training model for up to 3013.62s of the 3013.62s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	Warning: Exception caused XGBoost_BAG_L2 to fail during training... Skipping this model.
+		module 'numpy' has no attribute 'in1d'
+Detailed Traceback:
+Traceback (most recent call last):
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/trainer/abstract_trainer.py", line 2171, in _train_and_save
+    model = self._train_single(**model_fit_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/trainer/abstract_trainer.py", line 2055, in _train_single
+    model = model.fit(X=X, y=y, X_val=X_val, y_val=y_val, X_test=X_test, y_test=y_test, total_resources=total_resources, **model_fit_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 1068, in fit
+    out = self._fit(**kwargs)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/stacker_ensemble_model.py", line 270, in _fit
+    return super()._fit(X=X, y=y, time_limit=time_limit, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/bagged_ensemble_model.py", line 389, in _fit
+    self._fit_folds(
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/bagged_ensemble_model.py", line 868, in _fit_folds
+    fold_fitting_strategy.after_all_folds_scheduled()
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 350, in after_all_folds_scheduled
+    self._fit_fold_model(job)
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 355, in _fit_fold_model
+    fold_model = self._fit(self.model_base, time_start_fold, time_limit_fold, fold_ctx, self.model_base_kwargs)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/ensemble/fold_fitting_strategy.py", line 391, in _fit
+    fold_model.fit(X=X_fold, y=y_fold, X_val=X_val_fold, y_val=y_val_fold, time_limit=time_limit_fold, num_cpus=num_cpus, num_gpus=num_gpus, **kwargs_fold)
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 1068, in fit
+    out = self._fit(**kwargs)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_model.py", line 129, in _fit
+    X_val = self.preprocess(X_val, is_train=False)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/core/models/abstract/abstract_model.py", line 550, in preprocess
+    X = self._preprocess(X, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_model.py", line 74, in _preprocess
+    X = self._ohe_generator.transform(X)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/sklearn/utils/_set_output.py", line 316, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/xgboost/xgboost_utils.py", line 155, in transform
+    X_list.append(self.ohe_encs.transform(X[self.cat_cols]))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/sklearn/utils/_set_output.py", line 316, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 526, in transform
+    X_int, X_mask = self._transform(X, handle_unknown=self.handle_unknown)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 263, in _transform
+    diff, valid_mask = _encode_check_unknown(Xi, self.categories_[i], return_mask=True)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/autogluon/tabular/models/tabular_nn/utils/categorical_encoders.py", line 139, in _encode_check_unknown
+    valid_mask = np.in1d(values, uniques)
+                 ^^^^^^^
+  File "/mnt/wangbd8/workspace/envs/thyroid_infer/lib/python3.11/site-packages/numpy/__init__.py", line 792, in __getattr__
+    raise AttributeError(f"module {__name__!r} has no attribute {attr!r}")
+AttributeError: module 'numpy' has no attribute 'in1d'
+Fitting model: WeightedEnsemble_L3 ... Training model for up to 360.00s of the 3012.90s of remaining time.
+	Ensemble Weights: {'CatBoost_BAG_L1': 0.526, 'LightGBM_BAG_L2': 0.474}
+	0.9996	 = Validation score   (roc_auc)
+	0.05s	 = Training   runtime
+	0.0s	 = Validation runtime
+AutoGluon training complete, total runtime = 270.99s ... Best model: WeightedEnsemble_L3 | Estimated inference throughput: 898.5 rows/s (475 batch size)
+TabularPredictor saved. To load, use: predictor = TabularPredictor.load("/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/new_code/runs/lnm_ag_cv/fold_00/ag_model")

@@ -1,0 +1,5 @@
+stage,n_rows,n_TIRADS1,n_TIRADS2,n_TIRADS3,n_TIRADS4,n_TIRADS5
+train_original,13830,41,710,3956,5710,3413
+fit_input_before_resample,13830,41,710,3956,5710,3413
+fit_train_after_resample,28550,5710,5710,5710,5710,5710
+test::test_tirads,3482,11,182,941,1488,860

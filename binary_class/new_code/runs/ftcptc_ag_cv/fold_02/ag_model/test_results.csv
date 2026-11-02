@@ -1,0 +1,2 @@
+dataset,csv,n_rows,n_neg,n_pos,auroc,auprc,acc,prec,recall,f1,specificity,ece
+val_fold,binary_class/new_code/runs/ftcptc_ag_cv/fold_02/val_task.csv,965,846,119,0.5517213977789698,0.14373799944350713,0.8766839378238342,0.0,0.0,0.0,1.0,0.12264474932477723

@@ -1,0 +1,111 @@
+Verbosity: 2 (Standard Logging)
+=================== System Info ===================
+AutoGluon Version:  1.4.0
+Python Version:     3.11.15
+Operating System:   Linux
+Platform Machine:   x86_64
+Platform Version:   #35~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue May  7 09:00:52 UTC 2
+CPU Count:          20
+Memory Avail:       426.41 GB / 503.49 GB (84.7%)
+Disk Space Avail:   115476.59 GB / 185849.28 GB (62.1%)
+===================================================
+Presets specified: ['best_quality']
+Setting dynamic_stacking from 'auto' to True. Reason: Enable dynamic_stacking when use_bag_holdout is disabled. (use_bag_holdout=False)
+Stack configuration (auto_stack=True): num_stack_levels=1, num_bag_folds=8, num_bag_sets=1
+DyStack is enabled (dynamic_stacking=True). AutoGluon will try to determine whether the input data is affected by stacked overfitting and enable or disable stacking as a consequence.
+	This is used to identify the optimal `num_stack_levels` value. Copies of AutoGluon will be fit on subsets of the data. Then holdout validation data is used to detect stacked overfitting.
+	Running DyStack for up to 900s of the 3600s of remaining time (25%).
+		Context path: "/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/new_code/runs/shap_full_lnm_zjh3227/ag_model/ds_sub_fit/sub_fit_ho"
+Running DyStack sub-fit ...
+Beginning AutoGluon training ... Time limit = 900s
+AutoGluon will save models to "/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/new_code/runs/shap_full_lnm_zjh3227/ag_model/ds_sub_fit/sub_fit_ho"
+Train Data Rows:    2867
+Train Data Columns: 920
+Label Column:       label
+Problem Type:       binary
+Preprocessing data ...
+Selected class <--> label mapping:  class 1 = 1, class 0 = 0
+Using Feature Generators to preprocess the data ...
+Fitting AutoMLPipelineFeatureGenerator...
+	Available Memory:                    437214.49 MB
+	Train Data (Original)  Memory Usage: 20.37 MB (0.0% of available memory)
+	Inferring data type of each feature based on column values. Set feature_metadata_in to manually specify special dtypes of the features.
+	Stage 1 Generators:
+		Fitting AsTypeFeatureGenerator...
+	Stage 2 Generators:
+		Fitting FillNaFeatureGenerator...
+	Stage 3 Generators:
+		Fitting IdentityFeatureGenerator...
+		Fitting CategoryFeatureGenerator...
+			Fitting CategoryMemoryMinimizeFeatureGenerator...
+	Stage 4 Generators:
+		Fitting DropUniqueFeatureGenerator...
+	Stage 5 Generators:
+		Fitting DropDuplicatesFeatureGenerator...
+	Unused Original Features (Count: 143): ['original_firstorder_TotalEnergy', 'original_glszm_GrayLevelNonUniformity', 'original_glszm_GrayLevelNonUniformityNormalized', 'original_glszm_GrayLevelVariance', 'original_glszm_HighGrayLevelZoneEmphasis', 'original_glszm_LargeAreaEmphasis', 'original_glszm_LargeAreaHighGrayLevelEmphasis', 'original_glszm_LowGrayLevelZoneEmphasis', 'original_glszm_SizeZoneNonUniformity', 'original_glszm_SizeZoneNonUniformityNormalized', 'original_glszm_SmallAreaEmphasis', 'original_glszm_SmallAreaLowGrayLevelEmphasis', 'original_glszm_ZonePercentage', 'original_glszm_ZoneVariance', 'wavelet-H_firstorder_TotalEnergy', 'wavelet-H_glszm_GrayLevelNonUniformity', 'wavelet-H_glszm_GrayLevelNonUniformityNormalized', 'wavelet-H_glszm_GrayLevelVariance', 'wavelet-H_glszm_HighGrayLevelZoneEmphasis', 'wavelet-H_glszm_LargeAreaEmphasis', 'wavelet-H_glszm_LargeAreaHighGrayLevelEmphasis', 'wavelet-H_glszm_LowGrayLevelZoneEmphasis', 'wavelet-H_glszm_SizeZoneNonUniformity', 'wavelet-H_glszm_SizeZoneNonUniformityNormalized', 'wavelet-H_glszm_SmallAreaEmphasis', 'wavelet-H_glszm_SmallAreaLowGrayLevelEmphasis', 'wavelet-H_glszm_ZonePercentage', 'wavelet-H_glszm_ZoneVariance', 'wavelet-L_firstorder_TotalEnergy', 'wavelet-L_glszm_GrayLevelNonUniformity', 'wavelet-L_glszm_GrayLevelNonUniformityNormalized', 'wavelet-L_glszm_GrayLevelVariance', 'wavelet-L_glszm_HighGrayLevelZoneEmphasis', 'wavelet-L_glszm_LargeAreaEmphasis', 'wavelet-L_glszm_LargeAreaHighGrayLevelEmphasis', 'wavelet-L_glszm_LowGrayLevelZoneEmphasis', 'wavelet-L_glszm_SizeZoneNonUniformity', 'wavelet-L_glszm_SizeZoneNonUniformityNormalized', 'wavelet-L_glszm_SmallAreaEmphasis', 'wavelet-L_glszm_SmallAreaLowGrayLevelEmphasis', 'wavelet-L_glszm_ZonePercentage', 'wavelet-L_glszm_ZoneVariance', 'log-sigma-2-0-mm-3D_firstorder_TotalEnergy', 'log-sigma-2-0-mm-3D_glszm_GrayLevelNonUniformity', 'log-sigma-2-0-mm-3D_glszm_GrayLevelNonUniformityNormalized', 'log-sigma-2-0-mm-3D_glszm_GrayLevelVariance', 'log-sigma-2-0-mm-3D_glszm_HighGrayLevelZoneEmphasis', 'log-sigma-2-0-mm-3D_glszm_LargeAreaEmphasis', 'log-sigma-2-0-mm-3D_glszm_LargeAreaHighGrayLevelEmphasis', 'log-sigma-2-0-mm-3D_glszm_LowGrayLevelZoneEmphasis', 'log-sigma-2-0-mm-3D_glszm_SizeZoneNonUniformity', 'log-sigma-2-0-mm-3D_glszm_SizeZoneNonUniformityNormalized', 'log-sigma-2-0-mm-3D_glszm_SmallAreaEmphasis', 'log-sigma-2-0-mm-3D_glszm_SmallAreaLowGrayLevelEmphasis', 'log-sigma-2-0-mm-3D_glszm_ZonePercentage', 'log-sigma-2-0-mm-3D_glszm_ZoneVariance', 'log-sigma-4-0-mm-3D_firstorder_TotalEnergy', 'log-sigma-4-0-mm-3D_glszm_GrayLevelNonUniformity', 'log-sigma-4-0-mm-3D_glszm_GrayLevelNonUniformityNormalized', 'log-sigma-4-0-mm-3D_glszm_GrayLevelVariance', 'log-sigma-4-0-mm-3D_glszm_HighGrayLevelZoneEmphasis', 'log-sigma-4-0-mm-3D_glszm_LargeAreaEmphasis', 'log-sigma-4-0-mm-3D_glszm_LargeAreaHighGrayLevelEmphasis', 'log-sigma-4-0-mm-3D_glszm_LowGrayLevelZoneEmphasis', 'log-sigma-4-0-mm-3D_glszm_SizeZoneNonUniformity', 'log-sigma-4-0-mm-3D_glszm_SizeZoneNonUniformityNormalized', 'log-sigma-4-0-mm-3D_glszm_SmallAreaEmphasis', 'log-sigma-4-0-mm-3D_glszm_SmallAreaLowGrayLevelEmphasis', 'log-sigma-4-0-mm-3D_glszm_ZonePercentage', 'log-sigma-4-0-mm-3D_glszm_ZoneVariance', 'square_firstorder_TotalEnergy', 'square_glszm_GrayLevelNonUniformity', 'square_glszm_GrayLevelNonUniformityNormalized', 'square_glszm_GrayLevelVariance', 'square_glszm_HighGrayLevelZoneEmphasis', 'square_glszm_LargeAreaEmphasis', 'square_glszm_LargeAreaHighGrayLevelEmphasis', 'square_glszm_LowGrayLevelZoneEmphasis', 'square_glszm_SizeZoneNonUniformity', 'square_glszm_SizeZoneNonUniformityNormalized', 'square_glszm_SmallAreaEmphasis', 'square_glszm_SmallAreaLowGrayLevelEmphasis', 'square_glszm_ZonePercentage', 'square_glszm_ZoneVariance', 'squareroot_firstorder_TotalEnergy', 'squareroot_glszm_GrayLevelNonUniformity', 'squareroot_glszm_GrayLevelNonUniformityNormalized', 'squareroot_glszm_GrayLevelVariance', 'squareroot_glszm_HighGrayLevelZoneEmphasis', 'squareroot_glszm_LargeAreaEmphasis', 'squareroot_glszm_LargeAreaHighGrayLevelEmphasis', 'squareroot_glszm_LowGrayLevelZoneEmphasis', 'squareroot_glszm_SizeZoneNonUniformity', 'squareroot_glszm_SizeZoneNonUniformityNormalized', 'squareroot_glszm_SmallAreaEmphasis', 'squareroot_glszm_SmallAreaLowGrayLevelEmphasis', 'squareroot_glszm_ZonePercentage', 'squareroot_glszm_ZoneVariance', 'logarithm_firstorder_TotalEnergy', 'logarithm_glszm_GrayLevelNonUniformity', 'logarithm_glszm_GrayLevelNonUniformityNormalized', 'logarithm_glszm_GrayLevelVariance', 'logarithm_glszm_HighGrayLevelZoneEmphasis', 'logarithm_glszm_LargeAreaEmphasis', 'logarithm_glszm_LargeAreaHighGrayLevelEmphasis', 'logarithm_glszm_LowGrayLevelZoneEmphasis', 'logarithm_glszm_SizeZoneNonUniformity', 'logarithm_glszm_SizeZoneNonUniformityNormalized', 'logarithm_glszm_SmallAreaEmphasis', 'logarithm_glszm_SmallAreaLowGrayLevelEmphasis', 'logarithm_glszm_ZonePercentage', 'logarithm_glszm_ZoneVariance', 'exponential_firstorder_TotalEnergy', 'exponential_glszm_GrayLevelNonUniformity', 'exponential_glszm_GrayLevelNonUniformityNormalized', 'exponential_glszm_GrayLevelVariance', 'exponential_glszm_HighGrayLevelZoneEmphasis', 'exponential_glszm_LargeAreaEmphasis', 'exponential_glszm_LargeAreaHighGrayLevelEmphasis', 'exponential_glszm_LargeAreaLowGrayLevelEmphasis', 'exponential_glszm_LowGrayLevelZoneEmphasis', 'exponential_glszm_SizeZoneNonUniformity', 'exponential_glszm_SizeZoneNonUniformityNormalized', 'exponential_glszm_SmallAreaEmphasis', 'exponential_glszm_SmallAreaHighGrayLevelEmphasis', 'exponential_glszm_SmallAreaLowGrayLevelEmphasis', 'exponential_glszm_ZoneEntropy', 'exponential_glszm_ZonePercentage', 'exponential_glszm_ZoneVariance', 'gradient_firstorder_TotalEnergy', 'gradient_glszm_GrayLevelNonUniformity', 'gradient_glszm_GrayLevelNonUniformityNormalized', 'gradient_glszm_GrayLevelVariance', 'gradient_glszm_HighGrayLevelZoneEmphasis', 'gradient_glszm_LargeAreaEmphasis', 'gradient_glszm_LargeAreaHighGrayLevelEmphasis', 'gradient_glszm_LowGrayLevelZoneEmphasis', 'gradient_glszm_SizeZoneNonUniformity', 'gradient_glszm_SizeZoneNonUniformityNormalized', 'gradient_glszm_SmallAreaEmphasis', 'gradient_glszm_SmallAreaLowGrayLevelEmphasis', 'gradient_glszm_ZonePercentage', 'gradient_glszm_ZoneVariance']
+		These features were not used to generate any of the output features. Add a feature generator compatible with these features to utilize them.
+		Features can also be unused if they carry very little information, such as being categorical but having almost entirely unique values or being duplicates of other features.
+		These features do not need to be present at inference time.
+		('float', []) : 143 | ['original_firstorder_TotalEnergy', 'original_glszm_GrayLevelNonUniformity', 'original_glszm_GrayLevelNonUniformityNormalized', 'original_glszm_GrayLevelVariance', 'original_glszm_HighGrayLevelZoneEmphasis', ...]
+	Types of features in original data (raw dtype, special dtypes):
+		('float', [])  : 776 | ['original_shape2D_Elongation', 'original_shape2D_MajorAxisLength', 'original_shape2D_MaximumDiameter', 'original_shape2D_MeshSurface', 'original_shape2D_MinorAxisLength', ...]
+		('object', []) :   1 | ['patient_id']
+	Types of features in processed data (raw dtype, special dtypes):
+		('category', []) :   1 | ['patient_id']
+		('float', [])    : 776 | ['original_shape2D_Elongation', 'original_shape2D_MajorAxisLength', 'original_shape2D_MaximumDiameter', 'original_shape2D_MeshSurface', 'original_shape2D_MinorAxisLength', ...]
+	101.3s = Fit runtime
+	777 features in original data used to generate 777 features in processed data.
+	Train Data (Processed) Memory Usage: 16.98 MB (0.0% of available memory)
+Data preprocessing and feature engineering runtime = 101.72s ...
+AutoGluon will gauge predictive performance using evaluation metric: 'roc_auc'
+	This metric expects predicted probabilities rather than predicted class labels, so you'll need to use predict_proba() instead of predict()
+	To change this, specify the eval_metric parameter of Predictor()
+User-specified model hyperparameters to be fit:
+{
+	'GBM': [{}],
+	'CAT': [{}],
+	'XGB': [{}],
+}
+AutoGluon will fit 2 stack levels (L1 to L2) ...
+Fitting 3 L1 models, fit_strategy="sequential" ...
+Fitting model: LightGBM_BAG_L1 ... Training model for up to 532.05s of the 798.28s of remaining time.
+Will use sequential fold fitting strategy because import of ray failed. Reason: ray is required to train folds in parallel for TabularPredictor or HPO for MultiModalPredictor. A quick tip is to install via `pip install "ray>=2.10.0,<2.45.0"`
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9694	 = Validation score   (roc_auc)
+	160.68s	 = Training   runtime
+	0.22s	 = Validation runtime
+Fitting model: CatBoost_BAG_L1 ... Training model for up to 369.62s of the 635.85s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	Ran out of time, early stopping on iteration 375.
+	Ran out of time, early stopping on iteration 393.
+	Ran out of time, early stopping on iteration 446.
+	Ran out of time, early stopping on iteration 469.
+	Ran out of time, early stopping on iteration 444.
+	Ran out of time, early stopping on iteration 304.
+	Ran out of time, early stopping on iteration 331.
+	Ran out of time, early stopping on iteration 422.
+	0.9996	 = Validation score   (roc_auc)
+	351.9s	 = Training   runtime
+	1.95s	 = Validation runtime
+Fitting model: XGBoost_BAG_L1 ... Training model for up to 14.35s of the 280.57s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	Time limit exceeded... Skipping XGBoost_BAG_L1.
+Fitting model: WeightedEnsemble_L2 ... Training model for up to 360.00s of the 272.44s of remaining time.
+	Ensemble Weights: {'CatBoost_BAG_L1': 1.0}
+	0.9996	 = Validation score   (roc_auc)
+	0.02s	 = Training   runtime
+	0.0s	 = Validation runtime
+Fitting 3 L2 models, fit_strategy="sequential" ...
+Fitting model: LightGBM_BAG_L2 ... Training model for up to 272.40s of the 272.39s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	0.9985	 = Validation score   (roc_auc)
+	17.64s	 = Training   runtime
+	0.05s	 = Validation runtime
+Fitting model: CatBoost_BAG_L2 ... Training model for up to 253.40s of the 253.40s of remaining time.
+	Fitting 8 child models (S1F1 - S1F8) | Fitting with SequentialLocalFoldFittingStrategy (sequential: cpus=20, gpus=0)
+	Ran out of time, early stopping on iteration 301.
+	Ran out of time, early stopping on iteration 302.
+	Ran out of time, early stopping on iteration 290.
+	Ran out of time, early stopping on iteration 321.
+	Ran out of time, early stopping on iteration 324.
+	Ran out of time, early stopping on iteration 366.

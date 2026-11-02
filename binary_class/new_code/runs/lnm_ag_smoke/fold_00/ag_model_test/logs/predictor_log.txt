@@ -1,0 +1,82 @@
+Verbosity: 2 (Standard Logging)
+=================== System Info ===================
+AutoGluon Version:  1.4.0
+Python Version:     3.11.15
+Operating System:   Linux
+Platform Machine:   x86_64
+Platform Version:   #35~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue May  7 09:00:52 UTC 2
+CPU Count:          20
+Memory Avail:       428.76 GB / 503.49 GB (85.2%)
+Disk Space Avail:   116881.81 GB / 185849.28 GB (62.9%)
+===================================================
+Presets specified: ['medium_quality']
+Beginning AutoGluon training ... Time limit = 120s
+AutoGluon will save models to "/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/new_code/runs/lnm_ag_smoke/fold_00/ag_model_test"
+Train Data Rows:    128
+Train Data Columns: 920
+Label Column:       label
+Problem Type:       binary
+Preprocessing data ...
+Selected class <--> label mapping:  class 1 = 1, class 0 = 0
+Using Feature Generators to preprocess the data ...
+Fitting AutoMLPipelineFeatureGenerator...
+	Available Memory:                    439133.33 MB
+	Train Data (Original)  Memory Usage: 0.91 MB (0.0% of available memory)
+	Inferring data type of each feature based on column values. Set feature_metadata_in to manually specify special dtypes of the features.
+	Stage 1 Generators:
+		Fitting AsTypeFeatureGenerator...
+			Note: Converting 1 features to boolean dtype as they only contain 2 unique values.
+	Stage 2 Generators:
+		Fitting FillNaFeatureGenerator...
+	Stage 3 Generators:
+		Fitting IdentityFeatureGenerator...
+		Fitting CategoryFeatureGenerator...
+			Fitting CategoryMemoryMinimizeFeatureGenerator...
+	Stage 4 Generators:
+		Fitting DropUniqueFeatureGenerator...
+	Stage 5 Generators:
+		Fitting DropDuplicatesFeatureGenerator...
+	Unused Original Features (Count: 152): ['original_firstorder_TotalEnergy', 'original_glszm_GrayLevelNonUniformity', 'original_glszm_GrayLevelNonUniformityNormalized', 'original_glszm_GrayLevelVariance', 'original_glszm_HighGrayLevelZoneEmphasis', 'original_glszm_LargeAreaEmphasis', 'original_glszm_LargeAreaHighGrayLevelEmphasis', 'original_glszm_LowGrayLevelZoneEmphasis', 'original_glszm_SizeZoneNonUniformity', 'original_glszm_SizeZoneNonUniformityNormalized', 'original_glszm_SmallAreaEmphasis', 'original_glszm_SmallAreaLowGrayLevelEmphasis', 'original_glszm_ZonePercentage', 'original_glszm_ZoneVariance', 'wavelet-H_firstorder_TotalEnergy', 'wavelet-H_glszm_GrayLevelNonUniformity', 'wavelet-H_glszm_GrayLevelNonUniformityNormalized', 'wavelet-H_glszm_GrayLevelVariance', 'wavelet-H_glszm_HighGrayLevelZoneEmphasis', 'wavelet-H_glszm_LargeAreaEmphasis', 'wavelet-H_glszm_LargeAreaHighGrayLevelEmphasis', 'wavelet-H_glszm_LowGrayLevelZoneEmphasis', 'wavelet-H_glszm_SizeZoneNonUniformity', 'wavelet-H_glszm_SizeZoneNonUniformityNormalized', 'wavelet-H_glszm_SmallAreaEmphasis', 'wavelet-H_glszm_SmallAreaLowGrayLevelEmphasis', 'wavelet-H_glszm_ZonePercentage', 'wavelet-H_glszm_ZoneVariance', 'wavelet-L_firstorder_TotalEnergy', 'wavelet-L_glszm_GrayLevelNonUniformity', 'wavelet-L_glszm_GrayLevelNonUniformityNormalized', 'wavelet-L_glszm_GrayLevelVariance', 'wavelet-L_glszm_HighGrayLevelZoneEmphasis', 'wavelet-L_glszm_LargeAreaEmphasis', 'wavelet-L_glszm_LargeAreaHighGrayLevelEmphasis', 'wavelet-L_glszm_LowGrayLevelZoneEmphasis', 'wavelet-L_glszm_SizeZoneNonUniformity', 'wavelet-L_glszm_SizeZoneNonUniformityNormalized', 'wavelet-L_glszm_SmallAreaEmphasis', 'wavelet-L_glszm_SmallAreaLowGrayLevelEmphasis', 'wavelet-L_glszm_ZonePercentage', 'wavelet-L_glszm_ZoneVariance', 'log-sigma-2-0-mm-3D_firstorder_TotalEnergy', 'log-sigma-2-0-mm-3D_glszm_GrayLevelNonUniformity', 'log-sigma-2-0-mm-3D_glszm_GrayLevelNonUniformityNormalized', 'log-sigma-2-0-mm-3D_glszm_GrayLevelVariance', 'log-sigma-2-0-mm-3D_glszm_HighGrayLevelZoneEmphasis', 'log-sigma-2-0-mm-3D_glszm_LargeAreaEmphasis', 'log-sigma-2-0-mm-3D_glszm_LargeAreaHighGrayLevelEmphasis', 'log-sigma-2-0-mm-3D_glszm_LargeAreaLowGrayLevelEmphasis', 'log-sigma-2-0-mm-3D_glszm_LowGrayLevelZoneEmphasis', 'log-sigma-2-0-mm-3D_glszm_SizeZoneNonUniformity', 'log-sigma-2-0-mm-3D_glszm_SizeZoneNonUniformityNormalized', 'log-sigma-2-0-mm-3D_glszm_SmallAreaEmphasis', 'log-sigma-2-0-mm-3D_glszm_SmallAreaLowGrayLevelEmphasis', 'log-sigma-2-0-mm-3D_glszm_ZonePercentage', 'log-sigma-2-0-mm-3D_glszm_ZoneVariance', 'log-sigma-4-0-mm-3D_firstorder_TotalEnergy', 'log-sigma-4-0-mm-3D_glszm_GrayLevelNonUniformity', 'log-sigma-4-0-mm-3D_glszm_GrayLevelNonUniformityNormalized', 'log-sigma-4-0-mm-3D_glszm_GrayLevelVariance', 'log-sigma-4-0-mm-3D_glszm_HighGrayLevelZoneEmphasis', 'log-sigma-4-0-mm-3D_glszm_LargeAreaEmphasis', 'log-sigma-4-0-mm-3D_glszm_LargeAreaHighGrayLevelEmphasis', 'log-sigma-4-0-mm-3D_glszm_LargeAreaLowGrayLevelEmphasis', 'log-sigma-4-0-mm-3D_glszm_LowGrayLevelZoneEmphasis', 'log-sigma-4-0-mm-3D_glszm_SizeZoneNonUniformity', 'log-sigma-4-0-mm-3D_glszm_SizeZoneNonUniformityNormalized', 'log-sigma-4-0-mm-3D_glszm_SmallAreaEmphasis', 'log-sigma-4-0-mm-3D_glszm_SmallAreaHighGrayLevelEmphasis', 'log-sigma-4-0-mm-3D_glszm_SmallAreaLowGrayLevelEmphasis', 'log-sigma-4-0-mm-3D_glszm_ZoneEntropy', 'log-sigma-4-0-mm-3D_glszm_ZonePercentage', 'log-sigma-4-0-mm-3D_glszm_ZoneVariance', 'square_firstorder_TotalEnergy', 'square_glszm_GrayLevelNonUniformity', 'square_glszm_GrayLevelNonUniformityNormalized', 'square_glszm_GrayLevelVariance', 'square_glszm_HighGrayLevelZoneEmphasis', 'square_glszm_LargeAreaEmphasis', 'square_glszm_LargeAreaHighGrayLevelEmphasis', 'square_glszm_LargeAreaLowGrayLevelEmphasis', 'square_glszm_LowGrayLevelZoneEmphasis', 'square_glszm_SizeZoneNonUniformity', 'square_glszm_SizeZoneNonUniformityNormalized', 'square_glszm_SmallAreaEmphasis', 'square_glszm_SmallAreaHighGrayLevelEmphasis', 'square_glszm_SmallAreaLowGrayLevelEmphasis', 'square_glszm_ZoneEntropy', 'square_glszm_ZonePercentage', 'square_glszm_ZoneVariance', 'squareroot_firstorder_TotalEnergy', 'squareroot_glszm_GrayLevelNonUniformity', 'squareroot_glszm_GrayLevelNonUniformityNormalized', 'squareroot_glszm_GrayLevelVariance', 'squareroot_glszm_HighGrayLevelZoneEmphasis', 'squareroot_glszm_LargeAreaEmphasis', 'squareroot_glszm_LargeAreaHighGrayLevelEmphasis', 'squareroot_glszm_LowGrayLevelZoneEmphasis', 'squareroot_glszm_SizeZoneNonUniformity', 'squareroot_glszm_SizeZoneNonUniformityNormalized', 'squareroot_glszm_SmallAreaEmphasis', 'squareroot_glszm_SmallAreaLowGrayLevelEmphasis', 'squareroot_glszm_ZonePercentage', 'squareroot_glszm_ZoneVariance', 'logarithm_firstorder_TotalEnergy', 'logarithm_glszm_GrayLevelNonUniformity', 'logarithm_glszm_GrayLevelNonUniformityNormalized', 'logarithm_glszm_GrayLevelVariance', 'logarithm_glszm_HighGrayLevelZoneEmphasis', 'logarithm_glszm_LargeAreaEmphasis', 'logarithm_glszm_LargeAreaHighGrayLevelEmphasis', 'logarithm_glszm_LowGrayLevelZoneEmphasis', 'logarithm_glszm_SizeZoneNonUniformity', 'logarithm_glszm_SizeZoneNonUniformityNormalized', 'logarithm_glszm_SmallAreaEmphasis', 'logarithm_glszm_SmallAreaLowGrayLevelEmphasis', 'logarithm_glszm_ZonePercentage', 'logarithm_glszm_ZoneVariance', 'exponential_firstorder_TotalEnergy', 'exponential_glszm_GrayLevelNonUniformity', 'exponential_glszm_GrayLevelNonUniformityNormalized', 'exponential_glszm_GrayLevelVariance', 'exponential_glszm_HighGrayLevelZoneEmphasis', 'exponential_glszm_LargeAreaEmphasis', 'exponential_glszm_LargeAreaHighGrayLevelEmphasis', 'exponential_glszm_LargeAreaLowGrayLevelEmphasis', 'exponential_glszm_LowGrayLevelZoneEmphasis', 'exponential_glszm_SizeZoneNonUniformity', 'exponential_glszm_SizeZoneNonUniformityNormalized', 'exponential_glszm_SmallAreaEmphasis', 'exponential_glszm_SmallAreaHighGrayLevelEmphasis', 'exponential_glszm_SmallAreaLowGrayLevelEmphasis', 'exponential_glszm_ZoneEntropy', 'exponential_glszm_ZonePercentage', 'exponential_glszm_ZoneVariance', 'gradient_firstorder_TotalEnergy', 'gradient_glszm_GrayLevelNonUniformity', 'gradient_glszm_GrayLevelNonUniformityNormalized', 'gradient_glszm_GrayLevelVariance', 'gradient_glszm_HighGrayLevelZoneEmphasis', 'gradient_glszm_LargeAreaEmphasis', 'gradient_glszm_LargeAreaHighGrayLevelEmphasis', 'gradient_glszm_LargeAreaLowGrayLevelEmphasis', 'gradient_glszm_LowGrayLevelZoneEmphasis', 'gradient_glszm_SizeZoneNonUniformity', 'gradient_glszm_SizeZoneNonUniformityNormalized', 'gradient_glszm_SmallAreaEmphasis', 'gradient_glszm_SmallAreaHighGrayLevelEmphasis', 'gradient_glszm_SmallAreaLowGrayLevelEmphasis', 'gradient_glszm_ZonePercentage', 'gradient_glszm_ZoneVariance']
+		These features were not used to generate any of the output features. Add a feature generator compatible with these features to utilize them.
+		Features can also be unused if they carry very little information, such as being categorical but having almost entirely unique values or being duplicates of other features.
+		These features do not need to be present at inference time.
+		('float', []) : 152 | ['original_firstorder_TotalEnergy', 'original_glszm_GrayLevelNonUniformity', 'original_glszm_GrayLevelNonUniformityNormalized', 'original_glszm_GrayLevelVariance', 'original_glszm_HighGrayLevelZoneEmphasis', ...]
+	Types of features in original data (raw dtype, special dtypes):
+		('float', [])  : 767 | ['original_shape2D_Elongation', 'original_shape2D_MajorAxisLength', 'original_shape2D_MaximumDiameter', 'original_shape2D_MeshSurface', 'original_shape2D_MinorAxisLength', ...]
+		('object', []) :   1 | ['patient_id']
+	Types of features in processed data (raw dtype, special dtypes):
+		('category', [])  :   1 | ['patient_id']
+		('float', [])     : 766 | ['original_shape2D_Elongation', 'original_shape2D_MajorAxisLength', 'original_shape2D_MaximumDiameter', 'original_shape2D_MeshSurface', 'original_shape2D_MinorAxisLength', ...]
+		('int', ['bool']) :   1 | ['gradient_firstorder_Minimum']
+	1.6s = Fit runtime
+	768 features in original data used to generate 768 features in processed data.
+	Train Data (Processed) Memory Usage: 0.75 MB (0.0% of available memory)
+Data preprocessing and feature engineering runtime = 1.68s ...
+AutoGluon will gauge predictive performance using evaluation metric: 'roc_auc'
+	This metric expects predicted probabilities rather than predicted class labels, so you'll need to use predict_proba() instead of predict()
+	To change this, specify the eval_metric parameter of Predictor()
+Automatically generating train/validation split with holdout_frac=0.2, Train Rows: 102, Val Rows: 26
+User-specified model hyperparameters to be fit:
+{
+	'GBM': [{}],
+	'CAT': [{}],
+}
+Fitting 2 L1 models, fit_strategy="sequential" ...
+Fitting model: LightGBM ... Training model for up to 118.32s of the 118.32s of remaining time.
+	Fitting with cpus=20, gpus=0, mem=0.1/429.0 GB
+	0.8667	 = Validation score   (roc_auc)
+	0.73s	 = Training   runtime
+	0.21s	 = Validation runtime
+Fitting model: CatBoost ... Training model for up to 116.87s of the 116.87s of remaining time.
+	Fitting with cpus=20, gpus=0, mem=1.0/428.7 GB
+	Ran out of time, early stopping on iteration 8163.
+	1.0	 = Validation score   (roc_auc)
+	116.96s	 = Training   runtime
+	0.04s	 = Validation runtime
+Fitting model: WeightedEnsemble_L2 ... Training model for up to 118.32s of the -0.25s of remaining time.
+	Ensemble Weights: {'CatBoost': 1.0}
+	1.0	 = Validation score   (roc_auc)
+	0.02s	 = Training   runtime
+	0.0s	 = Validation runtime
+AutoGluon training complete, total runtime = 120.42s ... Best model: WeightedEnsemble_L2 | Estimated inference throughput: 662.0 rows/s (26 batch size)
+TabularPredictor saved. To load, use: predictor = TabularPredictor.load("/mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/new_code/runs/lnm_ag_smoke/fold_00/ag_model_test")
