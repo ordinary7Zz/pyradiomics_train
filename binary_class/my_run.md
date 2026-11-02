@@ -87,7 +87,21 @@ python binary_class/run_all_binary_tasks.py \
 - 若标签是病人级、样本却是图像级，建议先构建病人级 CSV，再复用现有训练脚本做病人级训练与评估
 - 建议重点关注 test_results.csv 中的 AUPRC、Recall、F1、Specificity，而不只看 AUROC
 
-## LymphUs数据集 - predmask：
+## LymphUs数据集 - predmask
+
+一键脚本（默认 **不重新提特征**，只读 legacy；新产物在 `outputs/runs/...`）：
+
+```bash
+cd /mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train
+bash binary_class/run_lnm_lymphus_fake_predmask.sh
+# SHAP -> binary_class/shap_analysis_outputs/lnm_lymphus_fake_predmask/（不覆盖 LymphUs_fake_predmask/LNM_CN01）
+# 重新提特征（写入 runs/.../features/ 或带时间戳子目录，不覆盖 legacy）：
+# SKIP_EXTRACT=0 bash binary_class/run_lnm_lymphus_fake_predmask.sh
+# 指定写入目录：SKIP_EXTRACT=0 FEAT_WRITE_DIR=binary_class/outputs/runs/lnm_lymphus_fake_predmask/features_v2 bash ...
+# 仅训练、不跑 SHAP：SKIP_SHAP=1 bash ...
+```
+
+逐条命令：
 python binary_class/extract_base_radiomics.py \
   --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Lymph_Node_Metastasis_fake/images \
   --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/pred_masks/Lymph_Node_Metastasis_fake/Lymph_images \
@@ -173,7 +187,19 @@ python -m binary_class.train_binary_task_resampled \
   --ci_seed 42 \
   --seed 42
 
-## 整理后的FTCPTC数据集：
+## 整理后的FTCPTC数据集
+
+一键脚本（默认 **不重新提特征**；legacy 在 `outputs/base_features/FTCPTC_FangDai`，只读）：
+
+```bash
+cd /mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train
+bash binary_class/run_ftcptc_malignant_filtered.sh
+# SHAP 写入 binary_class/shap_analysis_outputs/ftcptc_malignant_filtered/（不与 legacy FTCPTC_FangDai 混用）
+# SKIP_EXTRACT=0 / FEAT_WRITE_DIR=... / SKIP_SHAP=1 同上 LymphUs 脚本说明
+# 与 new_code 特征筛选 + SHAP 全量流水线：bash binary_class/new_code/run_shap_fulltrain_ftcptc_zjh3227.sh
+```
+
+逐条命令：
 python binary_class/extract_base_radiomics.py \
   --image_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Malignant_ultrasound_images_cropped \
   --mask_dir /mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Malignant_ultrasound_images_cropped_predictions \

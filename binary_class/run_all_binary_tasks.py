@@ -52,7 +52,18 @@ def _run(cmd: List[str]) -> None:
     subprocess.run(cmd, check=True)
 
 
-def _extract_base_features(image_dir: str, mask_dir: str, label_json: str, output_csv: str, params: str, mask_threshold: int, spacing_x: float, spacing_y: float, skip_fail: bool) -> None:
+def _extract_base_features(
+    image_dir: str,
+    mask_dir: str,
+    label_json: str,
+    output_csv: str,
+    params: str | None,
+    feature_preset: str,
+    mask_threshold: int,
+    spacing_x: float,
+    spacing_y: float,
+    skip_fail: bool,
+) -> None:
     cmd = [
         sys.executable,
         EXTRACT_SCRIPT,
@@ -60,11 +71,13 @@ def _extract_base_features(image_dir: str, mask_dir: str, label_json: str, outpu
         "--mask_dir", mask_dir,
         "--label_json", label_json,
         "--output_csv", output_csv,
-        "--params", params,
+        "--feature_preset", feature_preset,
         "--mask_threshold", str(mask_threshold),
         "--spacing_x", str(spacing_x),
         "--spacing_y", str(spacing_y),
     ]
+    if params:
+        cmd.extend(["--params", params])
     if skip_fail:
         cmd.append("--skip_fail")
     _run(cmd)
@@ -90,7 +103,19 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--test_mask_dir", type=str, required=True)
     p.add_argument("--test_label_json", type=str, required=True)
     p.add_argument("--work_dir", type=str, default=os.path.join(THIS_DIR, "outputs"))
-    p.add_argument("--params", type=str, default=os.path.join(ROOT, "radiomics_2d.yaml"))
+    p.add_argument("--params", type=str, default=None, help="Radiomics YAML (overrides --feature_preset)")
+    p.add_argument(
+        "--feature_preset",
+        type=str,
+        default="full",
+        choices=["full", "original_only", "shape_only"],
+    )
+    p.add_argument(
+        "--feature_filter",
+        type=str,
+        default="standard",
+        choices=["none", "standard"],
+    )
     p.add_argument("--mask_threshold", type=int, default=0)
     p.add_argument("--spacing_x", type=float, default=1.0)
     p.add_argument("--spacing_y", type=float, default=1.0)
@@ -130,6 +155,7 @@ def main() -> None:
         label_json=args.train_label_json,
         output_csv=train_base_features_csv,
         params=args.params,
+        feature_preset=args.feature_preset,
         mask_threshold=args.mask_threshold,
         spacing_x=args.spacing_x,
         spacing_y=args.spacing_y,
@@ -141,11 +167,18 @@ def main() -> None:
         label_json=args.test_label_json,
         output_csv=test_base_features_csv,
         params=args.params,
+        feature_preset=args.feature_preset,
         mask_threshold=args.mask_threshold,
         spacing_x=args.spacing_x,
         spacing_y=args.spacing_y,
         skip_fail=args.skip_fail,
     )
+
+    from binary_class.new_code.feature_presets import resolve_radiomics_params
+    from binary_class.new_code.feature_pipeline import FilterConfig, filter_train_test_tasks
+
+    radiomics_path = str(resolve_radiomics_params(args.feature_preset, args.params))
+    filter_cfg = FilterConfig(mode=args.feature_filter)
 
     tasks = _resolve_tasks(args.train_label_json, args.test_label_json, args.tasks)
     summary_rows = []
@@ -158,6 +191,18 @@ def main() -> None:
         _build_task_csv(train_base_features_csv, args.train_label_json, task, train_task_csv)
         _build_task_csv(test_base_features_csv, args.test_label_json, task, test_task_csv)
 
+        manifest_path = os.path.join(model_dir, "feature_manifest.json")
+        filter_train_test_tasks(
+            train_task_csv,
+            test_task_csv,
+            manifest_path,
+            label_col="label",
+            cfg=filter_cfg,
+            feature_preset=args.feature_preset,
+            radiomics_params=radiomics_path,
+            keep_filename=False,
+        )
+
         train_cmd = [
             sys.executable,
             "-m",
@@ -167,6 +212,7 @@ def main() -> None:
             "--task_name", task,
             "--test_csv", test_task_csv,
             "--test_names", f"test_{task}",
+            "--feature_manifest", manifest_path,
             "--presets", args.presets,
             "--seed", str(args.seed),
             "--threshold", str(args.threshold),

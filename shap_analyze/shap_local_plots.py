@@ -566,8 +566,8 @@ def plot_waterfall_samples(
 
     print(f"  Waterfall and compact bar plots saved to: {output_dir}")
 
+    csv_path = os.path.join(output_dir, "waterfall_sample_images.csv")
     if sample_ids_array is not None and waterfall_records:
-        csv_path = os.path.join(output_dir, "waterfall_sample_images.csv")
         fieldnames = [
             "model",
             "category",
@@ -586,3 +586,13 @@ def plot_waterfall_samples(
             print(f"  Saved waterfall sample image names to: {csv_path}")
         except Exception as e:
             print(f"  Warning: failed to save waterfall sample image names: {e}")
+    elif os.path.isfile(csv_path):
+        print(
+            "  Warning: waterfall_sample_images.csv was not updated "
+            "(train CSV has no filename/image_path; pass --filenames_csv e.g. train_features.csv). "
+            f"Removing stale file: {csv_path}"
+        )
+        try:
+            os.remove(csv_path)
+        except OSError as e:
+            print(f"  Warning: could not remove stale CSV: {e}")

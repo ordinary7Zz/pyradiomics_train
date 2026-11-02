@@ -12,11 +12,11 @@ def extract_ensemble_weights_from_log(log_path: str) -> Optional[Dict[str, float
             content = f.read()
 
         pattern = r"Ensemble Weights:\s*\{([^}]+)\}"
-        match = re.search(pattern, content)
-        if not match:
+        matches = list(re.finditer(pattern, content))
+        if not matches:
             return None
 
-        weights_str = match.group(1)
+        weights_str = matches[-1].group(1)
         weights: Dict[str, float] = {}
         for item in weights_str.split(","):
             item = item.strip()
@@ -32,6 +32,64 @@ def extract_ensemble_weights_from_log(log_path: str) -> Optional[Dict[str, float
     except Exception as e:
         print(f"Warning: Failed to extract ensemble weights from log: {e}")
         return None
+
+
+def extract_ensemble_weights_from_shap_summary(summary_path: str) -> Optional[Dict[str, float]]:
+    """Parse ``Ensemble weights:`` block from shap_analysis_summary.txt."""
+    if not os.path.isfile(summary_path):
+        return None
+    try:
+        with open(summary_path, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+        weights: Dict[str, float] = {}
+        in_section = False
+        for line in lines:
+            stripped = line.strip()
+            if stripped.startswith("Ensemble weights:"):
+                in_section = True
+                continue
+            if not in_section:
+                continue
+            if not stripped:
+                break
+            model_match = re.match(r"([^:]+):\s*([\d.]+)", stripped)
+            if model_match:
+                weights[model_match.group(1).strip()] = float(model_match.group(2))
+        return weights if weights else None
+    except Exception as e:
+        print(f"Warning: Failed to parse ensemble weights from summary: {e}")
+        return None
+
+
+def resolve_ensemble_weights(model_dir: str, output_dir: Optional[str] = None) -> Optional[Dict[str, float]]:
+    """Prefer last weights in predictor_log.txt; fall back to shap_analysis_summary.txt."""
+    log_path = os.path.join(model_dir, "logs", "predictor_log.txt")
+    weights = extract_ensemble_weights_from_log(log_path)
+    if weights:
+        return weights
+
+    summary_paths: List[str] = []
+    if output_dir:
+        summary_paths.append(os.path.join(output_dir, "shap_analysis_summary.txt"))
+    summary_paths.append(os.path.join(model_dir, "shap_analysis", "shap_analysis_summary.txt"))
+    for path in summary_paths:
+        weights = extract_ensemble_weights_from_shap_summary(path)
+        if weights:
+            return weights
+    return None
+
+
+def _models_in_leaderboard(predictor: Any, names: List[str]) -> List[str]:
+    try:
+        leaderboard = predictor.leaderboard(silent=True)
+        available = set(leaderboard["model"].astype(str))
+    except Exception:
+        return list(names)
+    kept = [n for n in names if n in available]
+    missing = [n for n in names if n not in available]
+    if missing:
+        print(f"Warning: models not in leaderboard (skipped): {missing}")
+    return kept
 
 
 def load_autogluon_model(predictor: Any, model_name: str) -> Any:
@@ -86,16 +144,19 @@ def get_main_models(
     predictor: Any,
     model_dir: str,
     main_models: Optional[List[str]] = None,
+    output_dir: Optional[str] = None,
 ) -> List[str]:
     """Get list of main models from ensemble or use provided list."""
     if main_models is not None:
-        return main_models
+        filtered = _models_in_leaderboard(predictor, main_models)
+        return filtered if filtered else main_models
 
-    log_path = os.path.join(model_dir, "logs", "predictor_log.txt")
-    weights = extract_ensemble_weights_from_log(log_path)
+    weights = resolve_ensemble_weights(model_dir, output_dir)
     if weights:
-        print(f"Found ensemble weights from log: {weights}")
-        return list(weights.keys())
+        print(f"Auto-detected ensemble weights: {weights}")
+        filtered = _models_in_leaderboard(predictor, list(weights.keys()))
+        if filtered:
+            return filtered
 
     try:
         leaderboard = predictor.leaderboard(silent=True)

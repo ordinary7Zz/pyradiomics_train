@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
-# 做法1 · FTC/PTC：ZJH 3227 全量训 AutoGluon（供 SHAP），ZJH 801 作 test 评估
+# 做法1 · FTC/PTC：Malignant cropped train/test JSON + pred mask -> AutoGluon
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=zjh3227_shap_train_lib.sh
-source "${SCRIPT_DIR}/zjh3227_shap_train_lib.sh"
+# shellcheck source=malignant_cropped_shap_train_lib.sh
+source "${SCRIPT_DIR}/malignant_cropped_shap_train_lib.sh"
 
 TASK="ftcptc"
-PACKED_ROOT="/mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/FTCPTC_ZJH8K_FangDai_packed"
 WORK_DIR="${WORK_DIR:-${PYR_ROOT}/binary_class/new_code/runs/shap_full_ftcptc_zjh3227}"
 SKIP_FAIL_FEATURES="${SKIP_FAIL_FEATURES:-1}"
+REUSE_FEATURES="${REUSE_FEATURES:-0}"
+TEST_NAME="${TEST_NAME:-Malignant_test_filtered}"
 
 TRAIN_RES="${WORK_DIR}/train_resolved.json"
 TEST_RES="${WORK_DIR}/test_resolved.json"
@@ -22,51 +23,39 @@ AG_DIR="${WORK_DIR}/ag_model"
 mkdir -p "${WORK_DIR}"
 cd "${PYR_ROOT}"
 
-echo "==> FTC/PTC SHAP full-train (3227 train / 801 test)"
-echo "    packed:  ${PACKED_ROOT}"
-echo "    work:    ${WORK_DIR}"
+echo "==> FTC/PTC full-train | PYTHON=${PYTHON}"
+echo "    image:  ${MALIGNANT_IMAGE_ROOT}"
+echo "    train:  ${MALIGNANT_TRAIN_LABELS}"
+echo "    test:   ${MALIGNANT_TEST_LABELS}"
+echo "    work:   ${WORK_DIR}"
 
-echo "==> [1/4] manifest -> resolved JSON"
-zjh3227_export_resolved "${TASK}" "${PACKED_ROOT}" "${TRAIN_MANIFEST_REL}" "${TRAIN_RES}"
-zjh3227_export_resolved "${TASK}" "${PACKED_ROOT}" "${TEST_MANIFEST_REL}" "${TEST_RES}"
+echo "==> [1/4] label JSON -> resolved"
+malignant_export_resolved "${TASK}" "${MALIGNANT_TRAIN_LABELS}" "${TRAIN_RES}"
+malignant_export_resolved "${TASK}" "${MALIGNANT_TEST_LABELS}" "${TEST_RES}"
 
 echo "==> [2/4] radiomics (pred mask)"
-zjh3227_extract_features "${TRAIN_RES}" "${TRAIN_FEAT}"
-zjh3227_extract_features "${TEST_RES}" "${TEST_FEAT}"
+zjh3227_maybe_extract_features "${TRAIN_RES}" "${TRAIN_FEAT}"
+zjh3227_maybe_extract_features "${TEST_RES}" "${TEST_FEAT}"
 
-echo "==> [3/4] merge labels -> task CSV"
+echo "==> [3/4] labels -> task CSV (strip patient_id / paths)"
 zjh3227_build_task_csv "${TASK}" "${TRAIN_FEAT}" "${TRAIN_RES}" "${TRAIN_TASK}"
 zjh3227_build_task_csv "${TASK}" "${TEST_FEAT}" "${TEST_RES}" "${TEST_TASK}"
 
-echo "==> [4/4] AutoGluon fit on full 3227"
-zjh3227_train_autogluon "${TRAIN_TASK}" "${TEST_TASK}" "${AG_DIR}" "FTCPTC"
+echo "==> [3b/4] image-level feature filter (train-only fit)"
+zjh3227_apply_feature_filter "${WORK_DIR}" "${TRAIN_TASK}" "${TEST_TASK}"
+
+echo "==> [4/4] AutoGluon (tree_full, time_limit=${TIME_LIMIT:-3600}s)"
+rm -rf "${AG_DIR}"
+TEST_NAMES="${TEST_NAME}" zjh3227_train_autogluon "${TRAIN_TASK}" "${TEST_TASK}" "${AG_DIR}" "FTCPTC" "${WORK_DIR}/feature_manifest.json"
 
 cat <<EOF
 
 Done.
-  SHAP --model_dir:  ${AG_DIR}
-  SHAP --train_csv:  ${TRAIN_TASK}
-  Test metrics:      ${AG_DIR}/test_results.csv
+  model:  ${AG_DIR}
+  train:  ${TRAIN_TASK}
+  test:   ${AG_DIR}/test_results.csv
 
-Example SHAP:
+Next SHAP:
   cd ${PYR_ROOT}
-  python shap_analyze/shap_analyze_autogluon_fixed.py \\
-    --model_dir ${AG_DIR} \\
-    --train_csv ${TRAIN_TASK} \\
-    --label label \\
-    --output_dir binary_class/shap_analysis_outputs/shap_full_ftcptc_zjh3227 \\
-    --task_name "FTC vs PTC" \\
-    --positive_class_name "FTC" \\
-    --negative_class_name "PTC" \\
-    --output_space "raw score" \\
-    --main_models LightGBMXT_BAG_L1 \\
-    --plot_beeswarm_for LightGBMXT_BAG_L1 \\
-    --background_samples 500 \\
-    --explain_samples 2000 \\
-    --skip_neural_net \\
-    --plot_waterfall \\
-    --top_features 10 \\
-    --waterfall_samples 10
-
-(若 leaderboard 榜首不是 LightGBMXT_BAG_L1，请改 --main_models / --plot_beeswarm_for)
+  bash shap_analyze/shap_analyze_autogluon_fixed_FTCPTC_zjh3227.sh
 EOF

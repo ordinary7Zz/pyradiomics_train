@@ -1,11 +1,17 @@
 import argparse
 import json
 import os
+import sys
+from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Tuple
 
 import numpy as np
 import pandas as pd
 from PIL import Image
+
+PYR_ROOT = Path(__file__).resolve().parents[1]
+if str(PYR_ROOT) not in sys.path:
+    sys.path.insert(0, str(PYR_ROOT))
 
 
 _IMAGE_EXTS = (".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff", ".PNG", ".JPG", ".JPEG")
@@ -116,7 +122,13 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--mask_dir", type=str, required=True, help="base directory for masks")
     p.add_argument("--label_json", type=str, required=True, help="json file containing filename and task keys")
     p.add_argument("--output_csv", type=str, required=True, help="output base features csv")
-    p.add_argument("--params", type=str, default=os.path.join(os.path.dirname(os.path.dirname(__file__)), "radiomics_2d.yaml"))
+    p.add_argument("--params", type=str, default=None, help="Radiomics YAML (overrides --feature_preset)")
+    p.add_argument(
+        "--feature_preset",
+        type=str,
+        default="full",
+        choices=["full", "original_only", "shape_only"],
+    )
     p.add_argument("--mask_threshold", type=int, default=0)
     p.add_argument("--spacing_x", type=float, default=1.0)
     p.add_argument("--spacing_y", type=float, default=1.0)
@@ -130,13 +142,18 @@ def main() -> None:
 
     from radiomics import featureextractor
 
+    from binary_class.new_code.feature_presets import resolve_radiomics_params
+
+    params_path = resolve_radiomics_params(args.feature_preset, args.params)
+    print(f"Radiomics params: {params_path} (preset={args.feature_preset})")
+
     label_rows = _load_label_rows(args.label_json)
     if args.limit is not None:
         label_rows = label_rows[: args.limit]
     if not label_rows:
         raise ValueError("No valid rows found in label_json")
 
-    extractor = featureextractor.RadiomicsFeatureExtractor(args.params)
+    extractor = featureextractor.RadiomicsFeatureExtractor(str(params_path))
     rows: List[Dict[str, object]] = []
     failures = 0
 

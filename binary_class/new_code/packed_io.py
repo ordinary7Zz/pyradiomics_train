@@ -219,6 +219,61 @@ def build_sample_records(
     return records, stats
 
 
+def build_sample_records_from_label_json(
+    spec: AgTaskSpec,
+    label_json_path: Path,
+    image_root_key: str,
+    image_root: Path,
+    label_key: Optional[str] = None,
+) -> Tuple[List[SampleRecord], Dict[str, int]]:
+    """Resolve FangDai (or single-root) samples from a flat label JSON list."""
+    label_key = label_key or spec.label_key
+    items = load_json(label_json_path)
+    if not isinstance(items, list):
+        raise ValueError(f"Label JSON must be a list: {label_json_path}")
+
+    image_roots = {image_root_key: str(image_root)}
+    records: List[SampleRecord] = []
+    stats = {"skipped_label": 0, "skipped_image": 0, "skipped_mask": 0}
+
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        label = item.get(label_key, -1)
+        try:
+            label = int(label)
+        except (TypeError, ValueError):
+            label = -1
+        if label not in (0, 1):
+            stats["skipped_label"] += 1
+            continue
+
+        filename = str(item.get("filename", ""))
+        manifest_row = {**item, "filename": filename, "image_root_key": image_root_key}
+        image_path = resolve_image_path(image_roots, image_root_key, filename)
+        if not image_path:
+            stats["skipped_image"] += 1
+            continue
+        mask_path = resolve_mask_path(spec, image_root_key, image_path, image_roots)
+        if not mask_path:
+            stats["skipped_mask"] += 1
+            continue
+
+        records.append(
+            SampleRecord(
+                filename=filename,
+                label=int(label),
+                patient_id=patient_id_from_record(manifest_row),
+                image_path=image_path,
+                mask_path=mask_path,
+                image_root_key=image_root_key,
+                raw=manifest_row,
+            )
+        )
+
+    return records, stats
+
+
 def write_resolved_samples(path: Path, rows: List[Dict[str, Any]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:

@@ -1,0 +1,23 @@
+---
+description: New pipelines use new output paths; do not wire code to legacy dirs that hold old artifacts
+alwaysApply: true
+---
+
+# Separate new outputs from legacy paths (coding-time)
+
+When **writing or changing code**, default paths must **not** point at directories that store **previous experiment artifacts**, so a normal re-run does not clobber old results.
+
+## Layout convention
+
+- **Legacy (read-only for new pipelines):** e.g. `binary_class/outputs/base_features/FTCPTC_FangDai/`, `outputs/models/FTCPTC_FangDai/`, `outputs/task_csvs/FTCPTC_FangDai/`, `shap_analysis_outputs/FTCPTC_FangDai/`
+- **New runs:** train under `binary_class/outputs/runs/<run_name>/`; SHAP under `binary_class/shap_analysis_outputs/<run_name>/` (same basename as `WORK_DIR`, via `my_run_shap_output_dir`)
+
+## When changing scripts
+
+- Do **not** set new run scripts’ default `SHAP_OUTPUT_DIR`, `MODEL_DIR`, or feature CSV paths to legacy folder names unless the task is explicitly “re-analyze legacy model in place.”
+- Before assigning a default output path, check whether that directory already holds unrelated results; if yes, use a **new** name (usually `basename(outputs/runs/...)`).
+- If a path change could overwrite legacy data, **ask 小路 once while coding**—not on every runtime execution.
+
+## Runtime
+
+Re-running a pipeline may overwrite files **inside its own run/SHAP directory**; that is expected once defaults use **new** paths only.

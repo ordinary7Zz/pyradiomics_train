@@ -7,6 +7,9 @@ from pathlib import Path
 
 import pandas as pd
 
+# Not radiomics; kept in feature CSV only for traceability — strip before task training.
+NON_FEATURE_COLUMNS = ["patient_id", "image_path", "mask_path"]
+
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
@@ -47,6 +50,10 @@ def main() -> None:
     merged = feat.merge(lab, on="filename", how="inner")
     if merged.empty:
         raise ValueError("No rows after merging features and labels")
+
+    drop_meta = [c for c in NON_FEATURE_COLUMNS if c in merged.columns]
+    if drop_meta:
+        merged = merged.drop(columns=drop_meta)
 
     out = Path(args.output_csv)
     out.parent.mkdir(parents=True, exist_ok=True)

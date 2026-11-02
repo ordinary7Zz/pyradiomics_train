@@ -22,10 +22,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from plots.plotting_utils import paper_friendly_name, prepare_df, save_beeswarm_plot
-from shap_analyze.autogluon_introspection import (
-    extract_ensemble_weights_from_log,
-    get_main_models,
-)
+from shap_analyze.autogluon_introspection import get_main_models, resolve_ensemble_weights
 from shap_analyze.shap_compute import compute_shap_for_model
 from shap_analyze.shap_local_plots import plot_waterfall_samples
 
@@ -76,6 +73,15 @@ def parse_args() -> argparse.Namespace:
         type=str,
         required=True,
         help="Training CSV file (used for SHAP background and analysis)",
+    )
+    p.add_argument(
+        "--filenames_csv",
+        type=str,
+        default=None,
+        help=(
+            "Optional CSV with a filename column, same row order as --train_csv "
+            "(e.g. train_features.csv when train_task.csv dropped filename for AutoGluon)"
+        ),
     )
     p.add_argument(
         "--label",
@@ -202,9 +208,37 @@ def main() -> None:
         sample_ids_all = raw_df.loc[train_df.index, id_col].copy()
         if id_col == "image_path":
             sample_ids_all = sample_ids_all.astype(str).apply(os.path.basename)
+    elif args.filenames_csv:
+        fn_path = Path(args.filenames_csv)
+        if not fn_path.is_file():
+            print(f"Warning: --filenames_csv not found: {fn_path}")
+        else:
+            fn_df = pd_mod.read_csv(fn_path, usecols=["filename"])
+            if len(fn_df) != len(raw_df):
+                print(
+                    f"Warning: filenames_csv rows ({len(fn_df)}) != train_csv rows ({len(raw_df)}); "
+                    "cannot align waterfall sample names"
+                )
+            else:
+                fn_series = fn_df["filename"].astype(str)
+                fn_series.index = raw_df.index
+                sample_ids_all = fn_series.loc[train_df.index]
+                print(f"Loaded sample filenames from: {fn_path}")
 
-    main_models = get_main_models(predictor, args.model_dir, args.main_models)
+    if args.output_dir is None:
+        output_dir = os.path.join(args.model_dir, "shap_analysis")
+    else:
+        output_dir = args.output_dir
+
+    main_models = get_main_models(
+        predictor, args.model_dir, args.main_models, output_dir=output_dir
+    )
+    beeswarm_models = args.plot_beeswarm_for if args.plot_beeswarm_for else main_models
     print(f"\nMain models to analyze: {main_models}")
+    if beeswarm_models != main_models:
+        print(f"Beeswarm plots for: {beeswarm_models}")
+    elif not args.plot_beeswarm_for:
+        print(f"Beeswarm plots for (auto): {beeswarm_models}")
 
     X_train = train_df.drop(columns=[args.label]).copy()
     y_train = train_df[args.label].copy()
@@ -263,10 +297,6 @@ def main() -> None:
         pct = count / len(X_explain) * 100
         print(f"    Class {cls}: {count} samples ({pct:.1f}%)")
 
-    if args.output_dir is None:
-        output_dir = os.path.join(args.model_dir, "shap_analysis")
-    else:
-        output_dir = args.output_dir
     os.makedirs(output_dir, exist_ok=True)
     plot_dirs = {
         "beeswarm": os.path.join(output_dir, "beeswarm"),
@@ -324,7 +354,7 @@ def main() -> None:
         importance_df.to_csv(importance_file, index=False)
         print(f"  Saved feature importance to: {importance_file}")
 
-        if args.plot_beeswarm_for and model_name in args.plot_beeswarm_for:
+        if beeswarm_models and model_name in beeswarm_models:
             try:
                 import shap  # noqa: F401
                 import matplotlib.pyplot as plt  # noqa: F401
@@ -355,8 +385,7 @@ def main() -> None:
                 )
                 print(f"  Saved beeswarm plot to: {', '.join(saved_paths)}")
 
-    log_path = os.path.join(args.model_dir, "logs", "predictor_log.txt")
-    weights = extract_ensemble_weights_from_log(log_path)
+    weights = resolve_ensemble_weights(args.model_dir, output_dir)
     if weights and results:
         print("\nComputing weighted ensemble SHAP values...")
         weighted_shap_list = []

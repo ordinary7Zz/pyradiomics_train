@@ -1,0 +1,21 @@
+# Original image only — 2D shape features (size / roundness / elongation)
+
+setting:
+  resampledPixelSpacing: null
+  interpolator: sitkBSpline
+  preCrop: false
+  normalize: true
+  normalizeScale: 100
+  removeOutliers: null
+  binWidth: 25
+  correctMask: true
+  label: 1
+  force2D: true
+  force2Ddimension: 0
+  symmetricalGLCM: true
+
+imageType:
+  Original: {}
+
+featureClass:
+  shape2D: []

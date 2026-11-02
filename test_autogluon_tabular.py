@@ -6,7 +6,7 @@ import pandas as pd
 from autogluon.tabular import TabularPredictor
 
 
-DROP_IF_PRESENT = ["image_path", "mask_path", "filename"]
+DROP_IF_PRESENT = ["image_path", "mask_path", "filename", "patient_id"]
 
 
 def parse_args() -> argparse.Namespace:

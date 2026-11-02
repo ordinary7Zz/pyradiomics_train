@@ -26,6 +26,16 @@ def parse_args() -> argparse.Namespace:
     return p.parse_args()
 
 
+from binary_class.new_code.feature_pipeline import MANIFEST_FILENAME, validate_against_manifest  # noqa: E402
+
+
+def _align_features(raw: pd.DataFrame, model_dir: str, label: str) -> pd.DataFrame:
+    manifest_path = Path(model_dir) / MANIFEST_FILENAME
+    if manifest_path.is_file():
+        validate_against_manifest(raw, manifest_path, label)
+    return _prepare_df(raw.copy(), label)
+
+
 def main() -> None:
     args = parse_args()
     with open(args.resolved_json, "r", encoding="utf-8") as f:
@@ -34,7 +44,7 @@ def main() -> None:
     raw = pd.read_csv(args.val_task_csv)
     filenames = raw["filename"].astype(str).tolist()
     labels = raw[args.label].astype(int).tolist()
-    feature_df = _prepare_df(raw.copy(), args.label)
+    feature_df = _align_features(raw, args.model_dir, args.label)
 
     predictor = TabularPredictor.load(args.model_dir)
     proba = predictor.predict_proba(feature_df)

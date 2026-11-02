@@ -1,5 +1,6 @@
 import argparse
 import os
+import shutil
 from typing import Any, Dict, List, Optional, Tuple
 
 import pandas as pd
@@ -8,9 +9,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.utils import resample
 
 from binary_class.binary_metrics import bootstrap_metric_cis, compute_binary_metrics, get_positive_proba
+from binary_class.new_code.feature_pipeline import MANIFEST_FILENAME, validate_against_manifest
 
 
-DROP_IF_PRESENT = ["image_path", "mask_path", "filename"]
+DROP_IF_PRESENT = ["image_path", "mask_path", "filename", "patient_id"]
 MODEL_SET_CHOICES = ["all", "tree_fast", "tree_full", "gbm_cat", "gbm_only"]
 
 
@@ -101,6 +103,12 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=-1,
         help="target number of class-1 samples after resampling; use -1 to keep the original count",
+    )
+    p.add_argument(
+        "--feature_manifest",
+        type=str,
+        default=None,
+        help="JSON from feature_pipeline; validates CSV columns and is copied into save_dir",
     )
     return p.parse_args()
 
@@ -376,6 +384,12 @@ def _evaluate_test_sets(
 def main() -> None:
     args = parse_args()
     os.makedirs(args.save_dir, exist_ok=True)
+
+    if args.feature_manifest is not None:
+        validate_against_manifest(pd.read_csv(args.train_csv), args.feature_manifest, args.label)
+        dest = os.path.join(args.save_dir, MANIFEST_FILENAME)
+        shutil.copy2(args.feature_manifest, dest)
+        print(f"Copied feature manifest -> {dest}")
 
     train_df = pd.read_csv(args.train_csv)
     train_df = _prepare_df(train_df, args.label)

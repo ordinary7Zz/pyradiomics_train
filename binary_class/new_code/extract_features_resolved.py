@@ -18,6 +18,7 @@ from binary_class.extract_base_radiomics import (  # noqa: E402
     _extract_one,
     _normalize_rel_path,
 )
+from binary_class.new_code.feature_presets import resolve_radiomics_params  # noqa: E402
 
 
 def parse_args() -> argparse.Namespace:
@@ -27,7 +28,15 @@ def parse_args() -> argparse.Namespace:
     p.add_argument(
         "--params",
         type=str,
-        default=str(PYR_ROOT / "radiomics_2d.yaml"),
+        default=None,
+        help="Radiomics YAML path (overrides --feature_preset)",
+    )
+    p.add_argument(
+        "--feature_preset",
+        type=str,
+        default="full",
+        choices=["full", "original_only", "shape_only"],
+        help="Radiomics extraction preset when --params is omitted",
     )
     p.add_argument("--mask_threshold", type=int, default=0)
     p.add_argument("--spacing_x", type=float, default=1.0)
@@ -41,12 +50,15 @@ def main() -> None:
     args = parse_args()
     from radiomics import featureextractor
 
+    params_path = resolve_radiomics_params(args.feature_preset, args.params)
+    print(f"Radiomics params: {params_path} (preset={args.feature_preset})")
+
     with open(args.resolved_json, "r", encoding="utf-8") as f:
         rows_in = json.load(f)
     if args.limit:
         rows_in = rows_in[: args.limit]
 
-    extractor = featureextractor.RadiomicsFeatureExtractor(args.params)
+    extractor = featureextractor.RadiomicsFeatureExtractor(str(params_path))
     out_rows: List[Dict[str, object]] = []
     failures = 0
     spacing = (args.spacing_x, args.spacing_y)
@@ -64,8 +76,7 @@ def main() -> None:
                 mask_threshold=args.mask_threshold,
                 spacing=spacing,
             )
-            if "patient_id" in row:
-                feats["patient_id"] = row["patient_id"]
+            # patient_id stays in resolved JSON only (not written to feature CSV).
             if "label" in row:
                 feats["label"] = row["label"]
             out_rows.append(feats)

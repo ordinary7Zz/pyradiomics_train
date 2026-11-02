@@ -6,7 +6,7 @@ from typing import Dict, List
 import pandas as pd
 
 
-META_COLUMNS = ["filename", "image_path", "mask_path"]
+META_COLUMNS = ["filename", "image_path", "mask_path", "patient_id"]
 
 
 def _normalize_rel_path(path: str) -> str:
@@ -77,8 +77,10 @@ def main() -> None:
         raise ValueError(f"Task {args.task} is not binary after filtering. labels={label_values}")
 
     feature_cols = [c for c in merged.columns if c not in META_COLUMNS + ["label"]]
-    ordered_cols = META_COLUMNS + feature_cols + ["label"]
-    ordered_cols = [c for c in ordered_cols if c in merged.columns]
+    drop_meta = [c for c in META_COLUMNS if c in merged.columns]
+    if drop_meta:
+        merged = merged.drop(columns=drop_meta)
+    ordered_cols = feature_cols + ["label"]
     merged = merged[ordered_cols]
 
     out_dir = os.path.dirname(os.path.abspath(args.output_csv))

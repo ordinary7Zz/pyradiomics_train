@@ -32,7 +32,9 @@ def compute_shap_tree_bag(
 
     if tree_result is None:
         print(f"  Could not extract tree model, using KernelExplainer...")
-        return compute_shap_kernel(model, X_background, X_explain, model_name)
+        return compute_shap_kernel(
+            model, X_background, X_explain, model_name, predictor=predictor, model_name_for_predict=model_name
+        )
 
     tree_model, preprocess_func = tree_result
     print(f"  Extracted tree model type: {type(tree_model)}")
@@ -43,7 +45,9 @@ def compute_shap_tree_bag(
 
     if X_background_processed is None or X_explain_processed is None:
         print(f"  Could not get preprocessed features, using KernelExplainer...")
-        return compute_shap_kernel(model, X_background, X_explain, model_name)
+        return compute_shap_kernel(
+            model, X_background, X_explain, model_name, predictor=predictor, model_name_for_predict=model_name
+        )
 
     print(f"  Preprocessed features: {X_background_processed.shape[1]} (from {X_background.shape[1]} original)")
 
@@ -54,7 +58,9 @@ def compute_shap_tree_bag(
         if actual_features != expected_features:
             print(f"  Feature mismatch: data has {actual_features}, model expects {expected_features}")
             print(f"  This suggests preprocessing didn't work correctly. Using KernelExplainer...")
-            return compute_shap_kernel(model, X_background, X_explain, model_name)
+            return compute_shap_kernel(
+                model, X_background, X_explain, model_name, predictor=predictor, model_name_for_predict=model_name
+            )
         else:
             print(f"  Feature count verified: {actual_features} features match model expectations")
 
@@ -63,8 +69,14 @@ def compute_shap_tree_bag(
     X_background_array = X_background_processed.values if isinstance(X_background_processed, pd.DataFrame) else X_background_processed
     X_explain_array = X_explain_processed.values if isinstance(X_explain_processed, pd.DataFrame) else X_explain_processed
 
-    explainer = shap.TreeExplainer(tree_model)
-    shap_values = explainer.shap_values(X_explain_array, X_background_array)
+    try:
+        explainer = shap.TreeExplainer(tree_model)
+        shap_values = explainer.shap_values(X_explain_array, X_background_array)
+    except Exception as e:
+        print(f"  TreeExplainer failed ({type(e).__name__}: {e}), using KernelExplainer...")
+        return compute_shap_kernel(
+            model, X_background, X_explain, model_name, predictor=predictor, model_name_for_predict=model_name
+        )
 
     if isinstance(shap_values, list):
         shap_values = shap_values[1]
@@ -90,6 +102,8 @@ def compute_shap_kernel(
     X_background: pd.DataFrame,
     X_explain: pd.DataFrame,
     model_name: str,
+    predictor: Any = None,
+    model_name_for_predict: Optional[str] = None,
 ) -> Tuple[np.ndarray, pd.DataFrame]:
     """Compute SHAP values using KernelExplainer."""
     try:
@@ -103,7 +117,10 @@ def compute_shap_kernel(
     def model_wrapper(X):
         X_df = pd.DataFrame(X, columns=X_background.columns, index=range(len(X)))
         try:
-            proba = model.predict_proba(X_df)
+            if predictor is not None and model_name_for_predict is not None:
+                proba = predictor.predict_proba(X_df, model=model_name_for_predict)
+            else:
+                proba = model.predict_proba(X_df)
             if isinstance(proba, pd.DataFrame):
                 if 1 in proba.columns:
                     return proba[1].values
@@ -154,9 +171,13 @@ def compute_shap_for_model(
             return compute_shap_tree_bag(model, X_background, X_explain, model_name, predictor)
         elif is_tree_model(model_name):
             print(f"  Non-BAG tree model detected, using KernelExplainer for safety...")
-            return compute_shap_kernel(model, X_background, X_explain, model_name)
+            return compute_shap_kernel(
+                model, X_background, X_explain, model_name, predictor=predictor, model_name_for_predict=model_name
+            )
         else:
-            return compute_shap_kernel(model, X_background, X_explain, model_name)
+            return compute_shap_kernel(
+                model, X_background, X_explain, model_name, predictor=predictor, model_name_for_predict=model_name
+            )
     except Exception as e:
         print(f"  Error computing SHAP for {model_name}: {e}")
         import traceback

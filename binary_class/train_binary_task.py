@@ -1,13 +1,15 @@
 import argparse
 import os
+import shutil
 
 import pandas as pd
 from autogluon.tabular import TabularPredictor
 
 from binary_class.binary_metrics import bootstrap_metric_cis, compute_binary_metrics, get_positive_proba
+from binary_class.new_code.feature_pipeline import MANIFEST_FILENAME, validate_against_manifest
 
 
-DROP_IF_PRESENT = ["image_path", "mask_path", "filename"]
+DROP_IF_PRESENT = ["image_path", "mask_path", "filename", "patient_id"]
 
 
 def _prepare_df(df: pd.DataFrame, label_col: str) -> pd.DataFrame:
@@ -45,11 +47,24 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--ci_bootstrap_iters", type=int, default=1000)
     p.add_argument("--ci_level", type=float, default=0.95)
     p.add_argument("--ci_seed", type=int, default=42)
+    p.add_argument(
+        "--feature_manifest",
+        type=str,
+        default=None,
+        help="JSON from feature_pipeline; validates CSV columns and is copied into save_dir",
+    )
     return p.parse_args()
 
 
 def main() -> None:
     args = parse_args()
+    os.makedirs(args.save_dir, exist_ok=True)
+
+    if args.feature_manifest is not None:
+        validate_against_manifest(pd.read_csv(args.train_csv), args.feature_manifest, args.label)
+        dest = os.path.join(args.save_dir, MANIFEST_FILENAME)
+        shutil.copy2(args.feature_manifest, dest)
+        print(f"Copied feature manifest -> {dest}")
 
     train_df = pd.read_csv(args.train_csv)
     train_df = _prepare_df(train_df, args.label)

@@ -19,6 +19,7 @@ if str(PYR_ROOT) not in sys.path:
 from binary_class.new_code.metrics_oof import aggregate_patient_mean, binary_metrics, cluster_bootstrap_ci
 from binary_class.new_code.packed_io import build_sample_records, load_image_roots, write_resolved_samples
 from binary_class.new_code.patient_cv import split_samples_by_patient_cv
+from binary_class.new_code.feature_presets import resolve_radiomics_params
 from binary_class.new_code.task_specs import get_task
 
 NEW_CODE = Path(__file__).resolve().parent
@@ -41,6 +42,9 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--presets", type=str, default="best_quality")
     p.add_argument("--ag_seed", type=int, default=42)
     p.add_argument("--skip_fail_features", action="store_true")
+    p.add_argument("--feature_preset", type=str, default="full", choices=["full", "original_only", "shape_only"])
+    p.add_argument("--feature_filter", type=str, default="standard", choices=["none", "standard"])
+    p.add_argument("--radiomics_params", type=str, default=None)
     return p.parse_args()
 
 
@@ -80,12 +84,18 @@ def main() -> None:
         "target_class1_count": spec.target_class1_count,
         "seed": args.ag_seed,
         "eval_metric": "roc_auc",
+        "feature_preset": args.feature_preset,
+        "feature_filter": args.feature_filter,
     }
     with open(out_dir / "ag_train_config.json", "w", encoding="utf-8") as f:
         json.dump(ag_config, f, indent=2)
 
     cache_csv = out_dir / "cache" / "all_features.csv"
     all_resolved_path = out_dir / "cache" / "all_resolved.json"
+    params_path = resolve_radiomics_params(args.feature_preset, args.radiomics_params)
+    extract_extra = ["--feature_preset", args.feature_preset]
+    if args.radiomics_params:
+        extract_extra = ["--params", str(args.radiomics_params)]
     if args.reuse_feature_cache and not args.dry_run:
         all_rows = [s.to_resolved_row(spec.label_key) for s in records]
         write_resolved_samples(all_resolved_path, all_rows)
@@ -99,6 +109,7 @@ def main() -> None:
                     "--output_csv",
                     str(cache_csv),
                 ]
+                + extract_extra
                 + (["--skip_fail"] if args.skip_fail_features else []),
                 PYR_ROOT,
             )
@@ -133,6 +144,7 @@ def main() -> None:
         val_feat = fold_dir / "val_features.csv"
         train_task = fold_dir / "train_task.csv"
         val_task = fold_dir / "val_task.csv"
+        manifest_path = fold_dir / "feature_manifest.json"
         ag_dir = fold_dir / "ag_model"
 
         if args.dry_run:
@@ -156,6 +168,7 @@ def main() -> None:
                     "--output_csv",
                     str(train_feat),
                 ]
+                + extract_extra
                 + (["--skip_fail"] if args.skip_fail_features else []),
                 PYR_ROOT,
             )
@@ -168,6 +181,7 @@ def main() -> None:
                     "--output_csv",
                     str(val_feat),
                 ]
+                + extract_extra
                 + (["--skip_fail"] if args.skip_fail_features else []),
                 PYR_ROOT,
             )
@@ -189,6 +203,20 @@ def main() -> None:
                 PYR_ROOT,
             )
 
+        from binary_class.new_code.feature_pipeline import FilterConfig, filter_train_test_tasks
+
+        filter_cfg = FilterConfig(mode=args.feature_filter)
+        filter_train_test_tasks(
+            train_task,
+            val_task,
+            manifest_path,
+            label_col="label",
+            cfg=filter_cfg,
+            feature_preset=args.feature_preset,
+            radiomics_params=str(params_path),
+            keep_filename=True,
+        )
+
         if not args.skip_train:
             cmd = [
                 sys.executable,
@@ -202,6 +230,8 @@ def main() -> None:
                 "val_fold",
                 "--save_dir",
                 str(ag_dir),
+                "--feature_manifest",
+                str(manifest_path),
                 "--label",
                 "label",
                 "--eval_metric",

@@ -90,7 +90,7 @@ def _ensure_cjk_fonts() -> None:
     except Exception:
         pass
 
-DROP_IF_PRESENT = ["image_path", "mask_path", "filename"]
+DROP_IF_PRESENT = ["image_path", "mask_path", "filename", "patient_id"]
 
 MANUAL_MAP = {
     "original_shape2D_Sphericity": "SHAPE: Sphericity",
