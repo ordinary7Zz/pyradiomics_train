@@ -2,6 +2,11 @@
 autogluon_model/
 csv_data/
 
+# 训练/特征产物（勿提交大 CSV）
+binary_class/BM/outputs/
+binary_class/new_code/runs/
+binary_class/outputs/runs/
+
 # 核心输出/模型目录（防止被 git clean 删除）
 binary_class/outputs/models/*/models/
 shap_analysis_outputs/*
