@@ -1,0 +1,12 @@
+feature,mean_abs_shap
+wavelet-L_firstorder_Minimum,0.8115463145267503
+exponential_glszm_ZoneEntropy,0.7666381860603577
+exponential_glszm_GrayLevelNonUniformity,0.5462411736284787
+gradient_firstorder_TotalEnergy,0.49865307021190197
+log-sigma-4-0-mm-3D_firstorder_TotalEnergy,0.27656794036794535
+gradient_gldm_GrayLevelNonUniformity,0.2727326091328292
+wavelet-L_firstorder_TotalEnergy,0.2649058494245768
+wavelet-H_glszm_SizeZoneNonUniformity,0.22199699822732893
+exponential_glszm_ZoneVariance,0.22191900534268075
+square_glszm_GrayLevelNonUniformity,0.21678753744876952
+gradient_glszm_GrayLevelNonUniformity,0.2018373838537292

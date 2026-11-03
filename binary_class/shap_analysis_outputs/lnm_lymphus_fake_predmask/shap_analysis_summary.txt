@@ -1,0 +1,41 @@
+SHAP Analysis Summary
+==================================================
+
+Model directory: /mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/outputs/runs/lnm_lymphus_fake_predmask/ag_model
+Training CSV: /mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/outputs/runs/lnm_lymphus_fake_predmask/task_csvs/train_LNM_CN01.csv
+Background samples: 220
+Explained samples: 220
+Main models analyzed: 2
+
+Ensemble weights:
+  CatBoost_BAG_L1: 0.6250
+  XGBoost_BAG_L1: 0.3750
+
+Model: CatBoost_BAG_L1
+  Mean absolute SHAP sum: 636.1337
+  Top 10 features:
+    original_firstorder_Maximum: 0.535274
+    original_shape2D_Sphericity: 0.257271
+    original_firstorder_TotalEnergy: 0.233009
+    original_ngtdm_Complexity: 0.211364
+    original_glcm_ClusterShade: 0.164575
+    original_ngtdm_Busyness: 0.163518
+    original_firstorder_Kurtosis: 0.138567
+    original_shape2D_PerimeterSurfaceRatio: 0.119814
+    original_glcm_Idn: 0.118879
+    original_shape2D_Elongation: 0.101639
+
+Model: XGBoost_BAG_L1
+  Mean absolute SHAP sum: 93.5130
+  Top 10 features:
+    original_firstorder_Maximum: 0.118157
+    original_shape2D_Elongation: 0.043793
+    original_shape2D_Sphericity: 0.042769
+    original_firstorder_TotalEnergy: 0.030085
+    original_firstorder_Kurtosis: 0.023713
+    original_ngtdm_Contrast: 0.022617
+    original_shape2D_PerimeterSurfaceRatio: 0.022522
+    original_glcm_ClusterShade: 0.022498
+    original_glcm_Idmn: 0.018504
+    original_glcm_ClusterProminence: 0.017166
+

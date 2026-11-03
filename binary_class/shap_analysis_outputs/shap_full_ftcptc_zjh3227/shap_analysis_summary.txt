@@ -1,0 +1,41 @@
+SHAP Analysis Summary
+==================================================
+
+Model directory: ./binary_class/new_code/runs/shap_full_ftcptc_zjh3227/ag_model
+Training CSV: ./binary_class/new_code/runs/shap_full_ftcptc_zjh3227/train_task.csv
+Background samples: 500
+Explained samples: 532
+Main models analyzed: 2
+
+Ensemble weights:
+  CatBoost_BAG_L1: 0.8240
+  LightGBM_BAG_L1: 0.1760
+
+Model: CatBoost_BAG_L1
+  Mean absolute SHAP sum: 3156.6990
+  Top 10 features:
+    gradient_glszm_GrayLevelNonUniformity: 0.422308
+    log-sigma-2-0-mm-3D_glszm_ZoneEntropy: 0.329959
+    gradient_glszm_ZoneEntropy: 0.227029
+    logarithm_firstorder_Range: 0.210633
+    wavelet-H_firstorder_RobustMeanAbsoluteDeviation: 0.201201
+    log-sigma-2-0-mm-3D_glcm_Imc1: 0.197954
+    wavelet-H_firstorder_Skewness: 0.195318
+    squareroot_firstorder_Range: 0.192874
+    log-sigma-2-0-mm-3D_glszm_SizeZoneNonUniformity: 0.189059
+    logarithm_ngtdm_Complexity: 0.182110
+
+Model: LightGBM_BAG_L1
+  Mean absolute SHAP sum: 3853.7186
+  Top 10 features:
+    gradient_glszm_GrayLevelNonUniformity: 0.618307
+    squareroot_firstorder_Range: 0.360471
+    log-sigma-2-0-mm-3D_glszm_ZoneEntropy: 0.339531
+    squareroot_gldm_LargeDependenceHighGrayLevelEmphasis: 0.301551
+    wavelet-H_firstorder_RobustMeanAbsoluteDeviation: 0.294598
+    wavelet-H_firstorder_Skewness: 0.292961
+    gradient_glszm_ZoneEntropy: 0.279855
+    log-sigma-2-0-mm-3D_glcm_Imc1: 0.225875
+    log-sigma-2-0-mm-3D_glszm_SizeZoneNonUniformity: 0.203219
+    square_gldm_SmallDependenceLowGrayLevelEmphasis: 0.193308
+

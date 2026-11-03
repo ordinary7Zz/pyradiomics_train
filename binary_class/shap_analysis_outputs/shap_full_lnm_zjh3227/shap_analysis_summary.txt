@@ -1,0 +1,54 @@
+SHAP Analysis Summary
+==================================================
+
+Model directory: ./binary_class/new_code/runs/shap_full_lnm_zjh3227/ag_model
+Training CSV: ./binary_class/new_code/runs/shap_full_lnm_zjh3227/train_task.csv
+Background samples: 110
+Explained samples: 110
+Main models analyzed: 3
+
+Ensemble weights:
+  CatBoost_BAG_L1: 1.0000
+
+Model: CatBoost_BAG_L1
+  Mean absolute SHAP sum: 472.9809
+  Top 10 features:
+    wavelet-L_firstorder_Minimum: 0.811546
+    exponential_glszm_ZoneEntropy: 0.766638
+    exponential_glszm_GrayLevelNonUniformity: 0.546241
+    gradient_firstorder_TotalEnergy: 0.498653
+    log-sigma-4-0-mm-3D_firstorder_TotalEnergy: 0.276568
+    gradient_gldm_GrayLevelNonUniformity: 0.272733
+    wavelet-L_firstorder_TotalEnergy: 0.264906
+    wavelet-H_glszm_SizeZoneNonUniformity: 0.221997
+    exponential_glszm_ZoneVariance: 0.221919
+    square_glszm_GrayLevelNonUniformity: 0.216788
+
+Model: LightGBM_BAG_L1
+  Mean absolute SHAP sum: 392.5070
+  Top 10 features:
+    wavelet-L_firstorder_Minimum: 0.959298
+    gradient_firstorder_TotalEnergy: 0.612863
+    exponential_glszm_GrayLevelNonUniformity: 0.552620
+    wavelet-L_firstorder_TotalEnergy: 0.277944
+    square_glszm_GrayLevelNonUniformity: 0.253921
+    exponential_glszm_ZoneVariance: 0.233022
+    wavelet-H_glszm_SizeZoneNonUniformity: 0.186533
+    exponential_glszm_ZoneEntropy: 0.185893
+    log-sigma-4-0-mm-3D_firstorder_TotalEnergy: 0.153752
+    gradient_gldm_GrayLevelNonUniformity: 0.101622
+
+Model: XGBoost_BAG_L1
+  Mean absolute SHAP sum: 28.6353
+  Top 10 features:
+    wavelet-L_firstorder_Minimum: 0.068963
+    log-sigma-4-0-mm-3D_firstorder_TotalEnergy: 0.036790
+    exponential_glszm_GrayLevelNonUniformity: 0.035568
+    exponential_glszm_ZoneEntropy: 0.035360
+    gradient_firstorder_TotalEnergy: 0.029321
+    wavelet-L_firstorder_TotalEnergy: 0.020558
+    wavelet-H_glszm_SizeZoneNonUniformity: 0.009764
+    square_glszm_GrayLevelNonUniformity: 0.008836
+    gradient_glszm_GrayLevelNonUniformity: 0.007053
+    gradient_gldm_GrayLevelNonUniformity: 0.004684
+

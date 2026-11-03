@@ -194,6 +194,8 @@ python -m binary_class.train_binary_task_resampled \
 ```bash
 cd /mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train
 bash binary_class/run_ftcptc_malignant_filtered.sh
+# 默认 FEATURE_FILTER=none（全特征 train+SHAP，Top 特征更接近 original 形态/纹理）
+# 若要用 train-only 筛选 (~53 维)：FEATURE_FILTER=standard bash binary_class/run_ftcptc_malignant_filtered.sh
 # SHAP 写入 binary_class/shap_analysis_outputs/ftcptc_malignant_filtered/（不与 legacy FTCPTC_FangDai 混用）
 # SKIP_EXTRACT=0 / FEAT_WRITE_DIR=... / SKIP_SHAP=1 同上 LymphUs 脚本说明
 # 与 new_code 特征筛选 + SHAP 全量流水线：bash binary_class/new_code/run_shap_fulltrain_ftcptc_zjh3227.sh

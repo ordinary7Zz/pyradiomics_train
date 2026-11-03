@@ -1,0 +1,41 @@
+SHAP Analysis Summary
+==================================================
+
+Model directory: ./binary_class/new_code/runs/shap_full_ftcptc_fangdai_fake/ag_model
+Training CSV: ./binary_class/new_code/runs/shap_full_ftcptc_fangdai_fake/train_task.csv
+Background samples: 179
+Explained samples: 179
+Main models analyzed: 2
+
+Ensemble weights:
+  CatBoost_BAG_L1: 0.6000
+  LightGBM_BAG_L1: 0.4000
+
+Model: CatBoost_BAG_L1
+  Mean absolute SHAP sum: 1827.4424
+  Top 10 features:
+    wavelet-H_gldm_DependenceVariance: 2.817357
+    logarithm_firstorder_90Percentile: 1.106013
+    log-sigma-2-0-mm-3D_glszm_ZoneEntropy: 0.914456
+    logarithm_gldm_SmallDependenceHighGrayLevelEmphasis: 0.648373
+    exponential_firstorder_Minimum: 0.647267
+    gradient_glcm_Imc1: 0.597410
+    logarithm_firstorder_RootMeanSquared: 0.524571
+    log-sigma-2-0-mm-3D_glcm_Imc1: 0.430186
+    logarithm_gldm_LargeDependenceHighGrayLevelEmphasis: 0.421876
+    logarithm_glcm_InverseVariance: 0.420219
+
+Model: LightGBM_BAG_L1
+  Mean absolute SHAP sum: 3221.3903
+  Top 10 features:
+    wavelet-H_gldm_DependenceVariance: 5.647734
+    gradient_glcm_Imc1: 2.006563
+    exponential_firstorder_Minimum: 1.956972
+    logarithm_firstorder_90Percentile: 1.733550
+    logarithm_gldm_SmallDependenceHighGrayLevelEmphasis: 1.420754
+    logarithm_gldm_LargeDependenceHighGrayLevelEmphasis: 1.291044
+    log-sigma-2-0-mm-3D_glcm_Imc1: 0.780524
+    logarithm_glcm_Imc1: 0.684774
+    logarithm_firstorder_RootMeanSquared: 0.630895
+    logarithm_gldm_DependenceEntropy: 0.594858
+

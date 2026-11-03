@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # 整理后的 FTC/PTC · Malignant cropped + filtered JSON（与 binary_class/my_run.md 该节一致）
 # Legacy 特征：outputs/base_features/FTCPTC_FangDai（只读，永不写入）
-# 本脚本训练产物：outputs/runs/ftcptc_malignant_filtered/{task_csvs,ag_model,feature_manifest.json}
+# 本脚本训练产物：outputs/runs/ftcptc_malignant_filtered/{task_csvs,ag_model[,feature_manifest.json]}
+# 默认 FEATURE_FILTER=none（全 radiomics 维训练+SHAP）；53 维筛选：FEATURE_FILTER=standard bash ...
 # Legacy 特征只读：outputs/base_features/FTCPTC_FangDai
 # SHAP 输出：binary_class/shap_analysis_outputs/ftcptc_malignant_filtered（与 WORK_DIR 同名，不覆盖 legacy FTCPTC_FangDai）
 set -euo pipefail
@@ -19,7 +20,7 @@ export PYTHONPATH="${PYR_ROOT}${PYTHONPATH:+:${PYTHONPATH}}"
 : "${MODEL_SET:=tree_full}"
 : "${TEST_NAME:=FTCPTC_test}"
 : "${SKIP_EXTRACT:=1}"
-: "${FEATURE_FILTER:=standard}"
+: "${FEATURE_FILTER:=none}"
 : "${FEATURE_PRESET:=full}"
 
 IMAGE_ROOT="/mnt/wangbd8/workspace/DataSets/ThyroidAgent/Classifaction_Data/Malignant_ultrasound_images_cropped"
@@ -44,6 +45,7 @@ echo "==> FTC/PTC · Malignant filtered (my_run) | PYTHON=${PYTHON}"
 echo "    SKIP_EXTRACT=${SKIP_EXTRACT} (default 1: do not re-extract)"
 echo "    legacy feats (read-only): ${LEGACY_FEAT_DIR}"
 echo "    work dir:                 ${WORK_DIR}"
+echo "    FEATURE_FILTER=${FEATURE_FILTER} (none=~900维; standard=train-only 筛选~53维)"
 echo "    train labels: ${TRAIN_LABEL_JSON}"
 echo "    test labels:  ${TEST_LABEL_JSON}"
 

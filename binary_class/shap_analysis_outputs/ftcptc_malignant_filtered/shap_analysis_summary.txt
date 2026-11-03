@@ -1,0 +1,56 @@
+SHAP Analysis Summary
+==================================================
+
+Model directory: /mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/outputs/runs/ftcptc_malignant_filtered/ag_model
+Training CSV: /mnt/wangbd8/workspace/ThyroidAgent/dino_unet_multitask/pyradiomics_train/binary_class/outputs/runs/ftcptc_malignant_filtered/task_csvs/train_FTCPTC.csv
+Background samples: 500
+Explained samples: 532
+Main models analyzed: 3
+
+Ensemble weights:
+  CatBoost_BAG_L1: 0.4740
+  LightGBM_BAG_L1: 0.4210
+  XGBoost_BAG_L1: 0.1050
+
+Model: CatBoost_BAG_L1
+  Mean absolute SHAP sum: 1439.3435
+  Top 10 features:
+    original_shape2D_Sphericity: 0.142264
+    original_glrlm_GrayLevelNonUniformity: 0.106074
+    original_glcm_Imc2: 0.101602
+    original_glcm_ClusterShade: 0.095572
+    original_glrlm_ShortRunLowGrayLevelEmphasis: 0.089314
+    original_shape2D_PerimeterSurfaceRatio: 0.073287
+    original_shape2D_Elongation: 0.070861
+    original_ngtdm_Strength: 0.070690
+    original_glrlm_RunEntropy: 0.061157
+    original_glrlm_GrayLevelVariance: 0.060354
+
+Model: LightGBM_BAG_L1
+  Mean absolute SHAP sum: 2119.8015
+  Top 10 features:
+    original_shape2D_Sphericity: 0.233749
+    original_glrlm_GrayLevelNonUniformity: 0.219078
+    original_glcm_ClusterShade: 0.198798
+    original_shape2D_Elongation: 0.192891
+    original_ngtdm_Coarseness: 0.185323
+    original_firstorder_10Percentile: 0.177106
+    original_glrlm_ShortRunLowGrayLevelEmphasis: 0.165930
+    original_glrlm_RunEntropy: 0.165225
+    original_glcm_Imc2: 0.138221
+    original_ngtdm_Busyness: 0.131647
+
+Model: XGBoost_BAG_L1
+  Mean absolute SHAP sum: 188.3547
+  Top 10 features:
+    original_glcm_ClusterShade: 0.024646
+    original_glrlm_GrayLevelNonUniformity: 0.024420
+    original_ngtdm_Coarseness: 0.023546
+    original_shape2D_Sphericity: 0.021687
+    original_firstorder_10Percentile: 0.021506
+    original_glrlm_ShortRunLowGrayLevelEmphasis: 0.015305
+    original_shape2D_Elongation: 0.013462
+    original_shape2D_MinorAxisLength: 0.012073
+    original_glrlm_RunEntropy: 0.010106
+    original_glcm_Imc2: 0.009670
+
